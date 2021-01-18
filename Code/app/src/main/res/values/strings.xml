@@ -1,0 +1,84 @@
+<resources>
+    <string name="app_name">GeoFence</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--dialog Strings-->
+    <string name="ignore_dialog">Ignore</string>
+    <string name="str_see_in_Map">See in Map</string>
+    <string name="map_api_key">AIzaSyCbIwM00M5BEWBZqMNz1T0AG2o8q5vdlOU</string>
+
+
+    <!--Bottom Menu-->
+    <!--Menu-->
+    <string name="activity_main_menu_connect_device">Connect Device</string>
+    <string name="activity_main_menu_message">Message</string>
+    <string name="activity_main_menu_setting">Setting</string>
+
+
+    <!--Fragment Setting.-->
+    <string name="fragment_setting">Setting</string>
+    <string name="fragment_setting_buzzer">Time interval for Buzzer sound</string>
+    <string name="fragment_setting_dialog_select">Select Time interval</string>
+    <string name="str_done">Done</string>
+
+
+    <!--Fragment Chatting.-->
+    <string name="fragment_chatting_no_messageFound">No message found</string>
+    <string name="fragment_chatting_toolbar">Messages</string>
+    <string name="fragment_chatting_entermessage">Enter Message</string>
+    <string name="fragment_chatting_incomming_message">IN_COMMING</string>
+    <string name="fragment_chatting_out_going_message">OUT_GOING</string>
+    <string name="fragment_chat_owner_name">USER</string>
+    <string name="fragment_chat_server_name">SERVER</string>
+
+
+    <!--<string name="fragment_chat_message_failed">MESSAGE_FAIL</string>
+    <string name="fragment_chat_message_full_message_recieved_from_device">MESSAGE_DELIVERD_TO_DEVICE</string>
+    <string name="fragment_chat_message_failed_to_send_message_server">MESSAGE_SENDING_TO_SERVER_FAILED</string>
+    <string name="fragment_chat_message_mesaage_sent_to_server">MESSAGE_SENT_SERVER</string>-->
+
+
+    <string name="fragment_chat_message_mesaage_failed_app">MESSAGE_FAILED_APP_SIDE</string>
+    <string name="fragment_chat_message_mesaage_invalid_channel_id">INVALID_CHANNEL_ID</string>
+    <string name="fragment_chat_message_mesaage_full_message_recieved_by_device">FULL MESSSAGE RECIEVED BY DEVICE</string>
+    <string name="fragment_chat_message_mesaage_message_sent_gsm">MESSAGE_SENT_GSM</string>
+    <string name="fragment_chat_message_mesaage_failed_message_gsm">MESSAGE_FAILES_GSM</string>
+    <string name="fragment_chat_message_mesaage_send_to_iridium">MESSSAGE_SEND_IRIDIUM</string>
+    <string name="fragment_chat_message_mesaage_server_sending_failed">MESSAGE_FAILED_SERVER</string>
+
+
+    <!--back dialog String-->
+    <string name="str_exit_confirmation">Are you sure want to exit?</string>
+
+    <!--DeviceName-->
+    <string name="device_name_filter">Succorfish SC2</string>
+    <string name="device_name_alias">Succorfish SC2_Gen2_V01</string>
+    <!--    <string name="device_name_alias">Succorfish SC2</string>-->
+    <string name="device_name_alias_save">SC2 Device</string>
+
+    <!--Fragment Scan.-->
+    <string name="Tap_on_Connect_button">Tap on <b><i>Connect</i></b> button to pair with device</string>
+
+    <!--Notification Channel Strings-->
+    <string name="GEO_FENCE_ID">GeoFence ID</string>
+    <string name="GEO_FENCE_ALERTS">GeoFence Alerts</string>
+    <string name="GEO_FENCE_DESCRIPTION">Updates on Alert of GeoFence</string>
+
+    <!--Login Activity-->
+    <string name="login_userName">User Name</string>
+    <string name="login_password">Password</string>
+    <string name="login_remember_me">Remember me</string>
+    <string name="login_Login_button">Login</string>
+
+
+    <!--Dialog Strings-->
+    <string name="Login_Sucessfull">Login Sucessfull</string>
+    <string name="str_ok">Ok</string>
+    <string name="str_no">No Sucessfull</string>
+
+    <!--Preference Helper String-->
+    <string name="pre_ESIM">ESIM</string>
+    <string name="pre_NANO">NANOSIM</string>
+</resources>
