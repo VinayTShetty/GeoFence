@@ -2789,7 +2789,7 @@ public class MainActivity extends AppCompatActivity implements
                          */
                         imeiNumberFomFirmware="";
                         imeiNumberFomFirmware=convert7bytesToLong(localVariableForBlock);
-                        checkTokenAvaliableForImeiNumber(bleDevice.getDevice().getAddress(),imeiNumberFomFirmware);
+                        checkTokenAvaliableForImeiNumber(bleAddressFromNotificationChanged,imeiNumberFomFirmware);
                     }
                     else if ((blehexObtainedFrom_Firmware.length() == 32) && ((blehexObtainedFrom_Firmware.substring(0, 2).equalsIgnoreCase("e2")))) {
                         String localVariableForBlock = blehexObtainedFrom_Firmware;
@@ -2798,17 +2798,6 @@ public class MainActivity extends AppCompatActivity implements
                              * Ask for geoFence ID and Add Devices for Re-Connection.
                              * As its valid Token..
                              */
-
-                            if (main_Activity_connectedDevicesAliasList.size() > 0) {
-                                Iterator<MainActivityConnectedDevices> iter = main_Activity_connectedDevicesAliasList.iterator();
-                                while (iter.hasNext()) {
-                                    MainActivityConnectedDevices mainActivityConnectedDevices = iter.next();
-                                    if (mainActivityConnectedDevices.isIs_DisconnectedFromFirmware()) {
-                                        iter.remove();
-                                    }
-                                }
-                            }
-                            main_Activity_connectedDevicesAliasList.add(new MainActivityConnectedDevices(bleDevice, false));
                             cancelProgressDialog();
                             AsyncTask.execute(new Runnable() {
                                 @Override
