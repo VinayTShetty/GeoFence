@@ -23,13 +23,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.clj.fastble.BleManager;
-import com.clj.fastble.data.BleDevice;
-import com.clj.fastble.utils.HexUtil;
 import com.kaopiz.kprogresshud.KProgressHUD;
-import com.polidea.rxandroidble2.RxBleClient;
-import com.polidea.rxandroidble2.RxBleDevice;
 import com.succorfish.geofence.BaseFragment.BaseFragment;
 import com.succorfish.geofence.LoginActivity;
 import com.succorfish.geofence.MainActivity;
@@ -48,20 +42,16 @@ import com.succorfish.geofence.interfaceFragmentToActivity.PassClickedDeviceForC
 import com.succorfish.geofence.interfaces.onAlertDialogCallBack;
 import com.succorfish.geofence.interfaces.onDeviceNameAlert;
 import com.succorfish.geofence.utility.Utility;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import static com.succorfish.geofence.MainActivity.CONNECTED_BLE_ADDRESS;
-import static com.succorfish.geofence.MainActivity.main_Activity_connectedDevicesAliasList;
 import static com.succorfish.geofence.MainActivity.roomDBHelperInstance;
 import static com.succorfish.geofence.utility.Utility.ble_on_off;
 import static com.succorfish.geofence.utility.Utility.getBluetoothAdapter;
-
 public class FragmentScan extends BaseFragment {
     private final int LocationPermissionRequestCode = 100;
     private Unbinder unbinder;
@@ -194,7 +184,8 @@ public class FragmentScan extends BaseFragment {
         switch (requestCode) {
             case LocationPermissionRequestCode:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mainActivity.start_stop_SCAN(getActivity());
+                    mainActivity.start_stop_SCAN(getActivity()); // Remove
+                    mainActivity.start_stop_scan(); // Remove
                 } else {
                     askPermission();
                 }
@@ -205,6 +196,7 @@ public class FragmentScan extends BaseFragment {
         if (isAdded()) {
             if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mainActivity.start_stop_SCAN(getActivity());
+                mainActivity.start_stop_scan();
             } else {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LocationPermissionRequestCode);
             }
@@ -244,6 +236,10 @@ public class FragmentScan extends BaseFragment {
     }
 
     private void interfaceImplementation_CallBack() {
+
+        /**
+         * Remove
+         */
         mainActivity.setUpInterfaceInMainActivity(new PassScanDevicesRxBle() {
             @Override
             public void scannedRxBleDevices(CustomBluetooth customBluetooth) {
@@ -501,7 +497,8 @@ public class FragmentScan extends BaseFragment {
     public void reloadImageClick() {
         checkBluetoothIsOn();
         clearScanConnectedDevices();
-        mainActivity.start_stop_SCAN(getActivity());
+        mainActivity.start_stop_SCAN(getActivity()); // Remove
+        mainActivity.start_stop_scan();
     }
 
     @OnClick(R.id.notificaiton_count)

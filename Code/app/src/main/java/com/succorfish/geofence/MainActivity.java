@@ -513,7 +513,7 @@ public class MainActivity extends AppCompatActivity implements
         fragmentTransction.commit();
     }
 
-    public void start_stop_SCAN(Context context) {
+    public void 100start_stop_SCAN(Context context) {
         if (new Utility().ble_on_off()) {
             /**
              * Rx Ble Start Scanning
@@ -2433,7 +2433,6 @@ public class MainActivity extends AppCompatActivity implements
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mScanning = false;
                 stopScan();
             }
         }, SCAN_PERIOD);
@@ -2453,15 +2452,20 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void start_stop_scan() {
-        if(ble_on_off()){
-            if (SCAN_TAG.equalsIgnoreCase(getResources().getString(R.string.SCAN_STOPED)) || (SCAN_TAG.equalsIgnoreCase(""))) {
-                startScan();
-            }else if (SCAN_TAG.equalsIgnoreCase(getResources().getString(R.string.SCAN_STARTED))) {
-                /**
-                 * Scan already started.
-                 */
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            if(ble_on_off()){
+                if (SCAN_TAG.equalsIgnoreCase(getResources().getString(R.string.SCAN_STOPED)) || (SCAN_TAG.equalsIgnoreCase(""))) {
+                    startScan();
+                }else if (SCAN_TAG.equalsIgnoreCase(getResources().getString(R.string.SCAN_STARTED))) {
+                    /**
+                     * Scan already started.
+                     */
+                }
             }
         }
+
     }
 
     public void setupPassScanDeviceToActivity_interface(PassScanDeviceToActivity_interface loc_passScanDeviceToActivity_interface) {
