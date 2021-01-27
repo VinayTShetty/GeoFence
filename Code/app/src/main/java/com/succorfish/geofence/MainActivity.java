@@ -26,16 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.RelativeLayout;
-import com.clj.fastble.BleManager;
-import com.clj.fastble.callback.BleGattCallback;
-import com.clj.fastble.callback.BleNotifyCallback;
-import com.clj.fastble.callback.BleWriteCallback;
-import com.clj.fastble.data.BleDevice;
-import com.clj.fastble.exception.BleException;
-import com.clj.fastble.utils.HexUtil;
 import com.kaopiz.kprogresshud.KProgressHUD;
-import com.polidea.rxandroidble2.RxBleClient;
-import com.polidea.rxandroidble2.RxBleDevice;
 import com.succorfish.geofence.DateUtils.DateUtilsMyHelper;
 import com.succorfish.geofence.Fragment.FragmentBandConfiguration;
 import com.succorfish.geofence.Fragment.FragmentChatting;
@@ -101,7 +92,6 @@ import javax.crypto.NoSuchPaddingException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.disposables.Disposable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -172,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * interface from Activity to Fragment
      */
-    private Disposable mainActivityScanningInstance;
     @BindView(R.id.bottom_navigation_layout)
     public RelativeLayout bottomRelativelayout;
     FragmentTransaction fragmentTransction;
@@ -2256,7 +2245,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void sendAckIncommigMessageRecievedFromDevice(String blAddress,ArrayList<byte[]> incomingMessagePacektRecieved){
-
         if (getBluetoothAdapter() != null) {
             BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
             if (bluetoothAdapter.isEnabled()) {
