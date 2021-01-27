@@ -66,7 +66,6 @@ import com.succorfish.geofence.customObjects.IncommingMessagePacket;
 import com.succorfish.geofence.dialog.DialogProvider;
 import com.succorfish.geofence.helper.PreferenceHelper;
 import com.succorfish.geofence.interfaceActivityToFragment.ChatDeliveryACK;
-import com.succorfish.geofence.interfaceActivityToFragment.ConnectionProgressDialogShow;
 import com.succorfish.geofence.interfaceActivityToFragment.ConnectionStatus;
 import com.succorfish.geofence.interfaceActivityToFragment.GeoFenceDialogAlertShow;
 import com.succorfish.geofence.interfaceActivityToFragment.LiveRequestDataPassToFragment;
@@ -145,7 +144,6 @@ import static com.succorfish.geofence.utility.Utility.removePreviousZero;
 import static com.succorfish.geofence.utility.Utility.splitString;
 
 public class MainActivity extends AppCompatActivity implements
-        PassClickedDeviceForConnection,
         PassBuzzerVolumeToDevice,
         MessageChatPacket,
         DeviceConfigurationPackets,
@@ -165,7 +163,6 @@ public class MainActivity extends AppCompatActivity implements
      */
     GeoFenceDialogAlertShow geoFenceDialogAlertShow;
     ConnectionStatus connectionStatus;
-    ConnectionProgressDialogShow connectionProgressDialogShow;
     OpenDialogToCheckDeviceName openDialogToCheckDeviceName;
     ChatDeliveryACK chatDeliveryACK;
     LiveRequestDataPassToFragment liveRequestDataPassToFragment;
@@ -473,10 +470,6 @@ public class MainActivity extends AppCompatActivity implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
-
-
-
                 if (getBluetoothAdapter() != null) {
                     BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
                     if (bluetoothAdapter.isEnabled()) {
@@ -626,10 +619,6 @@ public class MainActivity extends AppCompatActivity implements
         connectionStatus = loc_connectionStatus;
     }
 
-    public void setUpconnectionProgressDialogShow(ConnectionProgressDialogShow loc_connectionProgressDialogShow) {
-        connectionProgressDialogShow = loc_connectionProgressDialogShow;
-    }
-
     public void setUpOpenDialogToCheckDeviceName(OpenDialogToCheckDeviceName loc_openDialogToCheckDeviceName) {
         openDialogToCheckDeviceName = loc_openDialogToCheckDeviceName;
     }
@@ -665,12 +654,7 @@ public class MainActivity extends AppCompatActivity implements
 
             }
         });
-        setUpconnectionProgressDialogShow(new ConnectionProgressDialogShow() {
-            @Override
-            public void connectProgress(boolean connectStatus) {
 
-            }
-        });
         setUpOpenDialogToCheckDeviceName(new OpenDialogToCheckDeviceName() {
             @Override
             public void showDialogNameNotAvaliable(String bleAddressForDeviceAfterConfermation, String deviToken,String imeiNumberFromFirmware) {
