@@ -80,7 +80,6 @@ import com.succorfish.geofence.interfaceFragmentToActivity.IndustrySpeificConfig
 import com.succorfish.geofence.interfaceFragmentToActivity.LiveLocationReq;
 import com.succorfish.geofence.interfaceFragmentToActivity.MessageChatPacket;
 import com.succorfish.geofence.interfaceFragmentToActivity.PassBuzzerVolumeToDevice;
-import com.succorfish.geofence.interfaceFragmentToActivity.PassClickedDeviceForConnection;
 import com.succorfish.geofence.interfaceFragmentToActivity.ResetDeviceInterface;
 import com.succorfish.geofence.interfaceFragmentToActivity.ServerConfigurationDataPass;
 import com.succorfish.geofence.interfaceFragmentToActivity.SimConfigurationPackets;
@@ -264,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements
         removeallFragments();
         createNotificationChannel_codeTutor();
         interfaceImpleMainActivity();
-        fastBleImplementation();
+    //    fastBleImplementation();       // Remove
         intializeScanHandler();
         intializePreferenceInstance();
         intializeRetrofitInstance();
@@ -649,11 +648,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void interfaceImpleMainActivity() {
-        setUpInterfaceInMainActivity(new PassScanDevicesRxBle() {
+     /*   setUpInterfaceInMainActivity(new PassScanDevicesRxBle() {
             @Override
             public void scannedRxBleDevices(CustomBluetooth customBluetooth) {
             }
-        });
+        });*/
         setUpGeoFenceAlertDialogInterface(new GeoFenceDialogAlertShow() {
             @Override
             public void showDialogInterface(String ruleVioation, String bleAddress, String message_one, String messageTwo, String time_stamp) {
@@ -686,7 +685,7 @@ public class MainActivity extends AppCompatActivity implements
         });
         setUpLiveRequest(new LiveRequestDataPassToFragment() {
             @Override
-            public void liveRequestDataFromFirmware(Double latitudeValue, Double longValue, String bleAddress, BleDevice bleDevice) {
+            public void liveRequestDataFromFirmware(Double latitudeValue, Double longValue, String bleAddress) {
 
             }
         });
@@ -712,19 +711,24 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    private void fastBleImplementation() {
-        /**
+
+    /**
+     * Remove
+     */
+
+    /*private void fastBleImplementation() {
+        *//**
          * Ble Connection library.
-         */
+         *//*
         BleManager.getInstance().init(getApplication());
         BleManager.getInstance()
                 .enableLog(true)
                 .setReConnectCount(1, 5000)
                 .setConnectOverTime(20000)
                 .setOperateTimeout(5000);
-    }
+    }*/
 
-    @Override
+   /* @Override
     public void clickedDevice(CustBluetootDevices custombleDevice, int postion) {
         Utility utility = new Utility();
         if (!ble_on_off()) {
@@ -753,7 +757,7 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
         }
-    }
+    }*/
 
     private void connectRxBleDevice(RxBleDevice bleDevice, int itemSelectedPositon) {
         BleManager.getInstance().connect(new BleDevice(bleDevice.getBluetoothDevice()), new BleGattCallback() {
@@ -1461,8 +1465,7 @@ public class MainActivity extends AppCompatActivity implements
                                             if (fragment.toString().equalsIgnoreCase(new FragmentLiveTracking().toString())) {
                                                 if(liveRequestDataPassToFragment!=null){
                                                     liveRequestDataPassToFragment.liveRequestDataFromFirmware(Double.parseDouble(getFloatingPointValueFromHex(localVariableForBlock.substring(4,12))), Double.parseDouble(getFloatingPointValueFromHex(localVariableForBlock.substring(12,20))),
-                                                            bleDevice.getMac(),
-                                                            bleDevice
+                                                            bleAddressFromNOtifyDataCharcterticChanged
                                                     );
 
                                                 }

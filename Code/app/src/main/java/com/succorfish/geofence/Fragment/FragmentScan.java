@@ -1,7 +1,6 @@
 package com.succorfish.geofence.Fragment;
 
 import android.Manifest;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,14 +32,12 @@ import com.succorfish.geofence.adapter.FragmentScanAdapter;
 import com.succorfish.geofence.customObjects.CustBluetootDevices;
 import com.succorfish.geofence.customObjects.DeviceTableDetails;
 import com.succorfish.geofence.dialog.DialogProvider;
-import com.succorfish.geofence.interfaceActivityToFragment.ConnectionProgressDialogShow;
 import com.succorfish.geofence.interfaceActivityToFragment.ConnectionStatus;
 import com.succorfish.geofence.interfaceActivityToFragment.GeoFenceDialogAlertShow;
 import com.succorfish.geofence.interfaceActivityToFragment.OpenDialogToCheckDeviceName;
 import com.succorfish.geofence.interfaceActivityToFragment.PassConnectionStatusToFragment;
 import com.succorfish.geofence.interfaceActivityToFragment.PassScanDeviceToActivity_interface;
 import com.succorfish.geofence.interfaceFragmentToActivity.DeviceConnectDisconnect;
-import com.succorfish.geofence.interfaceFragmentToActivity.PassClickedDeviceForConnection;
 import com.succorfish.geofence.interfaces.onAlertDialogCallBack;
 import com.succorfish.geofence.interfaces.onDeviceNameAlert;
 import com.succorfish.geofence.utility.Utility;
@@ -53,7 +50,7 @@ import butterknife.Unbinder;
 import static com.succorfish.geofence.MainActivity.CONNECTED_BLE_ADDRESS;
 import static com.succorfish.geofence.MainActivity.roomDBHelperInstance;
 import static com.succorfish.geofence.utility.Utility.ble_on_off;
-import static com.succorfish.geofence.utility.Utility.getBluetoothAdapter;
+
 public class FragmentScan extends BaseFragment {
     private final int LocationPermissionRequestCode = 100;
     private Unbinder unbinder;

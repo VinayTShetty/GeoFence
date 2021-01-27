@@ -92,7 +92,7 @@ public class FragmentLiveTracking extends BaseFragment {
     private void interfaceImplementation_CallBack() {
         mainActivity.setUpLiveRequest(new LiveRequestDataPassToFragment() {
             @Override
-            public void liveRequestDataFromFirmware(Double latitudeValue, Double longValue, String bleAddress, BleDevice bleDevice) {
+            public void liveRequestDataFromFirmware(Double latitudeValue, Double longValue, String bleAddress) {
                     progressBarUIChangeTimer.cancel();
                     cancelProgressDialog();
                     showUpdatedMarkerInMap(latitudeValue,longValue);
