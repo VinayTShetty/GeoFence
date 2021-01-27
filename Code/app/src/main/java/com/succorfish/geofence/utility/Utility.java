@@ -31,6 +31,7 @@ import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
+import static com.succorfish.geofence.blecalculation.ByteConversion.bytesToHex;
 import static com.succorfish.geofence.blecalculation.MessageCalculation.endMessagePacket;
 
 public class Utility {
@@ -258,7 +259,7 @@ public class Utility {
     public static ArrayList<String> getHexArrayList(ArrayList<byte []> byteArraylist){
         ArrayList<String> hexArraylist=new ArrayList<String>();
         for (byte [] eachArray: byteArraylist) {
-            hexArraylist.add(HexUtil.encodeHexStr(eachArray));
+            hexArraylist.add(bytesToHex(eachArray));
         }
         return hexArraylist;
     }

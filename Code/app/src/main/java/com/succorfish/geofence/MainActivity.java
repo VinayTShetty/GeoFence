@@ -234,6 +234,10 @@ public class MainActivity extends AppCompatActivity implements
      * Rest Devie Request
      */
     ArrayList<String> HexConverted_DevicePacektList=new ArrayList<String>();
+
+
+    ArrayList<String> UNIVERSAL_ARRAY_PACEKT_LIST=new ArrayList<String>();
+
     /**
      * Used to Send the Connected BLE Address to different fragment.
      */
@@ -2358,13 +2362,10 @@ public class MainActivity extends AppCompatActivity implements
                  */
                 String bleAddress = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED_BLE_ADDRESS));
                 byte[] obtainedFromFirmware = intent.getByteArrayExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED_DATA_RECIEVED));
-                System.out.println("DATA_FIRMWARE_OBTAINED= "+""+convertHexToBigIntegert(bytesToHex(obtainedFromFirmware)));
-
-
+                System.out.println("DATA_FIRMWARE_OBTAINED= "+""+bytesToHex(obtainedFromFirmware));
                 /**
                  * Pasting Old NotifyDataChanrcterstic changed here...
                  */
-
                 String blehexObtainedFrom_Firmware = "";
                 blehexObtainedFrom_Firmware = bytesToHex(obtainedFromFirmware);
                 /**
@@ -2376,7 +2377,6 @@ public class MainActivity extends AppCompatActivity implements
                     int calculatedMagicNumber = calculateAlgorithmValue(m_auth_key);
                     byte[] connectionArray = getConnectionMainCode(calculatedMagicNumber);
                     writeConnectionMainTaincenceCodeToFirmware(bleAddress,connectionArray);
-                    writeConnectionMaintainceCode(bleDevice, ConnectionArray, ItemPositionSelected);
                 }
                 else {
                     /**
