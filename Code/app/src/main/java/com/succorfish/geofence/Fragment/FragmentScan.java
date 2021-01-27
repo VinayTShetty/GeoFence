@@ -10,12 +10,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -38,6 +38,7 @@ import com.succorfish.geofence.interfaceActivityToFragment.ConnectionStatus;
 import com.succorfish.geofence.interfaceActivityToFragment.GeoFenceDialogAlertShow;
 import com.succorfish.geofence.interfaceActivityToFragment.OpenDialogToCheckDeviceName;
 import com.succorfish.geofence.interfaceActivityToFragment.PassScanDeviceToActivity_interface;
+import com.succorfish.geofence.interfaceFragmentToActivity.DeviceConnectDisconnect;
 import com.succorfish.geofence.interfaceFragmentToActivity.PassClickedDeviceForConnection;
 import com.succorfish.geofence.interfaces.onAlertDialogCallBack;
 import com.succorfish.geofence.interfaces.onDeviceNameAlert;
@@ -77,6 +78,8 @@ public class FragmentScan extends BaseFragment {
      * This is used for Getting DeviceTable Name;
      */
     ArrayList<DeviceTableDetails> deviceTableslistDetails = new ArrayList<DeviceTableDetails>();
+    Fragment_ConnectionTimeOutTimer fragmentScanConnectionTimeOutTimer;
+    DeviceConnectDisconnect deviceConnectDisconnect;
     private static int number_of_Records_Avaliable_device_name_table;
 
     @Override
@@ -88,7 +91,8 @@ public class FragmentScan extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
-        passClickedDeviceForConnection = (PassClickedDeviceForConnection) getActivity();
+        interfaceIntialization();
+
     }
 
     @Nullable
@@ -110,6 +114,11 @@ public class FragmentScan extends BaseFragment {
         getListOfConnectedDevices();
     //    addNotification();
         return fragmenScanView;
+    }
+
+    private void interfaceIntialization(){
+        passClickedDeviceForConnection = (PassClickedDeviceForConnection) getActivity();
+        deviceConnectDisconnect = (DeviceConnectDisconnect) getActivity();
     }
 
     private void addNotification() {
@@ -185,7 +194,7 @@ public class FragmentScan extends BaseFragment {
             case LocationPermissionRequestCode:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mainActivity.start_stop_SCAN(getActivity()); // Remove
-                    mainActivity.start_stop_scan(); // Remove
+                    mainActivity.start_stop_scan();
                 } else {
                     askPermission();
                 }
@@ -195,7 +204,7 @@ public class FragmentScan extends BaseFragment {
     private void checkPermissionGiven() {
         if (isAdded()) {
             if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                mainActivity.start_stop_SCAN(getActivity());
+                mainActivity.start_stop_SCAN(getActivity()); //Remove
                 mainActivity.start_stop_scan();
             } else {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LocationPermissionRequestCode);
@@ -456,6 +465,20 @@ public class FragmentScan extends BaseFragment {
             @Override
             public void ConnectionStatusClick(CustBluetootDevices customBluetoothObject, int ItemSlected) {
                 CONNECTED_BLE_ADDRESS=customBluetoothObject.getBleAddress();
+                if (deviceConnectDisconnect != null) {
+                    if (customBluetoothObject.isConnected()) {
+                        deviceConnectDisconnect.makeDevieConnecteDisconnect(customBluetoothObject, false);
+                    } else if (!customBluetoothObject.isConnected()) {
+                        if(ble_on_off()){
+                            fragmentScanConnectionTimeOutTimer=new Fragment_ConnectionTimeOutTimer(30000,1000);
+                            fragmentScanConnectionTimeOutTimer.start();
+                            showProgressDialog(customBluetoothObject.getBleAddress(),"Connectiong ");
+                            deviceConnectDisconnect.makeDevieConnecteDisconnect(customBluetoothObject, true);
+                        }else {
+                            dialogProvider.errorDialog("Turn on Bluetooth");
+                        }
+                    }
+                }
                 if (passClickedDeviceForConnection != null) {
                     passClickedDeviceForConnection.clickedDevice(customBluetoothObject, ItemSlected);
                 }
@@ -597,11 +620,12 @@ public class FragmentScan extends BaseFragment {
         }
     }
 
-    private void showProgressDialog() {
-        hud
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setLabel("Connecting");
-        hud.show();
+    private void showProgressDialog(String bleAddress,String detailedLabel){
+        hud.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Connecting")
+                .setDetailsLabel(detailedLabel+" "+bleAddress)
+                .setCancellable(false)
+                .show();
     }
 
     private void cancelProgressDialog() {
@@ -700,5 +724,27 @@ public class FragmentScan extends BaseFragment {
         }
     }
 
+    public class Fragment_ConnectionTimeOutTimer extends CountDownTimer {
+        /**
+         * @param millisInFuture    The number of millis in the future from the call
+         *                          to {@link #start()} until the countdown is done and {@link #onFinish()}
+         *                          is called.
+         * @param countDownInterval The interval along the way to receive
+         *                          {@link #onTick(long)} callbacks.
+         */
+        public Fragment_ConnectionTimeOutTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+        }
+
+        @Override
+        public void onFinish() {
+            cancelProgressDialog();
+        }
+
+    }
 
 }
