@@ -588,7 +588,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-  
+
 
     private void connectRxBleDevice(RxBleDevice bleDevice, int itemSelectedPositon) {
         BleManager.getInstance().connect(new BleDevice(bleDevice.getBluetoothDevice()), new BleGattCallback() {
@@ -2194,9 +2194,13 @@ public class MainActivity extends AppCompatActivity implements
                 String bleAddress = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_ADDRESS));
                 byte[] dataWritten = intent.getByteArrayExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN));
                 int dataWrittenType = intent.getIntExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN_TYPE), -1);
+                sendNextDataToFirmmWareAfterConfermation(dataWritten,bleAddress);
+
+              /*
                 System.out.println("what data written to the Firmware= "+convertHexToBigIntegert(bytesToHex(dataWritten)));
                 System.out.println("what data written to the Firmware bleAddres = "+bleAddress);
-                System.out.println("what data written to the Firmware type = "+dataWrittenType);
+                System.out.println("what data written to the Firmware type = "+dataWrittenType);*/
+
             }else if ((action != null) && (action.equalsIgnoreCase(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED)))) {
                 /**
                  * Data Obtained from the firmware.
@@ -2228,9 +2232,10 @@ public class MainActivity extends AppCompatActivity implements
                         from_firmware_ID_TimeStamp = new ArrayList<String>();
                         from_firmware_ID_TimeStamp_A8_Packet = new ArrayList<String>();
                         System.gc();
-                        hexConverted_IMEIList = new ArrayList<String>();
-                        hexConverted_IMEIList = getHexArrayList(askIMEI_number());
-                        writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_IMEIList.get(0).toCharArray()), "ASKING IMEI NUMBER", hexConverted_IMEIList);
+                        UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
+                        UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(askIMEI_number());
+                        byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
+                        sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress);
                     }else (auth_sucess==0){
                         /**
                          * Disconnect the device..
@@ -2246,8 +2251,8 @@ public class MainActivity extends AppCompatActivity implements
                      * 3)Convert the Decrypt array to HexString.
                      */
                     try {
-                        byte[] decrypted_byteArray_FromFirmware = decryptData(data);
-                        String hex_converted_decrypted_byte_array = HexUtil.encodeHexStr(decrypted_byteArray_FromFirmware);
+                        byte[] decrypted_byteArray_FromFirmware = decryptData(obtainedFromFirmware);
+                        String hex_converted_decrypted_byte_array = bytesToHex(decrypted_byteArray_FromFirmware);
                         blehexObtainedFrom_Firmware = hex_converted_decrypted_byte_array;
                         System.out.println("Decrypted Firmware HEX Value= " + blehexObtainedFrom_Firmware);
                     } catch (IllegalBlockSizeException e) {
@@ -3225,6 +3230,10 @@ public class MainActivity extends AppCompatActivity implements
         } catch (BadPaddingException e) {
             e.printStackTrace();
         }
+    }
+
+    private static sendSinglePacketDataToBle(){
+
     }
 
 
