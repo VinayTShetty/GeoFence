@@ -1,8 +1,4 @@
 package com.succorfish.geofence.blecalculation;
-
-
-import com.clj.fastble.utils.HexUtil;
-
 public class DeviceTokenPacket {
 
     public static byte[] deviceTokenpacketArray(int packetNumber,String deviceTokenData){

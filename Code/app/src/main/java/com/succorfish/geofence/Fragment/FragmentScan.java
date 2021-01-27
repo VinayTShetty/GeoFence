@@ -67,7 +67,6 @@ public class FragmentScan extends BaseFragment {
     private FragmentScanAdapter fragmentScanAdapter;
     private KProgressHUD hud;
     MainActivity mainActivity;
-    PassClickedDeviceForConnection passClickedDeviceForConnection;
     /**
      * This is used for scan Devices.
      */
@@ -537,9 +536,6 @@ public class FragmentScan extends BaseFragment {
                             dialogProvider.errorDialog("Turn on Bluetooth");
                         }
                     }
-                }
-                if (passClickedDeviceForConnection != null) {
-                    passClickedDeviceForConnection.clickedDevice(customBluetoothObject, ItemSlected);
                 }
             }
             @Override

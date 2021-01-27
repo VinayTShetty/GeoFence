@@ -2358,10 +2358,10 @@ public class MainActivity extends AppCompatActivity implements
                  */
                 String bleAddress = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED_BLE_ADDRESS));
                 byte[] obtainedFromFirmware = intent.getByteArrayExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED_DATA_RECIEVED));
-                if(showDataForItemInRecycleView!=null){
-                    showDataForItemInRecycleView.recievedDataFromFirmware(bleAddress,obtainedFromFirmware);
-                }
                 System.out.println("DATA_FIRMWARE_OBTAINED= "+""+convertHexToBigIntegert(bytesToHex(obtainedFromFirmware)));
+
+
+
 
             }else  if ((action != null) && (action.equalsIgnoreCase(getResources().getString(R.string.BLUETOOTHLE_SERVICE_NOTIFICATION_ENABLE)))) {
                 /**
