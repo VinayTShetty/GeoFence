@@ -59,6 +59,7 @@ import butterknife.Unbinder;
 import static com.succorfish.geofence.MainActivity.CONNECTED_BLE_ADDRESS;
 import static com.succorfish.geofence.MainActivity.main_Activity_connectedDevicesAliasList;
 import static com.succorfish.geofence.MainActivity.roomDBHelperInstance;
+import static com.succorfish.geofence.utility.Utility.ble_on_off;
 import static com.succorfish.geofence.utility.Utility.getBluetoothAdapter;
 
 public class FragmentScan extends BaseFragment {
@@ -116,6 +117,7 @@ public class FragmentScan extends BaseFragment {
         intializeDialog();
         geoFenceAlertImplementation();
         addConnectedDevice();
+        getListOfConnectedDevices();
     //    addNotification();
         return fragmenScanView;
     }
@@ -219,7 +221,7 @@ public class FragmentScan extends BaseFragment {
 
     private void checkBluetoothIsOn() {
         Utility utility = new Utility();
-        if (!utility.ble_on_off()) {
+        if (!ble_on_off()) {
             utility.showTaost(getActivity(), "Turn on Bluetooth", getResources().getDrawable(R.drawable.ic_bluetoth_not_enabled));
         }
     }
@@ -456,39 +458,39 @@ public class FragmentScan extends BaseFragment {
     private void ItemClickonDevice() {
         fragmentScanAdapter.setOnItemClickListner(new FragmentScanAdapter.ScanOnItemClickInterface() {
             @Override
-            public void ConnectionStatusClick(CustomBluetooth customBluetoothObject, int ItemSlected) {
-                CONNECTED_BLE_ADDRESS=customBluetoothObject.getBleaddress();
+            public void ConnectionStatusClick(CustBluetootDevices customBluetoothObject, int ItemSlected) {
+                CONNECTED_BLE_ADDRESS=customBluetoothObject.getBleAddress();
                 if (passClickedDeviceForConnection != null) {
                     passClickedDeviceForConnection.clickedDevice(customBluetoothObject, ItemSlected);
                 }
             }
             @Override
-            public void messagingLayoutClick(CustomBluetooth customBluetoothObject, int ItemSlected) {
-                CONNECTED_BLE_ADDRESS=customBluetoothObject.getBleaddress();
+            public void messagingLayoutClick(CustBluetootDevices customBluetoothObject, int ItemSlected) {
+                CONNECTED_BLE_ADDRESS=customBluetoothObject.getBleAddress();
                 mainActivity.replaceFragment(new FragmentChatting(),null, null, false);
             }
 
             @Override
-            public void geoFenceLayoutClick(CustomBluetooth customBluetoothObject, int ItemSlected) {
-                CONNECTED_BLE_ADDRESS=customBluetoothObject.getBleaddress();
+            public void geoFenceLayoutClick(CustBluetootDevices customBluetoothObject, int ItemSlected) {
+                CONNECTED_BLE_ADDRESS=customBluetoothObject.getBleAddress();
                 mainActivity.replaceFragment(new FragmentHistory(),null, null, false);
             }
 
             @Override
-            public void liveTracking(CustomBluetooth customBluetooth, int postion) {
-                CONNECTED_BLE_ADDRESS=customBluetooth.getBleaddress();
+            public void liveTracking(CustBluetootDevices customBluetooth, int postion) {
+                CONNECTED_BLE_ADDRESS=customBluetooth.getBleAddress();
                 mainActivity.replaceFragment(new FragmentLiveTracking(),null, null, false);
             }
 
             @Override
-            public void overFlow_menu_Setting(CustomBluetooth customBluetooth, int postion) {
-                CONNECTED_BLE_ADDRESS=customBluetooth.getBleaddress();
+            public void overFlow_menu_Setting(CustBluetootDevices customBluetooth, int postion) {
+                CONNECTED_BLE_ADDRESS=customBluetooth.getBleAddress();
                 mainActivity.replaceFragment(new FragmentSetting(),null, null, false);
             }
 
             @Override
-            public void overFlow_menu_SOS(CustomBluetooth customBluetooth, int postion) {
-                CONNECTED_BLE_ADDRESS=customBluetooth.getBleaddress();
+            public void overFlow_menu_SOS(CustBluetootDevices customBluetooth, int postion) {
+                CONNECTED_BLE_ADDRESS=customBluetooth.getBleAddress();
                 Toast.makeText(getActivity(),"UNDER CONSTRUCTION",Toast.LENGTH_SHORT).show();
             }
         });
@@ -570,6 +572,7 @@ public class FragmentScan extends BaseFragment {
     private void clearScanConnectedDevices() {
         customBluetoothDeviceList.clear();
         fragmentScanAdapter.notifyDataSetChanged();
+        getListOfConnectedDevices();
         addConnectedDevice();
     }
 
@@ -666,6 +669,37 @@ public class FragmentScan extends BaseFragment {
                   main_Activity_connectedDevicesAliasList.clear();
               }
             }
+        }
+    }
+
+
+    /**
+     * Google BLE library.
+     */
+    private void getListOfConnectedDevices() {
+        if(ble_on_off()){
+            if(mainActivity.mBluetoothLeService!=null){
+                List<BluetoothDevice> connectedDevicesList = mainActivity.mBluetoothLeService.getListOfConnectedDevices();
+                if((connectedDevicesList!=null)&&(connectedDevicesList.size()>0)){
+                    for (BluetoothDevice bluetoothDevice : connectedDevicesList) {
+                        CustBluetootDevices custBluetootDevices = new CustBluetootDevices();
+                        custBluetootDevices.setBleAddress(bluetoothDevice.getAddress());
+                        custBluetootDevices.setDataObtained("");
+                        custBluetootDevices.setConnected(true);
+                        if (bluetoothDevice.getName() != null) {
+                            custBluetootDevices.setDeviceName(bluetoothDevice.getName());
+                        } else {
+                            custBluetootDevices.setDeviceName("NA");
+                        }
+                        customBluetoothDeviceList.add(custBluetootDevices);
+                        fragmentScanAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        }else {
+            customBluetoothDeviceList.clear();
+            fragmentScanAdapter.notifyDataSetChanged();
+            dialogProvider.errorDialog("Turn on Bluetooth");
         }
     }
 

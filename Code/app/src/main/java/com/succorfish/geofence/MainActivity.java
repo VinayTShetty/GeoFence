@@ -63,7 +63,6 @@ import com.succorfish.geofence.customObjects.ChattingObject;
 import com.succorfish.geofence.customObjects.CustBluetootDevices;
 import com.succorfish.geofence.customObjects.HistroyList;
 import com.succorfish.geofence.customObjects.IncommingMessagePacket;
-import com.succorfish.geofence.customObjects.MainActivityConnectedDevices;
 import com.succorfish.geofence.dialog.DialogProvider;
 import com.succorfish.geofence.helper.PreferenceHelper;
 import com.succorfish.geofence.interfaceActivityToFragment.ChatDeliveryACK;
@@ -75,6 +74,7 @@ import com.succorfish.geofence.interfaceActivityToFragment.OpenDialogToCheckDevi
 import com.succorfish.geofence.interfaceActivityToFragment.PassChatObjectToFragment;
 import com.succorfish.geofence.interfaceActivityToFragment.PassScanDeviceToActivity_interface;
 import com.succorfish.geofence.interfaceFragmentToActivity.DeviceConfigurationPackets;
+import com.succorfish.geofence.interfaceFragmentToActivity.DeviceConnectDisconnect;
 import com.succorfish.geofence.interfaceFragmentToActivity.IndustrySpeificConfigurationPackets;
 import com.succorfish.geofence.interfaceFragmentToActivity.LiveLocationReq;
 import com.succorfish.geofence.interfaceFragmentToActivity.MessageChatPacket;
@@ -154,7 +154,8 @@ public class MainActivity extends AppCompatActivity implements
         WifiConfigurationPackets,
         SimConfigurationPackets,
         ResetDeviceInterface,
-        LiveLocationReq {
+        LiveLocationReq,
+        DeviceConnectDisconnect {
     private Unbinder unbinder;
     PassScanDevicesRxBle passScanDevicesRxBle;
     PassScanDeviceToActivity_interface  passScanDeviceToActivity_interface;
@@ -187,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements
     ArrayList<String> from_firmware_ID_TimeStamp_A6_Packet = new ArrayList<String>();
     ArrayList<String> from_firmware_ID_TimeStamp_A8_Packet = new ArrayList<String>();
     public PreferenceHelper preferenceHelper;
-    public static ArrayList<MainActivityConnectedDevices> main_Activity_connectedDevicesAliasList = new ArrayList<MainActivityConnectedDevices>();
     private boolean application_Visible_ToUser = false;
     private KProgressHUD hud;
     DialogProvider dialogProvider;
@@ -712,12 +712,21 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void clickedDevice(CustomBluetooth custombleDevice, int postion) {
+    public void clickedDevice(CustBluetootDevices custombleDevice, int postion) {
         Utility utility = new Utility();
         if (!ble_on_off()) {
             utility.showTaost(MainActivity.this, "Turn On Bluetooth", getResources().getDrawable(R.drawable.ic_bluetoth_not_enabled));
             return;
         }
+
+        if(!custombleDevice.isConnected()){
+
+        }else if(custombleDevice.isConnected()){
+
+        }
+
+
+
         if (!BleManager.getInstance().isConnected(custombleDevice.getBleaddress())) {
             connectRxBleDevice(custombleDevice.getCustom_RxBleDevice(), postion);
         } else {
@@ -2457,6 +2466,23 @@ public class MainActivity extends AppCompatActivity implements
 
     public void setupPassScanDeviceToActivity_interface(PassScanDeviceToActivity_interface loc_passScanDeviceToActivity_interface) {
         this.passScanDeviceToActivity_interface = loc_passScanDeviceToActivity_interface;
+    }
+
+    @Override
+    public void makeDevieConnecteDisconnect(CustBluetootDevices custBluetootDevices, boolean connect_disconnect) {
+        if (connect_disconnect) {
+            boolean connectissue = mBluetoothLeService.connect(custBluetootDevices.getBleAddress());
+            if (SCAN_TAG.equalsIgnoreCase(getResources().getString(R.string.SCAN_STARTED))) {
+                SCAN_TAG = getResources().getString(R.string.SCAN_STOPED);
+                stopScan();
+            }
+        } else {
+            mBluetoothLeService.disconnect(custBluetootDevices.getBleAddress());
+            if (SCAN_TAG.equalsIgnoreCase(getResources().getString(R.string.SCAN_STARTED))) {
+                SCAN_TAG = getResources().getString(R.string.SCAN_STOPED);
+                stopScan();
+            }
+        }
     }
 }
 
