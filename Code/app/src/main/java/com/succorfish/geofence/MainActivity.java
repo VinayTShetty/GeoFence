@@ -160,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements
         DeviceConnectDisconnect {
     private final static String TAG = MainActivity.class.getSimpleName();
     private Unbinder unbinder;
-  //  PassScanDevicesRxBle passScanDevicesRxBle;
     PassScanDeviceToActivity_interface  passScanDeviceToActivity_interface;
 
     /**
@@ -270,7 +269,6 @@ public class MainActivity extends AppCompatActivity implements
         removeallFragments();
         createNotificationChannel_codeTutor();
         interfaceImpleMainActivity();
-    //    fastBleImplementation();       // Remove
         intializeScanHandler();
         intializePreferenceInstance();
         intializeRetrofitInstance();
@@ -313,19 +311,10 @@ public class MainActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
-       // stopScanningWhenActivityClosed();
         unbindService(serviceConnection);
         mBluetoothLeService = null;
     }
 
-   /* private void stopScanningWhenActivityClosed() {
-        if (getBluetoothAdapter() != null) {
-            BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-            if (bluetoothAdapter.isEnabled()) {
-               stopScanning();
-            }
-        }
-    }*/
 
     @Override
     public void onBackPressed() {
@@ -519,108 +508,6 @@ public class MainActivity extends AppCompatActivity implements
         fragmentTransction.commit();
     }
 
-  /*  public void start_stop_SCAN(Context context) {
-        if (new Utility().ble_on_off()) {
-            *//**
-             * Rx Ble Start Scanning
-             *//*
-            if (ContextCompat.checkSelfPermission(context,
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-
-                if (SCAN_TAG.equalsIgnoreCase("SCAN_NOT_STARTED")) {
-                    RxBleStartScanning(context);
-                    scanHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            stopScanning();
-                        }
-                    }, SCAN_PERIOD);
-                } else if (SCAN_TAG.equalsIgnoreCase("SCAN_STARTED")) {
-                } else if (SCAN_TAG.equalsIgnoreCase("SCAN_COMPLETED")) {
-                    RxBleStartScanning(context);
-                    scanHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            stopScanning();
-                        }
-                    }, SCAN_PERIOD);
-                }
-            }
-        }
-    }*/
-
-  /*  public void stopScanning() {
-        if (new Utility().ble_on_off()) {
-            mainActivityScanningInstance.dispose();
-            SCAN_TAG = "SCAN_COMPLETED";
-            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.mainActivity_container);
-            if (fragment != null) {
-                if (fragment.toString().equalsIgnoreCase(new FragmentScan().toString())) {
-                    new Utility().showTaost(this, "Scan Time Out ", getResources().getDrawable(R.drawable.scannertimeout));
-                }
-            }
-            System.out.println("TESTDEMO SCAN_STOPPPED");
-            if (goForConnect) {
-                for (int i = 0; i < customBluetoothsNewScannning.size(); i++) {
-                    if (customBluetoothsNewScannning.get(i).getBleaddress().equalsIgnoreCase("D4:22:50:31:E4:95")) {
-                        System.out.println("TESTDEMO DEVICE_AVALIABLE");
-                      //  connectRxBleDevice(customBluetoothsNewScannning.get(i).getCustom_RxBleDevice(), -1);
-                        System.out.println("TESTDEMO GOING FOR CONECETION");
-                        break;
-                    }
-                }
-            } else {
-            }
-        }
-    }*/
-
-/*    ArrayList<CustomBluetooth> customBluetoothsNewScannning = new ArrayList<CustomBluetooth>();*/
-
-    /*private void RxBleStartScanning(Context context) {
-        RxBleClient rxBleClient = RxBleClient.create(context);
-        try {
-            SCAN_TAG = "SCAN_STARTED";
-            Disposable scanDisposable = rxBleClient.scanBleDevices(
-                    new com.polidea.rxandroidble2.scan.ScanSettings.Builder()
-                            .setScanMode(com.polidea.rxandroidble2.scan.ScanSettings.SCAN_MODE_BALANCED)
-                            .build(),
-                    new com.polidea.rxandroidble2.scan.ScanFilter.Builder()
-                            .setServiceUuid(null)
-                            .build() // Optional, more than one ScanFilter may be passed as varargs.
-            )
-                    .subscribe(scanResult -> {
-                        if (scanResult != null) {
-                            if (scanResult != null) {
-                                if (scanResult.getBleDevice() != null) {
-                                    if (scanResult.getBleDevice().getName() != null) {
-                                        final RxBleDevice bluetoothDevice = scanResult.getBleDevice();
-                                        if ((passScanDevicesRxBle != null)) {
-                                            if ((bluetoothDevice != null) && (bluetoothDevice.getBluetoothDevice().getName().startsWith(getResources().getString(R.string.device_name_filter)))) {
-                                                CustomBluetooth customBluetooth = new CustomBluetooth(bluetoothDevice, getResources().getString(R.string.device_name_alias), bluetoothDevice.getMacAddress());
-                                                passScanDevicesRxBle.scannedRxBleDevices(customBluetooth);
-                                                customBleDeviceAfterDisconnection.add(customBluetooth);
-                                                if (goForConnect) {
-                                                    customBluetoothsNewScannning.add(customBluetooth);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }, throwable -> {
-                    });
-            mainActivityScanningInstance = scanDisposable;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
-  /*  public void setUpInterfaceInMainActivity(PassScanDevicesRxBle loc_passScanDevicesRxBle) {
-        passScanDevicesRxBle = loc_passScanDevicesRxBle;
-    }*/
-
     public void setUpGeoFenceAlertDialogInterface(GeoFenceDialogAlertShow loc_geoFenceAlertDialogInterface) {
         geoFenceDialogAlertShow = loc_geoFenceAlertDialogInterface;
     }
@@ -647,11 +534,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void interfaceImpleMainActivity() {
-     /*   setUpInterfaceInMainActivity(new PassScanDevicesRxBle() {
-            @Override
-            public void scannedRxBleDevices(CustomBluetooth customBluetooth) {
-            }
-        });*/
         setUpGeoFenceAlertDialogInterface(new GeoFenceDialogAlertShow() {
             @Override
             public void showDialogInterface(String ruleVioation, String bleAddress, String message_one, String messageTwo, String time_stamp) {
@@ -706,52 +588,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    /**
-     * Remove
-     */
-
-    /*private void fastBleImplementation() {
-        *//**
-         * Ble Connection library.
-         *//*
-        BleManager.getInstance().init(getApplication());
-        BleManager.getInstance()
-                .enableLog(true)
-                .setReConnectCount(1, 5000)
-                .setConnectOverTime(20000)
-                .setOperateTimeout(5000);
-    }*/
-
-   /* @Override
-    public void clickedDevice(CustBluetootDevices custombleDevice, int postion) {
-        Utility utility = new Utility();
-        if (!ble_on_off()) {
-            utility.showTaost(MainActivity.this, "Turn On Bluetooth", getResources().getDrawable(R.drawable.ic_bluetoth_not_enabled));
-            return;
-        }
-
-        if(!custombleDevice.isConnected()){
-
-        }else if(custombleDevice.isConnected()){
-
-        }
-
-
-
-        if (!BleManager.getInstance().isConnected(custombleDevice.getBleaddress())) {
-            connectRxBleDevice(custombleDevice.getCustom_RxBleDevice(), postion);
-        } else {
-            BleManager.getInstance().disconnect(new BleDevice(custombleDevice.getCustom_RxBleDevice().getBluetoothDevice()));
-            if (main_Activity_connectedDevicesAliasList.size() > 0) {
-                for (MainActivityConnectedDevices mainActivityConnecteDevices : main_Activity_connectedDevicesAliasList) {
-                    if (mainActivityConnecteDevices.getBleDevice().getMac().equalsIgnoreCase(custombleDevice.getBleaddress())) {
-                        mainActivityConnecteDevices.setIs_DisconnectedFromFirmware(true);
-                        main_Activity_connectedDevicesAliasList.remove(mainActivityConnecteDevices);
-                    }
-                }
-            }
-        }
-    }*/
+  
 
     private void connectRxBleDevice(RxBleDevice bleDevice, int itemSelectedPositon) {
         BleManager.getInstance().connect(new BleDevice(bleDevice.getBluetoothDevice()), new BleGattCallback() {
