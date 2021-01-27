@@ -72,6 +72,7 @@ import com.succorfish.geofence.interfaceActivityToFragment.GeoFenceDialogAlertSh
 import com.succorfish.geofence.interfaceActivityToFragment.LiveRequestDataPassToFragment;
 import com.succorfish.geofence.interfaceActivityToFragment.OpenDialogToCheckDeviceName;
 import com.succorfish.geofence.interfaceActivityToFragment.PassChatObjectToFragment;
+import com.succorfish.geofence.interfaceActivityToFragment.PassConnectionStatusToFragment;
 import com.succorfish.geofence.interfaceActivityToFragment.PassScanDeviceToActivity_interface;
 import com.succorfish.geofence.interfaceFragmentToActivity.DeviceConfigurationPackets;
 import com.succorfish.geofence.interfaceFragmentToActivity.DeviceConnectDisconnect;
@@ -170,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements
     ChatDeliveryACK chatDeliveryACK;
     LiveRequestDataPassToFragment liveRequestDataPassToFragment;
     PassChatObjectToFragment passChatObjectToFragment;
+    PassConnectionStatusToFragment passConnectionStatusToFragment;
     /**
      * interface from Activity to Fragment
      */
@@ -640,6 +642,9 @@ public class MainActivity extends AppCompatActivity implements
     public void setUpPassChatObjectToFragment(PassChatObjectToFragment passChatObjectToFragment_loc){
         passChatObjectToFragment=passChatObjectToFragment_loc;
     }
+    public void setupPassConnectionStatusToFragment(PassConnectionStatusToFragment locpassConnectionStatusToFragment) {
+        this.passConnectionStatusToFragment = locpassConnectionStatusToFragment;
+    }
 
     public void interfaceImpleMainActivity() {
         setUpInterfaceInMainActivity(new PassScanDevicesRxBle() {
@@ -694,6 +699,12 @@ public class MainActivity extends AppCompatActivity implements
         setupPassScanDeviceToActivity_interface(new PassScanDeviceToActivity_interface() {
             @Override
             public void sendCustomBleDevice(CustBluetootDevices custBluetootDevices) {
+
+            }
+        });
+        setupPassConnectionStatusToFragment(new PassConnectionStatusToFragment() {
+            @Override
+            public void connectDisconnect(String bleAddress, boolean connected_disconnected) {
 
             }
         });
@@ -2368,8 +2379,9 @@ public class MainActivity extends AppCompatActivity implements
                  * 1)show something went wrong try again later after some time...
                  * 2)Clear scan device and Scan again.
                  */
-                boolean timerCancelled=intent.getBooleanExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_TIMER_FINISH_KEY),false);
-                passTimerOutConnectionTag(timerCancelled);
+              //  boolean timerCancelled=intent.getBooleanExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_TIMER_FINISH_KEY),false);
+              //  passTimerOutConnectionTag(timerCancelled);
+
             }else  if ((action != null) && (action.equalsIgnoreCase(getResources().getString(R.string.BLUETOOTHLE_SERVICE_NOTIFICATION_ENABLE)))) {
                 /**
                  * Send Data to BLE Device.
@@ -2384,11 +2396,11 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
 
-        private void passTimerOutConnectionTag(boolean result) {
+       /* private void passTimerOutConnectionTag(boolean result) {
             if(deviceConnectionTimeOut!=null){
                 deviceConnectionTimeOut.connectionTimeOutTimer(result);
             }
-        }
+        }*/
 
         private void passConnectionSucesstoFragmentScanForUIChange(String connectedDeviceAddress, boolean connect_disconnect) {
             if (passConnectionStatusToFragment != null) {

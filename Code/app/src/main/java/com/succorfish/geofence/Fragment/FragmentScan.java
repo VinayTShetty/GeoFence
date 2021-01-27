@@ -37,6 +37,7 @@ import com.succorfish.geofence.interfaceActivityToFragment.ConnectionProgressDia
 import com.succorfish.geofence.interfaceActivityToFragment.ConnectionStatus;
 import com.succorfish.geofence.interfaceActivityToFragment.GeoFenceDialogAlertShow;
 import com.succorfish.geofence.interfaceActivityToFragment.OpenDialogToCheckDeviceName;
+import com.succorfish.geofence.interfaceActivityToFragment.PassConnectionStatusToFragment;
 import com.succorfish.geofence.interfaceActivityToFragment.PassScanDeviceToActivity_interface;
 import com.succorfish.geofence.interfaceFragmentToActivity.DeviceConnectDisconnect;
 import com.succorfish.geofence.interfaceFragmentToActivity.PassClickedDeviceForConnection;
@@ -313,7 +314,32 @@ public class FragmentScan extends BaseFragment {
             }
         });*/
 
-
+        mainActivity.setupPassConnectionStatusToFragment(new PassConnectionStatusToFragment() {
+            @Override
+            public void connectDisconnect(String bleAddress, boolean connected_disconnected) {
+                if (connected_disconnected) {
+                    cancelTimerFragmentScanTimer();
+                    CustBluetootDevices custBluetootDevices = new CustBluetootDevices();
+                    custBluetootDevices.setBleAddress(bleAddress);
+                    if (customBluetoothDeviceList.contains(custBluetootDevices)) {
+                        int postion = customBluetoothDeviceList.indexOf(custBluetootDevices);
+                        CustBluetootDevices custBluetootDevices1 = customBluetoothDeviceList.get(postion);
+                        custBluetootDevices1.setConnected(true);
+                        fragmentScanAdapter.notifyItemChanged(postion);
+                        cancelProgressDialog();
+                    }
+                } else {
+                    CustBluetootDevices custBluetootDevices = new CustBluetootDevices();
+                    custBluetootDevices.setBleAddress(bleAddress);
+                    if (customBluetoothDeviceList.contains(custBluetootDevices)) {
+                        int postion = customBluetoothDeviceList.indexOf(custBluetootDevices);
+                        CustBluetootDevices custBluetootDevices1 = customBluetoothDeviceList.get(postion);
+                        custBluetootDevices1.setConnected(false);
+                        fragmentScanAdapter.notifyItemChanged(postion);
+                    }
+                }
+            }
+        });
 
 
         mainActivity.setUpOpenDialogToCheckDeviceName(new OpenDialogToCheckDeviceName() {
@@ -789,6 +815,12 @@ public class FragmentScan extends BaseFragment {
         @Override
         public void onFinish() {
             cancelProgressDialog();
+        }
+    }
+    private void cancelTimerFragmentScanTimer() {
+        if(fragmentScanConnectionTimeOutTimer!=null){
+            fragmentScanConnectionTimeOutTimer.cancel();
+            fragmentScanConnectionTimeOutTimer=null;
         }
     }
 
