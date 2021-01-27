@@ -85,7 +85,6 @@ import com.succorfish.geofence.interfaceFragmentToActivity.ServerConfigurationDa
 import com.succorfish.geofence.interfaceFragmentToActivity.SimConfigurationPackets;
 import com.succorfish.geofence.interfaceFragmentToActivity.WifiConfigurationPackets;
 import com.succorfish.geofence.interfaces.API;
-import com.succorfish.geofence.interfaces.PassScanDevicesRxBle;
 import com.succorfish.geofence.interfaces.onAlertDialogCallBack;
 import com.succorfish.geofence.utility.URL_helper;
 import com.succorfish.geofence.utility.Utility;

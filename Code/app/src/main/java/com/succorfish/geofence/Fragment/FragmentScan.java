@@ -36,14 +36,15 @@ import com.succorfish.geofence.MainActivity;
 import com.succorfish.geofence.R;
 import com.succorfish.geofence.RoomDataBaseEntity.DeviceTable;
 import com.succorfish.geofence.adapter.FragmentScanAdapter;
+import com.succorfish.geofence.customObjects.CustBluetootDevices;
 import com.succorfish.geofence.customObjects.DeviceTableDetails;
 import com.succorfish.geofence.dialog.DialogProvider;
 import com.succorfish.geofence.interfaceActivityToFragment.ConnectionProgressDialogShow;
 import com.succorfish.geofence.interfaceActivityToFragment.ConnectionStatus;
 import com.succorfish.geofence.interfaceActivityToFragment.GeoFenceDialogAlertShow;
 import com.succorfish.geofence.interfaceActivityToFragment.OpenDialogToCheckDeviceName;
+import com.succorfish.geofence.interfaceActivityToFragment.PassScanDeviceToActivity_interface;
 import com.succorfish.geofence.interfaceFragmentToActivity.PassClickedDeviceForConnection;
-import com.succorfish.geofence.interfaces.PassScanDevicesRxBle;
 import com.succorfish.geofence.interfaces.onAlertDialogCallBack;
 import com.succorfish.geofence.interfaces.onDeviceNameAlert;
 import com.succorfish.geofence.utility.Utility;
@@ -80,7 +81,7 @@ public class FragmentScan extends BaseFragment {
     /**
      * This is used for scan Devices.
      */
-    private ArrayList<CustomBluetooth> customBluetoothDeviceList = new ArrayList<CustomBluetooth>();
+    private ArrayList<CustBluetootDevices> customBluetoothDeviceList = new ArrayList<CustBluetootDevices>();
     /**
      * This is used for Getting DeviceTable Name;
      */
@@ -253,6 +254,25 @@ public class FragmentScan extends BaseFragment {
                 }
             }
         });
+
+
+        mainActivity.setupPassScanDeviceToActivity_interface(new PassScanDeviceToActivity_interface() {
+            @Override
+            public void sendCustomBleDevice(CustBluetootDevices custBluetootDevices) {
+                if(!customBluetoothDeviceList.contains(custBluetootDevices)){
+                    String deviceName = getdevialiasNamefromDB(custBluetootDevices.getBleAddress());
+                    custBluetootDevices.setDeviceName(deviceName);
+                    connect_inst_Txtview.setVisibility(View.VISIBLE);
+                    fragmentScanAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+
+
+
+
+
         mainActivity.setUpConnectionStatus(new ConnectionStatus() {
             @Override
             public void connectedDevicePostion(BluetoothDevice bluetoothDevice, boolean status) {
