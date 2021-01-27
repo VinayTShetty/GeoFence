@@ -916,7 +916,7 @@ public class MainActivity extends AppCompatActivity implements
                                                     /**
                                                      * Used to remove the TimeStamp and ID from A6 packets.
                                                      */
-                                                    removeId_time_Stamp_from_firmware_arraylist(bleDevice, geoFenceObjectData.getGeoId() + ":" + geoFenceObjectData.getFirmwareTimeStamp());
+                                                    removeId_time_Stamp_from_firmware_arraylist(geoFenceObjectData.getGeoId() + ":" + geoFenceObjectData.getFirmwareTimeStamp());
                                                     System.out.println("Removed ID and TimeStamp from the arrayList ID= " + geoFenceObjectData.getGeoId() + " TimeStamp= " + geoFenceObjectData.getFirmwareTimeStamp());
                                                     process_TimeStamp_id_One_After_Other_A6_packet(bleDevice);
                                                     /**
@@ -1865,11 +1865,15 @@ public class MainActivity extends AppCompatActivity implements
         return result;
     }
 
-    private void process_TimeStamp_id_One_After_Other_A8_packet(BleDevice bleDevice) {
+    private void process_TimeStamp_id_One_After_Other_A8_packet(String bleAddress) {
         if (from_firmware_ID_TimeStamp_A8_Packet.size() > 0) {
             String firmwareDetailsArray = from_firmware_ID_TimeStamp_A8_Packet.get(0);
             String geofenceId = getID_From_ArrayList(firmwareDetailsArray);
-            writeDataToFirmware(bleDevice, geoFenceId(Integer.parseInt(geofenceId)), "Asking For GeoFenceID from A8 PACKET " + geofenceId);
+            /**
+             * Remove Here....
+             */
+//            writeDataToFirmware(bleDevice, geoFenceId(Integer.parseInt(geofenceId)), "Asking For GeoFenceID from A8 PACKET " + geofenceId);
+            sendSinglePacketDataToBle(bleAddress,geoFenceId(Integer.parseInt(geofenceId)),"Asking For GeoFenceID from A8 PACKET " + geofenceId);
         }
     }
 
@@ -2218,7 +2222,7 @@ public class MainActivity extends AppCompatActivity implements
                 /**
                  * Data Obtained from the firmware.
                  */
-                String bleAddress = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED_BLE_ADDRESS));
+                String bleAddressFromNotificationChanged = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED_BLE_ADDRESS));
                 byte[] obtainedFromFirmware = intent.getByteArrayExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED_DATA_RECIEVED));
                 System.out.println("DATA_FIRMWARE_OBTAINED= "+""+bytesToHex(obtainedFromFirmware));
                 /**
@@ -2234,7 +2238,7 @@ public class MainActivity extends AppCompatActivity implements
                     int m_auth_key = hexToint(blehexObtainedFrom_Firmware.substring(4, 6));
                     int calculatedMagicNumber = calculateAlgorithmValue(m_auth_key);
                     byte[] connectionArray = getConnectionMainCode(calculatedMagicNumber);
-                    writeConnectionMainTaincenceCodeToFirmware(bleAddress,connectionArray);
+                    writeConnectionMainTaincenceCodeToFirmware(bleAddressFromNotificationChanged,connectionArray);
                 }else if((blehexObtainedFrom_Firmware.length()==6)&&(blehexObtainedFrom_Firmware.substring(0,2).equalsIgnoreCase("0201"))){
                     int auth_sucess = hexToint(blehexObtainedFrom_Firmware.substring(4, 6));
                     if(auth_sucess==1){
@@ -2248,7 +2252,7 @@ public class MainActivity extends AppCompatActivity implements
                         UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
                         UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(askIMEI_number());
                         byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
-                        sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress);
+                        sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddressFromNotificationChanged);
                     }else (auth_sucess==0){
                         /**
                          * Disconnect the device..
@@ -2313,7 +2317,7 @@ public class MainActivity extends AppCompatActivity implements
                          * Check if the Firmware dosent contains any ID_TIME stamp send ACK to the firmware..
                          */
                         showProgressDialog("Syncing");
-                        process_TimeStamp_id_One_After_Other_A6_packet(bleDevice);
+                        process_TimeStamp_id_One_After_Other_A6_packet(bleAddressFromNotificationChanged);
 
                     }
                     else if ((blehexObtainedFrom_Firmware.length() == 32) && (blehexObtainedFrom_Firmware.equalsIgnoreCase("a2010000000000000000000000000000"))) {
@@ -2479,9 +2483,9 @@ public class MainActivity extends AppCompatActivity implements
                                 /**
                                  * Used to remove the TimeStamp and ID from A6 packets.
                                  */
-                                removeId_time_Stamp_from_firmware_arraylist(bleDevice, geoFenceObjectData.getGeoId() + ":" + geoFenceObjectData.getFirmwareTimeStamp());
+                                removeId_time_Stamp_from_firmware_arraylist(geoFenceObjectData.getGeoId() + ":" + geoFenceObjectData.getFirmwareTimeStamp());
                                 System.out.println("Removed ID and TimeStamp from the arrayList ID= " + geoFenceObjectData.getGeoId() + " TimeStamp= " + geoFenceObjectData.getFirmwareTimeStamp());
-                                process_TimeStamp_id_One_After_Other_A6_packet(bleDevice);
+                                process_TimeStamp_id_One_After_Other_A6_packet(bleAddressFromNotificationChanged);
                                 /**
                                  * Used to remove the TimeStamp and ID from A8 packets.
                                  */
@@ -2528,8 +2532,8 @@ public class MainActivity extends AppCompatActivity implements
                                 String breach_longitude = getFloatingPointValueFromHex(breachLongitude_hex);
                                 String rule_id = "" + hexToint(rule_Id_hex);
                                 String rule_value = removePreviousZero("" + hexToint(rule_Value_hex));
-                                String bleAddressWithColon = bleDevice.getMac();
-                                String bleAddress = bleDevice.getMac().replace(":", "").toLowerCase();
+                                String bleAddressWithColon = bleAddressFromNotificationChanged;
+                                String bleAddress = bleAddressFromNotificationChanged.replace(":", "").toLowerCase();
                                 boolean isGeoFenceId_Avaliable = roomDBHelperInstance.get_GeoFence_info_dao().isGeoFenceId_Avaliable(geoFence_id);
                                 if (isGeoFenceId_Avaliable) {
                                     String geofenceType =roomDBHelperInstance.get_GeoFence_info_dao().getGeoFenceTypeFromGeoFenceId(geoFence_id);
@@ -2696,7 +2700,11 @@ public class MainActivity extends AppCompatActivity implements
                                                 }
                                                 try {
                                                     Thread.sleep(10);
-                                                    writeDataToFirmware(bleDevice, sendAckReadyForNextPacket(), "A5 ALERTS RECIEVED,SENDING ACK READY FOR NEXT ALERT");
+                                                    /**
+                                                     * Remove here
+                                                     */
+                                                 //   writeDataToFirmware(bleDevice, sendAckReadyForNextPacket(), "A5 ALERTS RECIEVED,SENDING ACK READY FOR NEXT ALERT");
+                                                    sendSinglePacketDataToBle(bleAddressFromNotificationChanged,sendAckReadyForNextPacket(),"A5 ALERTS RECIEVED,SENDING ACK READY FOR NEXT ALERT");
                                                 } catch (InterruptedException e) {
                                                     e.printStackTrace();
                                                 }
@@ -2737,7 +2745,7 @@ public class MainActivity extends AppCompatActivity implements
                         });
                     }
                     else if ((blehexObtainedFrom_Firmware.length() == 32) && (blehexObtainedFrom_Firmware.substring(0, 4).equalsIgnoreCase("a803"))) {
-                        process_TimeStamp_id_One_After_Other_A8_packet(bleDevice);
+                        process_TimeStamp_id_One_After_Other_A8_packet(bleAddressFromNotificationChanged);
                     }
                     else if ((blehexObtainedFrom_Firmware.length() == 32) && (blehexObtainedFrom_Firmware.substring(0, 2).equalsIgnoreCase("b1"))) {
                         /**
