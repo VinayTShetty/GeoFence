@@ -110,7 +110,7 @@ public class FragmentScan extends BaseFragment {
         ItemClickonDevice();
         intializeDialog();
         geoFenceAlertImplementation();
-        addConnectedDevice();
+  //      addConnectedDevice(); // Remove
         getListOfConnectedDevices();
     //    addNotification();
         return fragmenScanView;
@@ -193,7 +193,7 @@ public class FragmentScan extends BaseFragment {
         switch (requestCode) {
             case LocationPermissionRequestCode:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mainActivity.start_stop_SCAN(getActivity()); // Remove
+             //       mainActivity.start_stop_SCAN(getActivity()); // Remove
                     mainActivity.start_stop_scan();
                 } else {
                     askPermission();
@@ -204,7 +204,7 @@ public class FragmentScan extends BaseFragment {
     private void checkPermissionGiven() {
         if (isAdded()) {
             if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                mainActivity.start_stop_SCAN(getActivity()); //Remove
+        //        mainActivity.start_stop_SCAN(getActivity()); //Remove
                 mainActivity.start_stop_scan();
             } else {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LocationPermissionRequestCode);
@@ -249,7 +249,7 @@ public class FragmentScan extends BaseFragment {
         /**
          * Remove
          */
-        mainActivity.setUpInterfaceInMainActivity(new PassScanDevicesRxBle() {
+      /*  mainActivity.setUpInterfaceInMainActivity(new PassScanDevicesRxBle() {
             @Override
             public void scannedRxBleDevices(CustomBluetooth customBluetooth) {
                 if (!customBluetoothDeviceList.contains(customBluetooth)) {
@@ -260,7 +260,7 @@ public class FragmentScan extends BaseFragment {
                     fragmentScanAdapter.notifyDataSetChanged();
                 }
             }
-        });
+        });*/
 
 
         mainActivity.setupPassScanDeviceToActivity_interface(new PassScanDeviceToActivity_interface() {
@@ -290,25 +290,35 @@ public class FragmentScan extends BaseFragment {
                 }
             }
         });
-        mainActivity.setUpconnectionProgressDialogShow(new ConnectionProgressDialogShow() {
+
+
+        /**
+         * Remvoe not Required..
+         */
+
+       /* mainActivity.setUpconnectionProgressDialogShow(new ConnectionProgressDialogShow() {
             @Override
             public void connectProgress(boolean connectStatus) {
                 if (connectStatus) {
-                    /**
+                    *//**
                      * show the Progress Dialog
-                     */
+                     *//*
                     showProgressDialog();
                 } else {
-                    /**
+                    *//**
                      * Hide the Progerss Dialog
-                     */
+                     *//*
                     cancelProgressDialog();
                 }
             }
-        });
+        });*/
+
+
+
+
         mainActivity.setUpOpenDialogToCheckDeviceName(new OpenDialogToCheckDeviceName() {
             @Override
-            public void showDialogNameNotAvaliable(int postionSelected,String deviceToken,String imeiNumberFromFirmware) {
+            public void showDialogNameNotAvaliable(String bleAddressForDeviceAfterConfermation,String deviceToken,String imeiNumberFromFirmware) {
                 dialogProvider.enterNameDialog(new onDeviceNameAlert() {
                     @Override
                     public void PositiveMethod(DialogInterface dialog, int id, String deviceName) {
@@ -325,8 +335,7 @@ public class FragmentScan extends BaseFragment {
                                             @Override
                                             public void run() {
                                                 roomDBHelperInstance.get_TableDevice_dao().insert_tableDevices(new DeviceTable(
-                                                        customBluetoothDeviceList.get(postionSelected).getBleaddress().replace(":", "").toLowerCase(),
-                                                        devicealiasName + " " + "1",
+                                                        bleAddressForDeviceAfterConfermation.replace(":", "").toLowerCase(), devicealiasName + " " + "1",
                                                         imeiNumberFromFirmware,
                                                         deviceToken,
                                                         "NA"
@@ -335,9 +344,12 @@ public class FragmentScan extends BaseFragment {
                                                     @Override
                                                     public void run() {
 
-                                                        customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName + " " + "1");
-                                                        fragmentScanAdapter.notifyItemChanged(postionSelected);
-                                                        dialog.dismiss();
+                                                       // customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName + " " + "1");
+                                                        int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
+                                                        if(postionToChange!=-1){
+                                                            fragmentScanAdapter.notifyItemChanged(postionToChange);
+                                                            dialog.dismiss();
+                                                        }
                                                     }
                                                 });
                                             }
@@ -350,7 +362,7 @@ public class FragmentScan extends BaseFragment {
                                             public void run() {
 
                                                 roomDBHelperInstance.get_TableDevice_dao().insert_tableDevices(new DeviceTable(
-                                                        customBluetoothDeviceList.get(postionSelected).getBleaddress().replace(":", "").toLowerCase(),
+                                                        bleAddressForDeviceAfterConfermation.replace(":", "").toLowerCase(),
                                                         devicealiasName + " " + number_of_Records_Avaliable_device_name_table,
                                                         imeiNumberFromFirmware,
                                                         deviceToken,
@@ -360,9 +372,15 @@ public class FragmentScan extends BaseFragment {
                                                 mainActivity.runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
-                                                        customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName + " " + number_of_Records_Avaliable_device_name_table);
+                                                       /* customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName + " " + number_of_Records_Avaliable_device_name_table);
                                                         fragmentScanAdapter.notifyItemChanged(postionSelected);
-                                                        dialog.dismiss();
+                                                        dialog.dismiss();*/
+
+                                                        int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
+                                                        if(postionToChange!=-1){
+                                                            fragmentScanAdapter.notifyItemChanged(postionToChange);
+                                                            dialog.dismiss();
+                                                        }
                                                     }
                                                 });
                                             }
@@ -377,7 +395,7 @@ public class FragmentScan extends BaseFragment {
                                 public void run() {
 
                                     roomDBHelperInstance.get_TableDevice_dao().insert_tableDevices(new DeviceTable(
-                                            customBluetoothDeviceList.get(postionSelected).getBleaddress().replace(":", "").toLowerCase(),
+                                            bleAddressForDeviceAfterConfermation.replace(":", "").toLowerCase(),
                                             devicealiasName_givenFromuser,
                                             imeiNumberFromFirmware,
                                             deviceToken,
@@ -386,9 +404,15 @@ public class FragmentScan extends BaseFragment {
                                     mainActivity.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName_givenFromuser);
+                                            /*customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName_givenFromuser);
                                             fragmentScanAdapter.notifyItemChanged(postionSelected);
-                                            dialog.dismiss();
+                                            dialog.dismiss();*/
+
+                                            int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
+                                            if(postionToChange!=-1){
+                                                fragmentScanAdapter.notifyItemChanged(postionToChange);
+                                                dialog.dismiss();
+                                            }
                                         }
                                     });
                                 }
@@ -409,7 +433,7 @@ public class FragmentScan extends BaseFragment {
                                         @Override
                                         public void run() {
                                             roomDBHelperInstance.get_TableDevice_dao().insert_tableDevices(new DeviceTable(
-                                                    customBluetoothDeviceList.get(postionSelected).getBleaddress().replace(":", "").toLowerCase(),
+                                                    bleAddressForDeviceAfterConfermation.replace(":", "").toLowerCase(),
                                                     devicealiasName + " " + "1",
                                                     imeiNumberFromFirmware,
                                                     deviceToken,
@@ -419,9 +443,15 @@ public class FragmentScan extends BaseFragment {
                                                 @Override
                                                 public void run() {
 
-                                                    customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName + " " + "1");
+                                                    /*customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName + " " + "1");
                                                     fragmentScanAdapter.notifyItemChanged(postionSelected);
-                                                    dialog.dismiss();
+                                                    dialog.dismiss();*/
+
+                                                    int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
+                                                    if(postionToChange!=-1){
+                                                        fragmentScanAdapter.notifyItemChanged(postionToChange);
+                                                        dialog.dismiss();
+                                                    }
                                                 }
                                             });
                                         }
@@ -433,7 +463,7 @@ public class FragmentScan extends BaseFragment {
                                         @Override
                                         public void run() {
                                             roomDBHelperInstance.get_TableDevice_dao().insert_tableDevices(new DeviceTable(
-                                                    customBluetoothDeviceList.get(postionSelected).getBleaddress().replace(":", "").toLowerCase(),
+                                                    bleAddressForDeviceAfterConfermation.replace(":", "").toLowerCase(),
                                                     devicealiasName + " " + number_of_Records_Avaliable_device_name_table,
                                                     imeiNumberFromFirmware,
                                                     deviceToken,
@@ -442,9 +472,15 @@ public class FragmentScan extends BaseFragment {
                                             mainActivity.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName + " " + number_of_Records_Avaliable_device_name_table);
+                                                   /* customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName + " " + number_of_Records_Avaliable_device_name_table);
                                                     fragmentScanAdapter.notifyItemChanged(postionSelected);
-                                                    dialog.dismiss();
+                                                    dialog.dismiss();*/
+
+                                                    int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
+                                                    if(postionToChange!=-1){
+                                                        fragmentScanAdapter.notifyItemChanged(postionToChange);
+                                                        dialog.dismiss();
+                                                    }
                                                 }
                                             });
                                         }
@@ -520,7 +556,7 @@ public class FragmentScan extends BaseFragment {
     public void reloadImageClick() {
         checkBluetoothIsOn();
         clearScanConnectedDevices();
-        mainActivity.start_stop_SCAN(getActivity()); // Remove
+      //  mainActivity.start_stop_SCAN(getActivity()); // Remove
         mainActivity.start_stop_scan();
     }
 
@@ -565,7 +601,14 @@ public class FragmentScan extends BaseFragment {
         dialogProvider = new DialogProvider(getActivity());
     }
 
-    private void addConnectedDevice() {
+
+    /**
+     *
+     *  Already implemented this logc so Remove it
+     *
+     */
+
+    /*private void addConnectedDevice() {
         List<BleDevice> bleDeviceList = BleManager.getInstance().getAllConnectedDevice();
         for (BleDevice bleDevice : bleDeviceList) {
             String macAddress = bleDevice.getMac();
@@ -577,7 +620,7 @@ public class FragmentScan extends BaseFragment {
             connect_inst_Txtview.setVisibility(View.VISIBLE);
             fragmentScanAdapter.notifyDataSetChanged();
         }
-    }
+    }*/
 
     private String getdevialiasNamefromDB(String bleAddress) {
         String deviceName = getResources().getString(R.string.device_name_alias);
@@ -593,7 +636,7 @@ public class FragmentScan extends BaseFragment {
         customBluetoothDeviceList.clear();
         fragmentScanAdapter.notifyDataSetChanged();
         getListOfConnectedDevices();
-        addConnectedDevice();
+//        addConnectedDevice();   // Remove
     }
 
     private void clearScanDevices() {
@@ -663,8 +706,8 @@ public class FragmentScan extends BaseFragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                disconnectAllDevices();
-                BleManager.getInstance().disconnectAllDevice();
+  //              disconnectAllDevices(); // Remove
+//                BleManager.getInstance().disconnectAllDevice();// Remove
                 dialog.dismiss();
                 mainActivity.preferenceHelper.resetPreferenceData();
                 Intent mIntent = new Intent(getActivity(), LoginActivity.class);
@@ -681,7 +724,10 @@ public class FragmentScan extends BaseFragment {
         builder.show();
     }
 
-    private void disconnectAllDevices() {
+    /**
+     * Remove and Implement later commented.
+     */
+  /*  private void disconnectAllDevices() {
         if (getBluetoothAdapter() != null) {
             BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
             if (bluetoothAdapter.isEnabled()) {
@@ -691,7 +737,7 @@ public class FragmentScan extends BaseFragment {
               }
             }
         }
-    }
+    }*/
 
 
     /**
@@ -744,7 +790,21 @@ public class FragmentScan extends BaseFragment {
         public void onFinish() {
             cancelProgressDialog();
         }
+    }
 
+    /**
+     * get the postion of the Device from the Arraylist.
+     */
+    private int getPositionOfItemFromBleAddress(String bleAddress_For_Position){
+        int result=-1;
+        CustBluetootDevices custBluetootDevices=new CustBluetootDevices();
+        custBluetootDevices.setBleAddress(bleAddress_For_Position);
+        if(customBluetoothDeviceList.contains(custBluetootDevices)){
+            result=customBluetoothDeviceList.indexOf(custBluetootDevices);
+        }else {
+            result=-1;
+        }
+        return result;
     }
 
 }

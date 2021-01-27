@@ -667,7 +667,7 @@ public class MainActivity extends AppCompatActivity implements
         });
         setUpOpenDialogToCheckDeviceName(new OpenDialogToCheckDeviceName() {
             @Override
-            public void showDialogNameNotAvaliable(int postionSelectedForConnection, String deviToken,String imeiNumberFromFirmware) {
+            public void showDialogNameNotAvaliable(String bleAddressForDeviceAfterConfermation, String deviToken,String imeiNumberFromFirmware) {
 
             }
         });
@@ -1400,7 +1400,7 @@ public class MainActivity extends AppCompatActivity implements
                                                             loadGeoFenceId_TimeStamp(bleDevice);
                                                         } else {
                                                             if ((openDialogToCheckDeviceName != null) && (ItemPositionSelected != -1)) {
-                                                                openDialogToCheckDeviceName.showDialogNameNotAvaliable(ItemPositionSelected, deviceToken_fromFirmware,imeiNumberFomFirmware);
+                                                                openDialogToCheckDeviceName.showDialogNameNotAvaliable(bleAddressForDeviceAfterConfermation, deviceToken_fromFirmware,imeiNumberFomFirmware);
                                                                 imeiNumberFomFirmware="";
                                                             }
                                                             loadGeoFenceId_TimeStamp(bleDevice);
