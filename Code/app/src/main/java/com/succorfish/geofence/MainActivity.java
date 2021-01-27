@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements
         LiveLocationReq,
         DeviceConnectDisconnect {
     private Unbinder unbinder;
-    PassScanDevicesRxBle passScanDevicesRxBle;
+  //  PassScanDevicesRxBle passScanDevicesRxBle;
     PassScanDeviceToActivity_interface  passScanDeviceToActivity_interface;
 
     /**
@@ -307,19 +307,19 @@ public class MainActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
-        stopScanningWhenActivityClosed();
+       // stopScanningWhenActivityClosed();
         unbindService(serviceConnection);
         mBluetoothLeService = null;
     }
 
-    private void stopScanningWhenActivityClosed() {
+   /* private void stopScanningWhenActivityClosed() {
         if (getBluetoothAdapter() != null) {
             BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
             if (bluetoothAdapter.isEnabled()) {
                stopScanning();
             }
         }
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -458,7 +458,6 @@ public class MainActivity extends AppCompatActivity implements
                 showProgressDialog("Please wait");
             }
         });
-
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -469,13 +468,16 @@ public class MainActivity extends AppCompatActivity implements
                     deviceToken__byteArray.add(deviceTokenpacketArray(indexPosition, individualString));
                     indexPosition--;
                 }
-
             }
         });
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
+
+
+
                 if (getBluetoothAdapter() != null) {
                     BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
                     if (bluetoothAdapter.isEnabled()) {
@@ -515,11 +517,11 @@ public class MainActivity extends AppCompatActivity implements
         fragmentTransction.commit();
     }
 
-    public void 100start_stop_SCAN(Context context) {
+  /*  public void start_stop_SCAN(Context context) {
         if (new Utility().ble_on_off()) {
-            /**
+            *//**
              * Rx Ble Start Scanning
-             */
+             *//*
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -544,9 +546,9 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
         }
-    }
+    }*/
 
-    public void stopScanning() {
+  /*  public void stopScanning() {
         if (new Utility().ble_on_off()) {
             mainActivityScanningInstance.dispose();
             SCAN_TAG = "SCAN_COMPLETED";
@@ -569,11 +571,11 @@ public class MainActivity extends AppCompatActivity implements
             } else {
             }
         }
-    }
+    }*/
 
-    ArrayList<CustomBluetooth> customBluetoothsNewScannning = new ArrayList<CustomBluetooth>();
+/*    ArrayList<CustomBluetooth> customBluetoothsNewScannning = new ArrayList<CustomBluetooth>();*/
 
-    private void RxBleStartScanning(Context context) {
+    /*private void RxBleStartScanning(Context context) {
         RxBleClient rxBleClient = RxBleClient.create(context);
         try {
             SCAN_TAG = "SCAN_STARTED";
@@ -611,11 +613,11 @@ public class MainActivity extends AppCompatActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    public void setUpInterfaceInMainActivity(PassScanDevicesRxBle loc_passScanDevicesRxBle) {
+  /*  public void setUpInterfaceInMainActivity(PassScanDevicesRxBle loc_passScanDevicesRxBle) {
         passScanDevicesRxBle = loc_passScanDevicesRxBle;
-    }
+    }*/
 
     public void setUpGeoFenceAlertDialogInterface(GeoFenceDialogAlertShow loc_geoFenceAlertDialogInterface) {
         geoFenceDialogAlertShow = loc_geoFenceAlertDialogInterface;
