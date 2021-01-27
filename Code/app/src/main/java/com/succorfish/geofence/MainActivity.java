@@ -1810,11 +1810,11 @@ public class MainActivity extends AppCompatActivity implements
         // connectRxBleDevice(bleDevice, -1);
     }
 
-    private void process_TimeStamp_id_One_After_Other_A6_packet(BleDevice bleDevice) {
+    private void process_TimeStamp_id_One_After_Other_A6_packet(String bleAddress) {
         if (from_firmware_ID_TimeStamp.size() > 0) {
             if (check_timeStamp_id_Avaliable_In_dataBase_Arraylist(from_firmware_ID_TimeStamp.get(0))) {
-                removeId_time_Stamp_from_firmware_arraylist(bleDevice, null);
-                process_TimeStamp_id_One_After_Other_A6_packet(bleDevice);
+                removeId_time_Stamp_from_firmware_arraylist( null);
+                process_TimeStamp_id_One_After_Other_A6_packet(bleAddress);
             } else {
                 /**
                  * Request ID_TimeStamp from firmware.
@@ -1822,18 +1822,32 @@ public class MainActivity extends AppCompatActivity implements
                 String firmwareDetailsArray = from_firmware_ID_TimeStamp.get(0);
                 String geofenceId = getID_From_ArrayList(firmwareDetailsArray);
                 String geofenceTimeStamp = get_TimeStamp_ArrayList(firmwareDetailsArray);
-                writeDataToFirmware(bleDevice, geoFenceId(Integer.parseInt(geofenceId)), "Asking For GeoFenceID from Time Stamp=  ID= " + geofenceId);
+
+                /**
+                 * Remove later...
+                 */
+
+                //      writeDataToFirmware(bleDevice, geoFenceId(Integer.parseInt(geofenceId)), "Asking For GeoFenceID from Time Stamp=  ID= " + geofenceId);
+
+                sendSinglePacketDataToBle(bleAddress, geoFenceId(Integer.parseInt(geofenceId)),"Asking For GeoFenceID from Time Stamp=  ID= ");
             }
         } else {
             /**
              * Send Ack that no geoFence id there..so ready to recieve geoFence alert.
              */
             cancelProgressDialog();
-            writeDataToFirmware(bleDevice, send_Geo_fenceID_fetched_finished_Acknoledgement((byte) 0xa4), "ACK to Firmware i.e Ready to Recieve alerts A4FF");
+
+            /**
+             * Remove later..
+             */
+            //  writeDataToFirmware(bleDevice, send_Geo_fenceID_fetched_finished_Acknoledgement((byte) 0xa4), "ACK to Firmware i.e Ready to Recieve alerts A4FF");
+
+            sendSinglePacketDataToBle(bleAddress, send_Geo_fenceID_fetched_finished_Acknoledgement((byte) 0xa4),"Asking For GeoFenceID from Time Stamp=  ID= ");
+
         }
     }
 
-    private void removeId_time_Stamp_from_firmware_arraylist(BleDevice bleDevice, String index_items) {
+    private void removeId_time_Stamp_from_firmware_arraylist(String index_items) {
         if (index_items == null) {
             from_firmware_ID_TimeStamp.remove(0);
         } else if (index_items.length() > 2) {
@@ -2195,7 +2209,6 @@ public class MainActivity extends AppCompatActivity implements
                 byte[] dataWritten = intent.getByteArrayExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN));
                 int dataWrittenType = intent.getIntExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN_TYPE), -1);
                 sendNextDataToFirmmWareAfterConfermation(dataWritten,bleAddress);
-
               /*
                 System.out.println("what data written to the Firmware= "+convertHexToBigIntegert(bytesToHex(dataWritten)));
                 System.out.println("what data written to the Firmware bleAddres = "+bleAddress);
@@ -3212,7 +3225,7 @@ public class MainActivity extends AppCompatActivity implements
                 System.out.println("DATA REMOVED AFTER WRITING " + hex_converted_decrypted_byte_array);
                 Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation: DATA_REMOVED_CONFERMATION= "+hex_converted_decrypted_byte_array);
                 if (UNIVERSAL_ARRAY_PACEKT_LIST.size() > 0) {
-                    byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
+                    byte[] bytesDataToWrite = encryptData(byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0)));
                     mBluetoothLeService.sendDataToBleDevice(bleAddressToWrite,bytesDataToWrite);
                     Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation: NEXT DATA WRITTEN "+bytesToHex(bytesDataToWrite));
                 }
@@ -3232,8 +3245,22 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private static sendSinglePacketDataToBle(){
-
+    private static void  sendSinglePacketDataToBle(String bleAddress,byte[] dataNeedToSend,String reasonToWriteData){
+        Log.d(TAG, "sendSinglePacketDataToBle: Hex Data needs to be Passed= "+bytesToHex(dataNeedToSend)+" DATA REASON= "+reasonToWriteData+" BLE ADDRESS= "+bleAddress);
+        try {
+            byte [] encryptedData=encryptData(dataNeedToSend);
+            mBluetoothLeService.sendDataToBleDevice(bleAddress,encryptedData);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        }
     }
 
 
