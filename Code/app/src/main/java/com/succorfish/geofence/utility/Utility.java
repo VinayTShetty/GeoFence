@@ -21,9 +21,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.clj.fastble.BleManager;
-import com.clj.fastble.data.BleDevice;
-import com.clj.fastble.utils.HexUtil;
+
 import com.succorfish.geofence.R;
 
 import java.sql.Timestamp;
@@ -36,7 +34,7 @@ import es.dmoral.toasty.Toasty;
 import static com.succorfish.geofence.blecalculation.MessageCalculation.endMessagePacket;
 
 public class Utility {
-    public  boolean ble_on_off(){
+    public static boolean ble_on_off(){
         boolean ble_on_off=false;
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {

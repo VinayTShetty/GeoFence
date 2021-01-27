@@ -132,6 +132,7 @@ import static com.succorfish.geofence.helper.UUID.TRACKER_CHARCTERSTICS_UUID;
 import static com.succorfish.geofence.helper.UUID.TRACKER_SERVICE_UUID;
 import static com.succorfish.geofence.utility.RetrofitHelperClass.getClientWithAutho;
 import static com.succorfish.geofence.utility.RetrofitHelperClass.haveInternet;
+import static com.succorfish.geofence.utility.Utility.ble_on_off;
 import static com.succorfish.geofence.utility.Utility.getBluetoothAdapter;
 import static com.succorfish.geofence.utility.Utility.getCurrenTimeStamp;
 import static com.succorfish.geofence.utility.Utility.getDateTime;
@@ -290,6 +291,7 @@ public class MainActivity extends AppCompatActivity implements
     protected void onPause() {
         super.onPause();
         application_Visible_ToUser = true;
+        unregisterReceiver(bluetootServiceRecieverData);
     }
 
     @Override
@@ -303,6 +305,8 @@ public class MainActivity extends AppCompatActivity implements
         super.onDestroy();
         unbinder.unbind();
         stopScanningWhenActivityClosed();
+        unbindService(serviceConnection);
+        mBluetoothLeService = null;
     }
 
     private void stopScanningWhenActivityClosed() {
@@ -702,7 +706,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void clickedDevice(CustomBluetooth custombleDevice, int postion) {
         Utility utility = new Utility();
-        if (!utility.ble_on_off()) {
+        if (!ble_on_off()) {
             utility.showTaost(MainActivity.this, "Turn On Bluetooth", getResources().getDrawable(R.drawable.ic_bluetoth_not_enabled));
             return;
         }
@@ -2397,6 +2401,51 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 }
             };
+
+
+    private void startScan() {
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                SCAN_TAG = getResources().getString(R.string.SCAN_STARTED);
+                bluetoothLeScanner.startScan(leScanCallback);
+            }
+        });
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mScanning = false;
+                stopScan();
+            }
+        }, SCAN_PERIOD);
+    }
+
+    private void stopScan() {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (SCAN_TAG.equalsIgnoreCase(getResources().getString(R.string.SCAN_STARTED))) {
+                    SCAN_TAG = getResources().getString(R.string.SCAN_STOPED);
+                    bluetoothLeScanner.stopScan(leScanCallback);
+                }
+
+            }
+        });
+    }
+
+    public void start_stop_scan() {
+        if(ble_on_off()){
+            if (SCAN_TAG.equalsIgnoreCase(getResources().getString(R.string.SCAN_STOPED)) || (SCAN_TAG.equalsIgnoreCase(""))) {
+                startScan();
+            }else if (SCAN_TAG.equalsIgnoreCase(getResources().getString(R.string.SCAN_STARTED))) {
+                /**
+                 * Scan already started.
+                 */
+            }
+        }
+    }
 }
 
 
