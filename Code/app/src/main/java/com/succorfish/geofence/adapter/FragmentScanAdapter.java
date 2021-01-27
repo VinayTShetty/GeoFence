@@ -93,7 +93,7 @@ public class FragmentScanAdapter extends RecyclerView.Adapter<FragmentScanAdapte
                     if(onItemClickInterface!=null){
                         System.out.println("clicked connection satus");
                         if((customBluetoothdevices!=null)&&(getAdapterPosition()>=0)){
-                            onItemClickInterface.ConnectionStatusClick(customBluetoothdevices.get(getAdapterPosition()),getAdapterPosition());
+                            onItemClickInterface.ConnectionStatusClick(customBluetooth,getAdapterPosition());
                         }
                     }
 
@@ -109,7 +109,7 @@ public class FragmentScanAdapter extends RecyclerView.Adapter<FragmentScanAdapte
                     if(onItemClickInterface!=null){
                         System.out.println("clicked message layout satus");
                         if((customBluetoothdevices!=null)&&(getAdapterPosition()>=0)){
-                            onItemClickInterface.messagingLayoutClick(customBluetoothdevices.get(getAdapterPosition()),getAdapterPosition());
+                            onItemClickInterface.messagingLayoutClick(customBluetooth,getAdapterPosition());
                         }
                     }
                 }
@@ -123,7 +123,7 @@ public class FragmentScanAdapter extends RecyclerView.Adapter<FragmentScanAdapte
                     if(onItemClickInterface!=null){
                         System.out.println("clicked geofence layout satus");
                         if((customBluetoothdevices!=null)&&(getAdapterPosition()>=0)){
-                            onItemClickInterface.geoFenceLayoutClick(customBluetoothdevices.get(getAdapterPosition()),getAdapterPosition());
+                            onItemClickInterface.geoFenceLayoutClick(customBluetooth,getAdapterPosition());
                         }
                     }
                 }
@@ -136,7 +136,7 @@ public class FragmentScanAdapter extends RecyclerView.Adapter<FragmentScanAdapte
                 public void onClick(View v) {
                     if(onItemClickInterface!=null){
                         if((customBluetoothdevices!=null)&&(getAdapterPosition()>=0)){
-                            onItemClickInterface.liveTracking(customBluetoothdevices.get(getAdapterPosition()),getAdapterPosition());
+                            onItemClickInterface.liveTracking(customBluetooth,getAdapterPosition());
                         }
                     }
                 }
@@ -158,7 +158,7 @@ public class FragmentScanAdapter extends RecyclerView.Adapter<FragmentScanAdapte
                                 case R.id.settings:
                                     if(onItemClickInterface!=null){
                                         if((customBluetoothdevices!=null)&&(getAdapterPosition()>=0)){
-                                            onItemClickInterface.overFlow_menu_Setting(customBluetoothdevices.get(getAdapterPosition()),getAdapterPosition());
+                                            onItemClickInterface.overFlow_menu_Setting(customBluetooth,getAdapterPosition());
                                         }
                                     }
                                     popup.dismiss();
@@ -166,7 +166,7 @@ public class FragmentScanAdapter extends RecyclerView.Adapter<FragmentScanAdapte
                                 case R.id.sos:
                                     if(onItemClickInterface!=null){
                                         if((customBluetoothdevices!=null)&&(getAdapterPosition()>=0)){
-                                            onItemClickInterface.overFlow_menu_SOS(customBluetoothdevices.get(getAdapterPosition()),getAdapterPosition());
+                                            onItemClickInterface.overFlow_menu_SOS(customBluetooth,getAdapterPosition());
                                         }
                                     }
                                     popup.dismiss();
