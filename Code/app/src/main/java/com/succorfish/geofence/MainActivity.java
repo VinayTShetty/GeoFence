@@ -2758,25 +2758,25 @@ public class MainActivity extends AppCompatActivity implements
 
                         if (messageACK.equalsIgnoreCase("00")) {
                             messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_invalid_channel_id);
-                            changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
+                            changeMessageStatusInDb(bleAddressFromNotificationChanged.replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
                         } else if (messageACK.equalsIgnoreCase("01")) {
                             messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_full_message_recieved_by_device);
-                            changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
+                            changeMessageStatusInDb(bleAddressFromNotificationChanged.replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
                         } else if (messageACK.equalsIgnoreCase("02")) {
                             messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_message_sent_gsm);
-                            changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
+                            changeMessageStatusInDb(bleAddressFromNotificationChanged.replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
                         } else if (messageACK.equalsIgnoreCase("03")) {
                             messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_failed_message_gsm);
-                            changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
+                            changeMessageStatusInDb(bleAddressFromNotificationChanged.replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
                         } else if (messageACK.equalsIgnoreCase("04")) {
                             messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_send_to_iridium);
-                            changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
+                            changeMessageStatusInDb(bleAddressFromNotificationChanged.replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
                         } else if (messageACK.equalsIgnoreCase("05")) {
                             messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_server_sending_failed);
-                            changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
+                            changeMessageStatusInDb(bleAddressFromNotificationChanged.replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
                         } else {
                             messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_failed_app);
-                            changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
+                            changeMessageStatusInDb(bleAddressFromNotificationChanged.replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
                         }
                     }
                     else if ((blehexObtainedFrom_Firmware.length() == 32) && ((blehexObtainedFrom_Firmware.substring(0, 2).equalsIgnoreCase("e1")))) {
