@@ -34,6 +34,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.RelativeLayout;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.succorfish.geofence.Fragment.FragmentBandConfiguration;
@@ -119,6 +120,7 @@ import static com.succorfish.geofence.blecalculation.Blecalculation.hexToint;
 import static com.succorfish.geofence.blecalculation.Blecalculation.sendAckReadyForNextPacket;
 import static com.succorfish.geofence.blecalculation.Blecalculation.send_Geo_fenceID_fetched_finished_Acknoledgement;
 import static com.succorfish.geofence.blecalculation.Blecalculation.set_firmwareTimeStamp;
+import static com.succorfish.geofence.blecalculation.ByteConversion.byteConverstionHelper_hexStringToByteArray;
 import static com.succorfish.geofence.blecalculation.ByteConversion.bytesToHex;
 import static com.succorfish.geofence.blecalculation.ByteConversion.convert7bytesToLong;
 import static com.succorfish.geofence.blecalculation.ByteConversion.convertHexStringToString;
@@ -156,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements
         ResetDeviceInterface,
         LiveLocationReq,
         DeviceConnectDisconnect {
+    private final static String TAG = MainActivity.class.getSimpleName();
     private Unbinder unbinder;
   //  PassScanDevicesRxBle passScanDevicesRxBle;
     PassScanDeviceToActivity_interface  passScanDeviceToActivity_interface;
@@ -236,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements
     ArrayList<String> HexConverted_DevicePacektList=new ArrayList<String>();
 
 
-    ArrayList<String> UNIVERSAL_ARRAY_PACEKT_LIST=new ArrayList<String>();
+   private static ArrayList<String> UNIVERSAL_ARRAY_PACEKT_LIST=new ArrayList<String>();
 
     /**
      * Used to Send the Connected BLE Address to different fragment.
@@ -244,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements
     ArrayList<String> HexConverted_IncommingMessagePacket=new ArrayList<>();
     private static String incommingMessageForConcatenation="";
     public static String CONNECTED_BLE_ADDRESS = "";
+
     /**
      * Retrofit Implementation
      */
@@ -2299,7 +2303,7 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * Google BLE libraray implementation.
      */
-    public BluetoothLeService mBluetoothLeService;
+    public static BluetoothLeService mBluetoothLeService;
     private BluetoothLeScanner bluetoothLeScanner =
             BluetoothAdapter.getDefaultAdapter().getBluetoothLeScanner();
     private Handler handler = new Handler();
@@ -2377,6 +2381,25 @@ public class MainActivity extends AppCompatActivity implements
                     int calculatedMagicNumber = calculateAlgorithmValue(m_auth_key);
                     byte[] connectionArray = getConnectionMainCode(calculatedMagicNumber);
                     writeConnectionMainTaincenceCodeToFirmware(bleAddress,connectionArray);
+                }else if((blehexObtainedFrom_Firmware.length()==6)&&(blehexObtainedFrom_Firmware.substring(0,2).equalsIgnoreCase("0201"))){
+                    int auth_sucess = hexToint(blehexObtainedFrom_Firmware.substring(4, 6));
+                    if(auth_sucess==1){
+                        /**
+                         * Ask imei number and Procedd further
+                         */
+                        from_DataBase_ID_TimeStamp = new ArrayList<String>();
+                        from_firmware_ID_TimeStamp = new ArrayList<String>();
+                        from_firmware_ID_TimeStamp_A8_Packet = new ArrayList<String>();
+                        System.gc();
+                        hexConverted_IMEIList = new ArrayList<String>();
+                        hexConverted_IMEIList = getHexArrayList(askIMEI_number());
+                        writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_IMEIList.get(0).toCharArray()), "ASKING IMEI NUMBER", hexConverted_IMEIList);
+                    }else (auth_sucess==0){
+                        /**
+                         * Disconnect the device..
+                         */
+                    }
+
                 }
                 else {
                     /**
@@ -3331,6 +3354,43 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
     }
+
+    /**
+     * Write Data to BLE device After Confermation.
+     */
+
+    private static void sendNextDataToFirmmWareAfterConfermation(byte [] obtainedFromOnCharcterticWrite,String bleAddressToWrite){
+        try {
+            byte[] decrypted_byteArray_FromFirmware =decryptData(obtainedFromOnCharcterticWrite);
+            String hex_converted_decrypted_byte_array = bytesToHex(decrypted_byteArray_FromFirmware);
+            System.out.println("" + hex_converted_decrypted_byte_array);
+            Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation:  DATA_WRITTEN_SUCEFFULLY "+hex_converted_decrypted_byte_array);
+            if (!UNIVERSAL_ARRAY_PACEKT_LIST.isEmpty() && (UNIVERSAL_ARRAY_PACEKT_LIST.contains(hex_converted_decrypted_byte_array))) {
+                UNIVERSAL_ARRAY_PACEKT_LIST.remove(hex_converted_decrypted_byte_array);
+                System.out.println("DATA REMOVED AFTER WRITING " + hex_converted_decrypted_byte_array);
+                Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation: DATA_REMOVED_CONFERMATION= "+hex_converted_decrypted_byte_array);
+                if (UNIVERSAL_ARRAY_PACEKT_LIST.size() > 0) {
+                    byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
+                    mBluetoothLeService.sendDataToBleDevice(bleAddressToWrite,bytesDataToWrite);
+                    Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation: NEXT DATA WRITTEN "+bytesToHex(bytesDataToWrite));
+                }
+            }
+            
+            
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
 
 
