@@ -1,6 +1,7 @@
 package com.succorfish.geofence.blecalculation;
 
-import static com.succorfish.geofence.blecalculation.Blecalculation.intToBytes;
+
+import com.clj.fastble.utils.HexUtil;
 
 public class DeviceTokenPacket {
 
@@ -13,7 +14,7 @@ public class DeviceTokenPacket {
          * packet number(As its fixed)
          * Token data packets.
          */
-        int datalength_packetLength_TokenDataLength=deviceToken.length+1;
+        int datalength_packetLength_TokenDataLength=deviceTokenArray.length+1;
         deviceToken[1]= (byte) datalength_packetLength_TokenDataLength;
         deviceToken[2]= (byte) packetNumber;
 
@@ -22,6 +23,7 @@ public class DeviceTokenPacket {
             deviceToken[indexPositionToStart]=deviceTokenArray[i];
             indexPositionToStart++;
         }
+        System.out.println("Device_Token in HEX array= "+ HexUtil.encodeHexStr(deviceToken));
         return deviceToken;
     }
 }

@@ -1,8 +1,12 @@
 package com.succorfish.geofence.blecalculation;
 
+import com.clj.fastble.utils.HexUtil;
+
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 import static com.succorfish.geofence.blecalculation.Blecalculation.intToBytes;
+import static com.succorfish.geofence.blecalculation.ByteConversion.convert_TimeStampTo_4bytes;
 import static com.succorfish.geofence.utility.Utility.ConvertStringToByteArray;
 
 public class MessageCalculation {
@@ -19,8 +23,8 @@ public class MessageCalculation {
          * filing time stamp and Sequence number to 4 bytes.
          */
         byte [] startPacket=new byte[16];
-        byte [] timeStampArray=intToBytes(Integer.parseInt(timeStamp));
-        byte [] sequenceArray=intToBytes(Integer.parseInt(SequenceNumber));
+        byte [] timeStampArray=convert_TimeStampTo_4bytes(Integer.parseInt(timeStamp));
+        byte [] sequenceArray=convert_TimeStampTo_4bytes(Integer.parseInt(SequenceNumber));
         byte command= (byte) 0xb1;
         byte upcode= (byte) 0x01;
         /**
@@ -94,5 +98,30 @@ public class MessageCalculation {
             index_FilledTo_MessageArray++;
         }
         return message_array;
+    }
+
+    public static ArrayList<byte[]> incommingMessageACK(String sequenceNumber,byte channelId,byte response){
+        ArrayList<byte[]> incommigMessageACkList=new ArrayList<byte[]>();
+        byte [] sequenceArray=convert_TimeStampTo_4bytes(Integer.parseInt(sequenceNumber));
+        byte [] message_array=new byte[16];
+        message_array[0]=(byte)0xb2;//command
+        /**
+         * Data length is fixed i.e 6 bytes.
+         * Sequence Number= 4 bytes;
+         * Channel ID=1 bytes
+         * ACK =1 bytes.
+         */
+        message_array[1]=(byte)0x06;//command
+        int index_FilledTo_MessageArray=2;
+        for (int i = 0; i <sequenceArray.length ; i++) {
+            message_array[index_FilledTo_MessageArray]=sequenceArray[i];
+            index_FilledTo_MessageArray++;
+        }
+
+        int positionToAddChannelId=2+sequenceArray.length;
+        message_array[positionToAddChannelId]=channelId;
+        message_array[positionToAddChannelId+1]=response;
+        incommigMessageACkList.add(message_array);
+             return  incommigMessageACkList;
     }
 }

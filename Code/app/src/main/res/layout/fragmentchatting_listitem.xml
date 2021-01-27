@@ -12,7 +12,7 @@
         android:id="@+id/chat_item_date"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="wrap_content"
-        android:text="Today"
+        android:text=""
         android:textSize="18sp"
         android:layout_gravity="center"
         android:textColor="#ffffff"

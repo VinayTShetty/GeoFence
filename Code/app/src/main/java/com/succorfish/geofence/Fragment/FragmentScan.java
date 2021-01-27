@@ -189,8 +189,6 @@ public class FragmentScan extends BaseFragment {
         return FragmentScan.class.getSimpleName();
     }
 
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -206,9 +204,7 @@ public class FragmentScan extends BaseFragment {
 
     private void checkPermissionGiven() {
         if (isAdded()) {
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mainActivity.start_stop_SCAN(getActivity());
             } else {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LocationPermissionRequestCode);
@@ -506,7 +502,7 @@ public class FragmentScan extends BaseFragment {
             @Override
             public void showDialogInterface(String ruleVioation, String bleAddress, String message_one, String messageTwo, String timeStamp) {
                 if (isAdded() && isVisible() && fragment instanceof FragmentScan) {
-                    checkNotificationCount();
+                  //  checkNotificationCount();
                     dialogProvider.showGeofenceAlertDialog(ruleVioation, bleAddress, message_one, messageTwo, 3, false, new onAlertDialogCallBack() {
                         @Override
                         public void PositiveMethod(DialogInterface dialog, int id) {

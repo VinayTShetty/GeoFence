@@ -13,7 +13,7 @@ import java.util.List;
 
 @Dao
 public interface ChatInfo_DAO {
-    @Query("Select * from NewChat  where identifier=:bleAddressValue ORDER BY sequence ASC")
+    @Query("Select * from NewChat  where identifier=:bleAddressValue ORDER BY timeStamp ASC")
     List<ChatInfo> getAll_ChatsFromBleAddress(String bleAddressValue);
     @Insert
     void insert_ChatInfo(ChatInfo chatInfo);

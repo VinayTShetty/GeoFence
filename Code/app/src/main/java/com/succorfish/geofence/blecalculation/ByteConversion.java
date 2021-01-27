@@ -2,6 +2,7 @@ package com.succorfish.geofence.blecalculation;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.security.PublicKey;
 
 public class ByteConversion {
     public static byte[] convertToTwoBytes(int data){
@@ -39,6 +40,21 @@ public class ByteConversion {
     public static String convert7bytesToLong(String valueToConevrt){
      long value=   new BigInteger(valueToConevrt, 16).longValue();
      return ""+value;
+    }
+
+    public static byte[] convert_TimeStampTo_4bytes(int value){
+        return ByteBuffer.allocate(4).putInt(value).array();
+    }
+
+    public static String convertHexStringToString(String hexStringInput) {
+        String result = new String();
+        char[] charArray = hexStringInput.toCharArray();
+        for(int i = 0; i < charArray.length; i=i+2) {
+            String st = ""+charArray[i]+""+charArray[i+1];
+            char ch = (char)Integer.parseInt(st, 16);
+            result = result + ch;
+        }
+        return result;
     }
 }
 

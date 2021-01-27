@@ -184,11 +184,25 @@ public class Utility {
      *
      * timeStamp example:-1603802952
      */
-    public static String getTimeStamp(){
+   /* public static String getTimeStamp(){
+        Long tsLong = System.currentTimeMillis()/1000;
+        String ts = tsLong.toString();
+        return  ts;
+    }*/
+
+    public static String getTimeStampMilliSecondd(){
+        Long tsLong = System.currentTimeMillis();
+        String ts = tsLong.toString();
+        return  ts;
+    }
+
+    public static String getTimeStamp4bytesToBle(){
         Long tsLong = System.currentTimeMillis()/1000;
         String ts = tsLong.toString();
         return  ts;
     }
+
+
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

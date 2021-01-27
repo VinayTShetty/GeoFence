@@ -36,6 +36,7 @@ import com.clj.fastble.utils.HexUtil;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.polidea.rxandroidble2.RxBleClient;
 import com.polidea.rxandroidble2.RxBleDevice;
+import com.succorfish.geofence.DateUtils.DateUtilsMyHelper;
 import com.succorfish.geofence.Fragment.FragmentBandConfiguration;
 import com.succorfish.geofence.Fragment.FragmentChatting;
 import com.succorfish.geofence.Fragment.FragmentDeviceConfiguration;
@@ -49,6 +50,7 @@ import com.succorfish.geofence.Fragment.FragmentSetting;
 import com.succorfish.geofence.Fragment.FragmentSimConfiguration;
 import com.succorfish.geofence.Fragment.FragmentUARTConfiguration;
 import com.succorfish.geofence.Fragment.FragmentWifiConfiguration;
+import com.succorfish.geofence.RoomDataBaseEntity.ChatInfo;
 import com.succorfish.geofence.RoomDataBaseEntity.Geofence;
 import com.succorfish.geofence.RoomDataBaseEntity.GeofenceAlert;
 import com.succorfish.geofence.RoomDataBaseEntity.PolygonEnt;
@@ -57,8 +59,10 @@ import com.succorfish.geofence.RoomDataBaseHelper.RoomDBHelper;
 import com.succorfish.geofence.customA2_object.GeoFenceObjectData;
 import com.succorfish.geofence.customA2_object.LatLong;
 import com.succorfish.geofence.customA2_object.RuleId_Value_ActionBitMask;
+import com.succorfish.geofence.customObjects.ChattingObject;
 import com.succorfish.geofence.customObjects.CustomBluetooth;
 import com.succorfish.geofence.customObjects.HistroyList;
+import com.succorfish.geofence.customObjects.IncommingMessagePacket;
 import com.succorfish.geofence.customObjects.MainActivityConnectedDevices;
 import com.succorfish.geofence.dialog.DialogProvider;
 import com.succorfish.geofence.helper.PreferenceHelper;
@@ -68,6 +72,7 @@ import com.succorfish.geofence.interfaceActivityToFragment.ConnectionStatus;
 import com.succorfish.geofence.interfaceActivityToFragment.GeoFenceDialogAlertShow;
 import com.succorfish.geofence.interfaceActivityToFragment.LiveRequestDataPassToFragment;
 import com.succorfish.geofence.interfaceActivityToFragment.OpenDialogToCheckDeviceName;
+import com.succorfish.geofence.interfaceActivityToFragment.PassChatObjectToFragment;
 import com.succorfish.geofence.interfaceFragmentToActivity.DeviceConfigurationPackets;
 import com.succorfish.geofence.interfaceFragmentToActivity.IndustrySpeificConfigurationPackets;
 import com.succorfish.geofence.interfaceFragmentToActivity.LiveLocationReq;
@@ -85,6 +90,7 @@ import com.succorfish.geofence.utility.URL_helper;
 import com.succorfish.geofence.utility.Utility;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -117,9 +123,11 @@ import static com.succorfish.geofence.blecalculation.Blecalculation.sendAckReady
 import static com.succorfish.geofence.blecalculation.Blecalculation.send_Geo_fenceID_fetched_finished_Acknoledgement;
 import static com.succorfish.geofence.blecalculation.Blecalculation.set_firmwareTimeStamp;
 import static com.succorfish.geofence.blecalculation.ByteConversion.convert7bytesToLong;
+import static com.succorfish.geofence.blecalculation.ByteConversion.convertHexStringToString;
 import static com.succorfish.geofence.blecalculation.DeviceTokenPacket.deviceTokenpacketArray;
 import static com.succorfish.geofence.blecalculation.IMEIpacket.askIMEI_number;
 import static com.succorfish.geofence.blecalculation.LiveLocationPacketManufacturer.Start_Stop_LIVE_LOCATION;
+import static com.succorfish.geofence.blecalculation.MessageCalculation.incommingMessageACK;
 import static com.succorfish.geofence.encryption.Encryption.decryptData;
 import static com.succorfish.geofence.encryption.Encryption.encryptData;
 import static com.succorfish.geofence.helper.UUID.TRACKER_CHARCTERSTICS_UUID;
@@ -129,8 +137,10 @@ import static com.succorfish.geofence.utility.RetrofitHelperClass.haveInternet;
 import static com.succorfish.geofence.utility.Utility.getBluetoothAdapter;
 import static com.succorfish.geofence.utility.Utility.getCurrenTimeStamp;
 import static com.succorfish.geofence.utility.Utility.getDateTime;
+import static com.succorfish.geofence.utility.Utility.getDateWithtime;
 import static com.succorfish.geofence.utility.Utility.getHexArrayList;
 import static com.succorfish.geofence.utility.Utility.getID_From_ArrayList;
+import static com.succorfish.geofence.utility.Utility.getTimeStampMilliSecondd;
 import static com.succorfish.geofence.utility.Utility.get_TimeStamp_ArrayList;
 import static com.succorfish.geofence.utility.Utility.removePreviousZero;
 import static com.succorfish.geofence.utility.Utility.splitString;
@@ -158,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements
     OpenDialogToCheckDeviceName openDialogToCheckDeviceName;
     ChatDeliveryACK chatDeliveryACK;
     LiveRequestDataPassToFragment liveRequestDataPassToFragment;
+    PassChatObjectToFragment passChatObjectToFragment;
     /**
      * interface from Activity to Fragment
      */
@@ -181,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements
     public static ArrayList<MainActivityConnectedDevices> main_Activity_connectedDevicesAliasList = new ArrayList<MainActivityConnectedDevices>();
     private boolean application_Visible_ToUser = false;
     private KProgressHUD hud;
-    private String sequenceNUmber = "";
     DialogProvider dialogProvider;
     String deviceToken_fromFirmware = "";
     private static String imeiNumberFomFirmware="";
@@ -229,12 +239,19 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * Used to Send the Connected BLE Address to different fragment.
      */
+    ArrayList<String> HexConverted_IncommingMessagePacket=new ArrayList<>();
+    private static String incommingMessageForConcatenation="";
     public static String CONNECTED_BLE_ADDRESS = "";
     /**
      * Retrofit Implementation
      */
     public Retrofit mRetrofit_instance;
     public API mApiService;
+
+    /**
+     *  Incomming message packet.
+     */
+  private   IncommingMessagePacket incommingMessagePacket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -252,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements
         intializeRetrofitInstance();
         intializeDialog();
         replaceFragment(new FragmentScan(), null, null, false);
+     //   replaceFragment(new FragmentChatting(), null, null, false);
     }
 
     private void intializeRoomDataBaseInstance() {
@@ -401,7 +419,6 @@ public class MainActivity extends AppCompatActivity implements
     private void getDeviceTokenAPI(String imeiNumber, String bleAddress) {
         if (haveInternet(this)) {
             Call<String> deviceToken = mApiService.getDeviceToken(imeiNumber);
-            System.out.println("Device_Token " + deviceToken.request().url().toString());
             deviceToken.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
@@ -428,40 +445,44 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    ArrayList<byte[]> deviceToken__byteArray;
     private void processDeviceTokenAndSend(String deviceToken_fromFirmware, String bleAddress) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                showProgressDialog("Authenicating\nPlease wait");
+                showProgressDialog("Please wait");
             }
         });
+
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                ArrayList<byte[]> deviceToken__byteArray = new ArrayList<byte[]>();
+               deviceToken__byteArray = new ArrayList<byte[]>();
                 List<String> listOfString_startPacket = splitString(deviceToken_fromFirmware, 13);
                 int indexPosition = listOfString_startPacket.size();
                 for (String individualString : listOfString_startPacket) {
                     deviceToken__byteArray.add(deviceTokenpacketArray(indexPosition, individualString));
                     indexPosition--;
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (getBluetoothAdapter() != null) {
-                            BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-                            if (bluetoothAdapter.isEnabled()) {
-                                final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddress);
-                                BleDevice bleDevice = new BleDevice(getBleDevice);
-                                if (BleManager.getInstance().isConnected(bleDevice)) {
-                                    hexConverted_deviceToken = new ArrayList<String>();
-                                    hexConverted_deviceToken = getHexArrayList(deviceToken__byteArray);
-                                    writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_deviceToken.get(0).toCharArray()), "SERVER DEVICE CONFIGURATION", hexConverted_deviceToken);
-                                }
-                            }
+
+            }
+        });
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (getBluetoothAdapter() != null) {
+                    BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
+                    if (bluetoothAdapter.isEnabled()) {
+                        final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddress);
+                        BleDevice bleDevice = new BleDevice(getBleDevice);
+                        if (BleManager.getInstance().isConnected(bleDevice)) {
+                            hexConverted_deviceToken = new ArrayList<String>();
+                            hexConverted_deviceToken = getHexArrayList(deviceToken__byteArray);
+                            writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_deviceToken.get(0).toCharArray()), "SERVER DEVICE CONFIGURATION", hexConverted_deviceToken);
                         }
                     }
-                });
+                }
             }
         });
     }
@@ -613,6 +634,9 @@ public class MainActivity extends AppCompatActivity implements
     public void setUpLiveRequest(LiveRequestDataPassToFragment liveRequestDataPassToFragment_loc){
         liveRequestDataPassToFragment=liveRequestDataPassToFragment_loc;
     }
+    public void setUpPassChatObjectToFragment(PassChatObjectToFragment passChatObjectToFragment_loc){
+        passChatObjectToFragment=passChatObjectToFragment_loc;
+    }
 
     public void interfaceImpleMainActivity() {
         setUpInterfaceInMainActivity(new PassScanDevicesRxBle() {
@@ -653,6 +677,13 @@ public class MainActivity extends AppCompatActivity implements
         setUpLiveRequest(new LiveRequestDataPassToFragment() {
             @Override
             public void liveRequestDataFromFirmware(Double latitudeValue, Double longValue, String bleAddress, BleDevice bleDevice) {
+
+            }
+        });
+
+        setUpPassChatObjectToFragment(new PassChatObjectToFragment() {
+            @Override
+            public void ChatObjetShare(ChattingObject chattingObject) {
 
             }
         });
@@ -1096,7 +1127,6 @@ public class MainActivity extends AppCompatActivity implements
                                                             }
                                                             geofenceAlert.setBreach_Type("IN");
                                                         }
-
                                                         geofenceAlert.setBreach_Lat(breach_latitude);
                                                         geofenceAlert.setBreach_Long(breach_longitude);
                                                         geofenceAlert.setDate_Time(getDateTime());
@@ -1280,47 +1310,35 @@ public class MainActivity extends AppCompatActivity implements
                                             process_TimeStamp_id_One_After_Other_A8_packet(bleDevice);
                                         }
                                         else if ((blehexObtainedFrom_Firmware.length() == 32) && (blehexObtainedFrom_Firmware.substring(0, 2).equalsIgnoreCase("b1"))) {
+                                            /**
+                                             * ACK packet for the message sent.
+                                             */
                                             String locaVariableForBlock = blehexObtainedFrom_Firmware;
-                                            if ((blehexObtainedFrom_Firmware.length() == 32) && (blehexObtainedFrom_Firmware.substring(0, 4).equalsIgnoreCase("b101"))) {
-                                                sequenceNUmber = "";
-                                                /**
-                                                 * getting the Sequene number from the frist packet and storing it for future reference.
-                                                 */
-                                                sequenceNUmber = blehexObtainedFrom_Firmware.substring(10, 18);
-                                                sequenceNUmber = sequenceNUmber.substring(6, 8) + sequenceNUmber.substring(4, 6) + sequenceNUmber.substring(2, 4) + sequenceNUmber.substring(0, 2);
-                                            }
+                                            String sequenceNumber=""+convert4bytes(locaVariableForBlock.substring(4,12));
+                                            String messageACK=locaVariableForBlock.substring(12,14);
+                                            String messageStatusProcessed = "";
 
-                                            if ((blehexObtainedFrom_Firmware.length() == 32) && (blehexObtainedFrom_Firmware.substring(0, 4)).equalsIgnoreCase("b103") && ((
-                                                    (blehexObtainedFrom_Firmware.substring(16, 18).equalsIgnoreCase("00"))
-                                                            || (blehexObtainedFrom_Firmware.substring(16, 18).equalsIgnoreCase("01")) ||
-                                                            (blehexObtainedFrom_Firmware.substring(16, 18).equalsIgnoreCase("02")) ||
-                                                            (blehexObtainedFrom_Firmware.substring(16, 18).equalsIgnoreCase("03")) ||
-                                                            (blehexObtainedFrom_Firmware.substring(16, 18).equalsIgnoreCase("04")) ||
-                                                            (blehexObtainedFrom_Firmware.substring(16, 18).equalsIgnoreCase("05"))))) {
-                                                String messageStatus = blehexObtainedFrom_Firmware.substring(16, 18);
-                                                String messageStatusProcessed = "";
-                                                if (messageStatus.equalsIgnoreCase("00")) {
-                                                    messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_invalid_channel_id);
-                                                    changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNUmber, messageStatusProcessed);
-                                                } else if (messageStatus.equalsIgnoreCase("01")) {
-                                                    messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_full_message_recieved_by_device);
-                                                    changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNUmber, messageStatusProcessed);
-                                                } else if (messageStatus.equalsIgnoreCase("02")) {
-                                                    messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_message_sent_gsm);
-                                                    changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNUmber, messageStatusProcessed);
-                                                } else if (messageStatus.equalsIgnoreCase("03")) {
-                                                    messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_failed_message_gsm);
-                                                    changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNUmber, messageStatusProcessed);
-                                                } else if (messageStatus.equalsIgnoreCase("04")) {
-                                                    messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_send_to_iridium);
-                                                    changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNUmber, messageStatusProcessed);
-                                                } else if (messageStatus.equalsIgnoreCase("05")) {
-                                                    messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_server_sending_failed);
-                                                    changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNUmber, messageStatusProcessed);
-                                                } else {
-                                                    messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_failed_app);
-                                                    changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNUmber, messageStatusProcessed);
-                                                }
+                                            if (messageACK.equalsIgnoreCase("00")) {
+                                                messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_invalid_channel_id);
+                                                changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
+                                            } else if (messageACK.equalsIgnoreCase("01")) {
+                                                messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_full_message_recieved_by_device);
+                                                changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
+                                            } else if (messageACK.equalsIgnoreCase("02")) {
+                                                messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_message_sent_gsm);
+                                                changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
+                                            } else if (messageACK.equalsIgnoreCase("03")) {
+                                                messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_failed_message_gsm);
+                                                changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
+                                            } else if (messageACK.equalsIgnoreCase("04")) {
+                                                messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_send_to_iridium);
+                                                changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
+                                            } else if (messageACK.equalsIgnoreCase("05")) {
+                                                messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_server_sending_failed);
+                                                changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
+                                            } else {
+                                                messageStatusProcessed = getString(R.string.fragment_chat_message_mesaage_failed_app);
+                                                changeMessageStatusInDb(bleDevice.getMac().replace(":", "").toLowerCase(), sequenceNumber, messageStatusProcessed);
                                             }
                                         }
                                         else if ((blehexObtainedFrom_Firmware.length() == 32) && ((blehexObtainedFrom_Firmware.substring(0, 2).equalsIgnoreCase("e1")))) {
@@ -1410,11 +1428,11 @@ public class MainActivity extends AppCompatActivity implements
                                             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.mainActivity_container);
                                             if (fragment.toString().equalsIgnoreCase(new FragmentLiveTracking().toString())) {
                                                 if(liveRequestDataPassToFragment!=null){
-                                                    liveRequestDataPassToFragment.liveRequestDataFromFirmware(Double.parseDouble(getFloatingPointValueFromHex(localVariableForBlock.substring(4,12))),
-                                                            Double.parseDouble(getFloatingPointValueFromHex(localVariableForBlock.substring(12,20))),
+                                                    liveRequestDataPassToFragment.liveRequestDataFromFirmware(Double.parseDouble(getFloatingPointValueFromHex(localVariableForBlock.substring(4,12))), Double.parseDouble(getFloatingPointValueFromHex(localVariableForBlock.substring(12,20))),
                                                             bleDevice.getMac(),
                                                             bleDevice
                                                     );
+
                                                 }
                                             }else {
                                                 hexConverted_liveLocation = new ArrayList<String>();
@@ -1550,6 +1568,83 @@ public class MainActivity extends AppCompatActivity implements
                                                     dialog.dismiss();
                                                 }
                                             });
+                                        }else if((blehexObtainedFrom_Firmware.length()==32)&&(blehexObtainedFrom_Firmware.substring(0,2).equalsIgnoreCase("b2"))){
+                                            /**
+                                             * Process the incomming message s here.
+                                             */
+                                                    if((blehexObtainedFrom_Firmware.length()==32)&&(blehexObtainedFrom_Firmware.substring(0,2).equalsIgnoreCase("b2"))&&(blehexObtainedFrom_Firmware.substring(4,6).equalsIgnoreCase("01"))){
+                                                        /**
+                                                         * message Start packet with upcode 01
+                                                         */
+                                                        String localVariableForBlock= blehexObtainedFrom_Firmware;
+                                                        /**
+                                                         * Message Starting packet.
+                                                         */
+                                                        incommingMessagePacket=new IncommingMessagePacket();
+                                                        incommingMessagePacket.setTotalLengthOfTextmessage(""+Integer.parseInt(localVariableForBlock.substring(8,10),16));
+                                                        String  timeStampInHexOppsite=localVariableForBlock.substring(16,18)+""+localVariableForBlock.substring(14,16)+""+localVariableForBlock.substring(12,14)+""+localVariableForBlock.substring(10,12);
+                                                        incommingMessagePacket.setTimeStamp(""+Integer.parseInt(timeStampInHexOppsite,16));
+                                                        incommingMessagePacket.setSequenceNumber(""+Integer.parseInt(localVariableForBlock.substring(18,26),16));
+                                                    }
+                                            if((blehexObtainedFrom_Firmware.length()==32)&&(blehexObtainedFrom_Firmware.substring(0,2).equalsIgnoreCase("b2"))&&(blehexObtainedFrom_Firmware.substring(4,6).equalsIgnoreCase("02"))){
+                                                /**
+                                                 * message Start packet with upcode 02
+                                                 */
+                                                String localVariableForBlock= blehexObtainedFrom_Firmware;
+                                                /**
+                                                 * Message Starting packet.
+                                                 */
+                                                incommingMessagePacket.setMessagePacketDataLength(""+Integer.parseInt(localVariableForBlock.substring(2,4),16));
+                                                int messageToExtractFrom=Integer.parseInt(incommingMessagePacket.getMessagePacketDataLength());
+                                                messageToExtractFrom=messageToExtractFrom-2;
+                                                messageToExtractFrom=messageToExtractFrom*2;
+                                                String hexString=localVariableForBlock.substring(8,messageToExtractFrom+8);
+                                                String getlast2charcters=hexString.length() > 2 ? hexString.substring(hexString.length() - 2) : hexString;
+                                                if(getlast2charcters.equalsIgnoreCase("00")){
+                                                    hexString=hexString.substring(0,hexString.length()-2);
+                                                    incommingMessageForConcatenation=incommingMessageForConcatenation+convertHexStringToString(hexString);
+                                                }else {
+                                                    incommingMessageForConcatenation=incommingMessageForConcatenation+convertHexStringToString(hexString);
+                                                }
+                                            }
+                                            if((blehexObtainedFrom_Firmware.length()==32)&&(blehexObtainedFrom_Firmware.substring(0,2).equalsIgnoreCase("b2"))&&(blehexObtainedFrom_Firmware.substring(4,6).equalsIgnoreCase("03"))){
+                                                /**
+                                                 * message Start packet with upcode 03 ending packet incomming message.
+                                                 */
+                                                incommingMessagePacket.setMessageData(incommingMessageForConcatenation);
+                                                incommingMessageForConcatenation="";
+                                                String localVariableForBlock= blehexObtainedFrom_Firmware;
+                                                if(localVariableForBlock.substring(6,8).equalsIgnoreCase("01")){
+                                                    incommingMessagePacket.setEndpacketChannelID(getResources().getString(R.string.GSM));
+                                                }else if(localVariableForBlock.substring(6,8).equalsIgnoreCase("02")){
+                                                    incommingMessagePacket.setEndpacketChannelID(getResources().getString(R.string.IRIDIUM));
+                                                }
+
+                                                byte channelId=0;
+                                                if(incommingMessagePacket.getEndpacketChannelID().equalsIgnoreCase(getResources().getString(R.string.IRIDIUM))){
+                                                    channelId=2;
+                                                }else   if(incommingMessagePacket.getEndpacketChannelID().equalsIgnoreCase(getResources().getString(R.string.GSM))){
+                                                    channelId=1;
+                                                }
+                                                if(Integer.parseInt(incommingMessagePacket.getTotalLengthOfTextmessage())==Integer.parseInt(""+incommingMessagePacket.getMessageData().length())){
+                                                    /**
+                                                     * Recieveed incomming message sucess
+                                                     */
+                                                    sendAckIncommigMessageRecievedFromDevice(bleDevice.getMac(),incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 1));
+                                                    /**
+                                                     * insert chat to table and send UI updte for recycleView.
+                                                     */
+                                                    insertChatInfoToTable(incommingMessagePacket.getMessageData(),incommingMessagePacket.getSequenceNumber(),bleDevice.getMac().toLowerCase().replace(":",""), incommingMessagePacket.getEndpacketChannelID());
+
+                                                }else {
+                                                    /**
+                                                     * incomming message recieved failure..
+                                                     */
+                                                    sendAckIncommigMessageRecievedFromDevice(bleDevice.getMac(),incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 0));
+                                                }
+
+                                            }
+
                                         }
                                     }
                                 }
@@ -1559,6 +1654,53 @@ public class MainActivity extends AppCompatActivity implements
 
 
                 });
+    }
+
+    private void insertChatInfoToTable(String messageRecieved,String sequenceNumber,String bleAddress,String GSM_IRIDIUM) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                String timeStampDateBase =getTimeStampMilliSecondd();
+           //     String timeStampDateBase = DateUtilsMyHelper.getCurrentDate(DateUtilsMyHelper.dateFormatStandard);
+                String date_time = getDateWithtime();
+                ChatInfo chatInfo = new ChatInfo();
+                chatInfo.setFrom_name(getString(R.string.fragment_chat_server_name));
+                chatInfo.setTo_name(getString(R.string.fragment_chat_owner_name));
+                chatInfo.setMsg_txt(messageRecieved);
+                chatInfo.setTime(date_time);
+                chatInfo.setStatus(getResources().getString(R.string.fragment_chat_message_mesaage_recieved_from_ble));
+                chatInfo.setSequence("" + sequenceNumber);
+                chatInfo.setIdentifier(bleAddress);
+                chatInfo.setTimeStamp(timeStampDateBase);
+                if (GSM_IRIDIUM.equalsIgnoreCase(getResources().getString(R.string.GSM))) {
+                    chatInfo.setIsGSM("1");
+                } else if (GSM_IRIDIUM.equalsIgnoreCase(getResources().getString(R.string.IRIDIUM))) {
+                    chatInfo.setIsGSM("0");
+                }
+                roomDBHelperInstance.get_Chat_info_dao().insert_ChatInfo(chatInfo);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.mainActivity_container);
+                        if (fragment.toString().equalsIgnoreCase(new FragmentChatting().toString())) {
+                            ChattingObject chattingObject = new ChattingObject();
+                            chattingObject.setMode(getResources().getString(R.string.fragment_chatting_incomming_message));
+                            chattingObject.setMessage(messageRecieved);
+                            chattingObject.setDate(date_time);
+                            chattingObject.setTimeStamp(timeStampDateBase);
+                            chattingObject.setTime_chat(date_time.substring(11,16));
+                            chattingObject.setBleAddress(bleAddress);
+                            chattingObject.setSequenceNumber(sequenceNumber);
+                            if(passChatObjectToFragment!=null){
+                                passChatObjectToFragment.ChatObjetShare(chattingObject);
+                            }
+                        }
+
+                    }
+                });
+            }
+        });
+
     }
 
 
@@ -2112,9 +2254,22 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
     }
-    /**
-     * Test commit for Test Upload.
-     */
+
+    private void sendAckIncommigMessageRecievedFromDevice(String blAddress,ArrayList<byte[]> incomingMessagePacektRecieved){
+
+        if (getBluetoothAdapter() != null) {
+            BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
+            if (bluetoothAdapter.isEnabled()) {
+                final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(blAddress);
+                BleDevice bleDevice = new BleDevice(getBleDevice);
+                if (BleManager.getInstance().isConnected(bleDevice)) {
+                    HexConverted_IncommingMessagePacket=new ArrayList<String>();
+                    HexConverted_IncommingMessagePacket = getHexArrayList(incomingMessagePacektRecieved);
+                    writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(HexConverted_IncommingMessagePacket.get(0).toCharArray()), "INCOMMING MESSGE REQUEST ACK", HexConverted_IncommingMessagePacket);
+                }
+            }
+        }
+    }
 }
 
 

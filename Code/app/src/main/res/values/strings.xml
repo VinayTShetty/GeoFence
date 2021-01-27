@@ -47,7 +47,8 @@
     <string name="fragment_chat_message_mesaage_failed_message_gsm">MESSAGE_FAILES_GSM</string>
     <string name="fragment_chat_message_mesaage_send_to_iridium">MESSSAGE_SEND_IRIDIUM</string>
     <string name="fragment_chat_message_mesaage_server_sending_failed">MESSAGE_FAILED_SERVER</string>
-
+    <!--Incomming message Recieved From Server-->
+    <string name="fragment_chat_message_mesaage_recieved_from_ble">INCOMMING_MESSAGE_DELIEVERED</string>
 
     <!--back dialog String-->
     <string name="str_exit_confirmation">Are you sure want to exit?</string>
@@ -81,4 +82,7 @@
     <!--Preference Helper String-->
     <string name="pre_ESIM">ESIM</string>
     <string name="pre_NANO">NANOSIM</string>
+    <!--message packet channel ID-->
+    <string name="GSM">GSM</string>
+    <string name="IRIDIUM">IRIDIUM</string>
 </resources>

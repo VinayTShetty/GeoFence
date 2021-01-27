@@ -1,5 +1,4 @@
 package com.succorfish.geofence.blecalculation;
-import static com.succorfish.geofence.blecalculation.Blecalculation.intToBytes;
 import static com.succorfish.geofence.blecalculation.ByteConversion.convertIntegertTWOBytes;
 
 public class ServerConfiguration {

@@ -162,6 +162,7 @@ public class Blecalculation {
         return type;
     }
 
+
     public static BigInteger convert4bytes(String value4bytes){
         return new BigInteger(value4bytes, 16);
     }

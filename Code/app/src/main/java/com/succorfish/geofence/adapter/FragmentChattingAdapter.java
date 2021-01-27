@@ -6,15 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.succorfish.geofence.DateUtils.DateUtilsMyHelper;
 import com.succorfish.geofence.R;
 import com.succorfish.geofence.customObjects.ChattingObject;
-
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 public class FragmentChattingAdapter extends RecyclerView.Adapter<FragmentChattingAdapter.FragmentChattingItemViewHolder> {
@@ -33,7 +35,7 @@ public class FragmentChattingAdapter extends RecyclerView.Adapter<FragmentChatti
 
     @Override
     public void onBindViewHolder(@NonNull FragmentChattingItemViewHolder fragmentChattingItemViewHolder, int position) {
-        fragmentChattingItemViewHolder.bindDetails(chattingObjectList.get(position));
+        fragmentChattingItemViewHolder.bindDetails(chattingObjectList.get(position),position);
     }
 
     @Override
@@ -73,11 +75,16 @@ public class FragmentChattingAdapter extends RecyclerView.Adapter<FragmentChatti
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-        void bindDetails(ChattingObject chattingObject){
+        void bindDetails(ChattingObject chattingObject,int position){
             if(chattingObject.getMode().equalsIgnoreCase(context.getString(R.string.fragment_chatting_incomming_message))){
                 /**
                  * UI handling.
                  */
+                incommming_message_text.setText(chattingObject.getMessage());
+                incommming_message_time_text.setText(chattingObject.getTime_chat());
+                incommingMessage_layout.setVisibility(View.VISIBLE);
+                incommming_message_text.setVisibility(View.VISIBLE);
+                incommming_message_time_text.setVisibility(View.VISIBLE);
                 outgoing_message_text.setVisibility(View.INVISIBLE);
                 outgoing_message_time_text.setVisibility(View.INVISIBLE);
                 outgoing_message_status.setVisibility(View.INVISIBLE);
@@ -85,8 +92,6 @@ public class FragmentChattingAdapter extends RecyclerView.Adapter<FragmentChatti
                 /**
                  * showing messageDetials.
                  */
-                incommming_message_text.setText(chattingObject.getMessage());
-                incommming_message_time_text.setText(chattingObject.getTime_chat());
 
             }else if(chattingObject.getMode().equalsIgnoreCase(context.getString(R.string.fragment_chatting_out_going_message))){
                 /**
@@ -120,12 +125,104 @@ public class FragmentChattingAdapter extends RecyclerView.Adapter<FragmentChatti
                 }else {
                     outgoing_message_status.setImageDrawable(context.getDrawable(R.drawable.failed_message_icon));
                 }
+
+               /* Date fristItem_date=new Date(Long.parseLong(chattingObject.getTimeStamp()));
+                long previousTs = 0;
+                Date secondItem_date=new Date(0);
+                if(position>0){
+                     secondItem_date=new Date(Long.parseLong(chattingObjectList.get(position-1).getTimeStamp()));
+                }
+                showTimeChatForEachItemIncomming_OutGoiing(fristItem_date,secondItem_date,item_date);*/
+
+
+
+             /*   Date mDate = DateUtilsMyHelper.parse(chattingObject.getTimeStamp(), DateUtilsMyHelper.dateFormatStandard);
+                long previousTs = 0;
+                if (position > 0) {
+                    ChattingObject chatHistoryPrevious = chattingObjectList.get(position - 1);
+                    if (chatHistoryPrevious.getTimeStamp() != null && !chatHistoryPrevious.getTimeStamp().isEmpty()) {
+                        Date mDatePrevious = DateUtilsMyHelper.parse(chatHistoryPrevious.getTimeStamp(), DateUtilsMyHelper.dateFormatStandard);
+                        previousTs = mDatePrevious.getTime();
+                    }
+                }
+                setTimeTextVisibility(mDate.getTime(), previousTs, item_date);*/
+
             }
         }
 
         @Override
         public void onClick(View v) {
 
+        }
+
+        private void showTimeChatForEachItemIncomming_OutGoiing(Date presentDate,Date previousDate,TextView itemTextViewForTimeChate){
+
+
+
+
+
+           if(presentDate.compareTo(previousDate)==1){
+               /**
+                * Same Date
+                */
+               if(itemTextViewForTimeChate.getText().toString().length()==0){
+                   itemTextViewForTimeChate.setVisibility(View.VISIBLE);
+                   itemTextViewForTimeChate.setText(presentDate.toString());
+               }else {
+                   itemTextViewForTimeChate.setVisibility(View.INVISIBLE);
+                   itemTextViewForTimeChate.setText("");
+               }
+
+           }else if(presentDate.compareTo(previousDate)==0){
+               /**
+                * Different Date
+                */
+               itemTextViewForTimeChate.setVisibility(View.VISIBLE);
+               itemTextViewForTimeChate.setText(presentDate.toString());
+           }
+        }
+
+        private void setTimeTextVisibility(long epochTime1, long epochTime2, TextView timeText) {
+            if (epochTime2 == 0) {
+                Calendar calSendTime = Calendar.getInstance();
+                Calendar now = Calendar.getInstance();
+                calSendTime.setTimeInMillis(epochTime1);
+                timeText.setVisibility(View.VISIBLE);
+                if (now.get(Calendar.DATE) == calSendTime.get(Calendar.DATE) && now.get(Calendar.MONTH) == calSendTime.get(Calendar.MONTH) && now.get(Calendar.DAY_OF_MONTH) == calSendTime.get(Calendar.DAY_OF_MONTH)) {
+                    timeText.setText("Today");
+                } else if (now.get(Calendar.DATE) - calSendTime.get(Calendar.DATE) == 1 && now.get(Calendar.MONTH) == calSendTime.get(Calendar.MONTH) && now.get(Calendar.DAY_OF_MONTH) == calSendTime.get(Calendar.DAY_OF_MONTH)) {
+                    timeText.setText("Yesterday");
+                } else {
+                    timeText.setText(DateUtilsMyHelper.formatDate(calSendTime.getTime(), DateUtilsMyHelper.dateFormatYearMonthDay));
+                }
+            } else {
+                Calendar cal1 = Calendar.getInstance();
+                Calendar cal2 = Calendar.getInstance();
+                cal1.setTimeInMillis(epochTime1);
+                cal2.setTimeInMillis(epochTime2);
+
+                boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                        cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
+                        cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
+
+                if (sameDay) {
+                    timeText.setVisibility(View.GONE);
+                    timeText.setText("");
+                } else {
+                    timeText.setVisibility(View.VISIBLE);
+//                    timeText.setText(mDateFormatDisplay.format(new Date(ts1)));
+                    Calendar now = Calendar.getInstance();
+                    if (now.get(Calendar.DATE) == cal1.get(Calendar.DATE) &&
+                            now.get(Calendar.MONTH) == cal1.get(Calendar.MONTH) && now.get(Calendar.DAY_OF_MONTH) == cal1.get(Calendar.DAY_OF_MONTH)) {
+                        timeText.setText("Today");
+                    } else if (now.get(Calendar.DATE) - cal1.get(Calendar.DATE) == 1 &&
+                            now.get(Calendar.MONTH) == cal1.get(Calendar.MONTH) && now.get(Calendar.DAY_OF_MONTH) == cal1.get(Calendar.DAY_OF_MONTH)) {
+                        timeText.setText("Yesterday");
+                    } else {
+                        timeText.setText(DateUtilsMyHelper.formatDate(cal1.getTime(), DateUtilsMyHelper.dateFormatYearMonthDay));
+                    }
+                }
+            }
         }
     }
 }
