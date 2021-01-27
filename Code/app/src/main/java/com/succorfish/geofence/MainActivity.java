@@ -119,8 +119,10 @@ import static com.succorfish.geofence.blecalculation.Blecalculation.hexToint;
 import static com.succorfish.geofence.blecalculation.Blecalculation.sendAckReadyForNextPacket;
 import static com.succorfish.geofence.blecalculation.Blecalculation.send_Geo_fenceID_fetched_finished_Acknoledgement;
 import static com.succorfish.geofence.blecalculation.Blecalculation.set_firmwareTimeStamp;
+import static com.succorfish.geofence.blecalculation.ByteConversion.bytesToHex;
 import static com.succorfish.geofence.blecalculation.ByteConversion.convert7bytesToLong;
 import static com.succorfish.geofence.blecalculation.ByteConversion.convertHexStringToString;
+import static com.succorfish.geofence.blecalculation.ByteConversion.convertHexToBigIntegert;
 import static com.succorfish.geofence.blecalculation.DeviceTokenPacket.deviceTokenpacketArray;
 import static com.succorfish.geofence.blecalculation.IMEIpacket.askIMEI_number;
 import static com.succorfish.geofence.blecalculation.LiveLocationPacketManufacturer.Start_Stop_LIVE_LOCATION;
@@ -2326,7 +2328,6 @@ public class MainActivity extends AppCompatActivity implements
         intentFilter.addAction(getResources().getString(R.string.BLUETOOTHLE_SERVICE_CONNECTION_STATUS));
         intentFilter.addAction(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION));
         intentFilter.addAction(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED));
-        intentFilter.addAction(getResources().getString(R.string.BLUETOOTHLE_SERVICE_TIMER_ACTION));
         intentFilter.addAction(getResources().getString(R.string.BLUETOOTHLE_SERVICE_NOTIFICATION_ENABLE));
         return intentFilter;
     }
@@ -2362,18 +2363,10 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 System.out.println("DATA_FIRMWARE_OBTAINED= "+""+convertHexToBigIntegert(bytesToHex(obtainedFromFirmware)));
 
-            }else if ((action != null) && (action.equalsIgnoreCase(getResources().getString(R.string.BLUETOOTHLE_SERVICE_TIMER_ACTION)))) {
-                /**
-                 * Logic to cacen the progress dialog and hide it.
-                 * 1)show something went wrong try again later after some time...
-                 * 2)Clear scan device and Scan again.
-                 */
-              //  boolean timerCancelled=intent.getBooleanExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_TIMER_FINISH_KEY),false);
-              //  passTimerOutConnectionTag(timerCancelled);
-
             }else  if ((action != null) && (action.equalsIgnoreCase(getResources().getString(R.string.BLUETOOTHLE_SERVICE_NOTIFICATION_ENABLE)))) {
                 /**
                  * Send Data to BLE Device.
+                 * 1)Ask for the Code.(i.e write 01 to BleDevice.)
                  */
                 boolean notificationEnabled=intent.getBooleanExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_NOTIFICATION_ENABLE_DATA),false);
                 System.out.println("ENABLE_NOTIFICATION_TRUE MainActivity "+notificationEnabled);
