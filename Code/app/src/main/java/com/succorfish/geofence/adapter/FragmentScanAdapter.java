@@ -7,24 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.clj.fastble.BleManager;
-import com.polidea.rxandroidble2.RxBleDevice;
 import com.succorfish.geofence.R;
-
+import com.succorfish.geofence.customObjects.CustBluetootDevices;
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 public class FragmentScanAdapter extends RecyclerView.Adapter<FragmentScanAdapter.ScanItemViewHolder> {
-    private ArrayList<CustomBluetooth> customBluetoothdevices;
+    private ArrayList<CustBluetootDevices> customBluetoothdevices;
 
     private Context context;
     private ScanOnItemClickInterface onItemClickInterface;
-    public FragmentScanAdapter(ArrayList<CustomBluetooth> loc_customBluetoothdevices) {
+    public FragmentScanAdapter(ArrayList<CustBluetootDevices> loc_customBluetoothdevices) {
         this.customBluetoothdevices=loc_customBluetoothdevices;
     }
     @NonNull
@@ -78,15 +74,15 @@ public class FragmentScanAdapter extends RecyclerView.Adapter<FragmentScanAdapte
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
-        void bindBluetoothDeviceDetails (final  CustomBluetooth customBluetooth,ScanItemViewHolder scanItemViewHolder){
-            bleAddress.setText(customBluetooth.getBleaddress().replace(":","").toLowerCase());
+        void bindBluetoothDeviceDetails (final  CustBluetootDevices customBluetooth,ScanItemViewHolder scanItemViewHolder){
+            bleAddress.setText(customBluetooth.getBleAddress().replace(":","").toLowerCase());
             device_name.setText(customBluetooth.getDeviceName());
-            BluetoothDevice bluetoothDevice= customBluetooth.getCustom_RxBleDevice().getBluetoothDevice();
-            if(BleManager.getInstance().isConnected(bluetoothDevice.getAddress())){
+            BluetoothDevice bluetoothDevice= customBluetooth.getBluetoothDevice();
+            if(customBluetooth.isConnected()){
                 linearLayoutConnected_layout.setVisibility(View.VISIBLE);
                 connection_status.setText("Disconnect");
                 separatorLine.setVisibility(View.VISIBLE);
-            }else if(!BleManager.getInstance().isConnected(bluetoothDevice.getAddress())) {
+            }else if(!customBluetooth.isConnected()) {
                 connection_status.setText("Connect");
                 linearLayoutConnected_layout.setVisibility(View.GONE);
                 separatorLine.setVisibility(View.GONE);
@@ -189,18 +185,18 @@ public class FragmentScanAdapter extends RecyclerView.Adapter<FragmentScanAdapte
         }
     }
     public interface ScanOnItemClickInterface{
-        public void ConnectionStatusClick(CustomBluetooth customBluetoothObject,int ItemSlected);;
-        public void messagingLayoutClick(CustomBluetooth customBluetoothObject,int ItemSlected);
-        public void geoFenceLayoutClick(CustomBluetooth customBluetoothObject,int ItemSlected);
-        public void liveTracking(CustomBluetooth customBluetooth,int postion);
-        public void overFlow_menu_Setting(CustomBluetooth customBluetooth,int postion);
-        public void overFlow_menu_SOS(CustomBluetooth customBluetooth,int postion);
+        public void ConnectionStatusClick(CustBluetootDevices customBluetoothObject,int ItemSlected);;
+        public void messagingLayoutClick(CustBluetootDevices customBluetoothObject,int ItemSlected);
+        public void geoFenceLayoutClick(CustBluetootDevices customBluetoothObject,int ItemSlected);
+        public void liveTracking(CustBluetootDevices customBluetooth,int postion);
+        public void overFlow_menu_Setting(CustBluetootDevices customBluetooth,int postion);
+        public void overFlow_menu_SOS(CustBluetootDevices customBluetooth,int postion);
     }
     public void setOnItemClickListner(ScanOnItemClickInterface loc_scanOnItemClickInterface){
             this.onItemClickInterface=loc_scanOnItemClickInterface;
     }
 
-    public void addBluetoothDevices(CustomBluetooth customBluetooth){
+    public void addBluetoothDevices(CustBluetootDevices customBluetooth){
             this.customBluetoothdevices.add(customBluetooth);
             notifyItemInserted(getItemCount());
     }
