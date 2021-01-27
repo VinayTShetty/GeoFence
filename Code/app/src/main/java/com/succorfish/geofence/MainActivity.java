@@ -1,5 +1,6 @@
 package com.succorfish.geofence;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -15,9 +16,16 @@ import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
@@ -25,9 +33,9 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.widget.RelativeLayout;
 import com.kaopiz.kprogresshud.KProgressHUD;
-import com.succorfish.geofence.DateUtils.DateUtilsMyHelper;
 import com.succorfish.geofence.Fragment.FragmentBandConfiguration;
 import com.succorfish.geofence.Fragment.FragmentChatting;
 import com.succorfish.geofence.Fragment.FragmentDeviceConfiguration;
@@ -41,6 +49,7 @@ import com.succorfish.geofence.Fragment.FragmentSetting;
 import com.succorfish.geofence.Fragment.FragmentSimConfiguration;
 import com.succorfish.geofence.Fragment.FragmentUARTConfiguration;
 import com.succorfish.geofence.Fragment.FragmentWifiConfiguration;
+import com.succorfish.geofence.MyServices.BluetoothLeService;
 import com.succorfish.geofence.RoomDataBaseEntity.ChatInfo;
 import com.succorfish.geofence.RoomDataBaseEntity.Geofence;
 import com.succorfish.geofence.RoomDataBaseEntity.GeofenceAlert;
@@ -51,7 +60,7 @@ import com.succorfish.geofence.customA2_object.GeoFenceObjectData;
 import com.succorfish.geofence.customA2_object.LatLong;
 import com.succorfish.geofence.customA2_object.RuleId_Value_ActionBitMask;
 import com.succorfish.geofence.customObjects.ChattingObject;
-import com.succorfish.geofence.customObjects.CustomBluetooth;
+import com.succorfish.geofence.customObjects.CustBluetootDevices;
 import com.succorfish.geofence.customObjects.HistroyList;
 import com.succorfish.geofence.customObjects.IncommingMessagePacket;
 import com.succorfish.geofence.customObjects.MainActivityConnectedDevices;
@@ -81,7 +90,6 @@ import com.succorfish.geofence.utility.URL_helper;
 import com.succorfish.geofence.utility.Utility;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -171,8 +179,7 @@ public class MainActivity extends AppCompatActivity implements
     private boolean exit = false;
     private Handler scanHandler;
     // Stops scanning after 10 seconds.
-    private static final long SCAN_PERIOD = 30000;
-    private static String SCAN_TAG = "SCAN_NOT_STARTED";
+
     ArrayList<String> from_firmware_ID_TimeStamp;
     ArrayList<String> from_DataBase_ID_TimeStamp;
     ArrayList<String> from_firmware_ID_TimeStamp_A6_Packet = new ArrayList<String>();
@@ -248,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(MainActivity.this);
         intializeView();
+        bindBleServiceToMainActivity();
         intializeRoomDataBaseInstance();
         removeallFragments();
         createNotificationChannel_codeTutor();
@@ -275,6 +283,7 @@ public class MainActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         application_Visible_ToUser = false;
+        registerReceiver(bluetootServiceRecieverData, makeGattUpdateIntentFilter());
     }
 
     @Override
@@ -2258,6 +2267,136 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
     }
+
+
+    /**
+     * Google BLE libraray implementation.
+     */
+    public BluetoothLeService mBluetoothLeService;
+    private BluetoothLeScanner bluetoothLeScanner =
+            BluetoothAdapter.getDefaultAdapter().getBluetoothLeScanner();
+    private Handler handler = new Handler();
+    private static final long SCAN_PERIOD = 30000;
+    public static String SCAN_TAG = "";
+    private void bindBleServiceToMainActivity() {
+        Intent intent = new Intent(this, BluetoothLeService.class);
+        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+    }
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+            if (!mBluetoothLeService.initialize()) {
+                finish();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBluetoothLeService = null;
+        }
+    };
+    /**
+     * BroadCast Reciever Data Trigger.
+     */
+    private IntentFilter makeGattUpdateIntentFilter() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(getResources().getString(R.string.BLUETOOTHLE_SERVICE_CONNECTION_STATUS));
+        intentFilter.addAction(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION));
+        intentFilter.addAction(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED));
+        intentFilter.addAction(getResources().getString(R.string.BLUETOOTHLE_SERVICE_TIMER_ACTION));
+        intentFilter.addAction(getResources().getString(R.string.BLUETOOTHLE_SERVICE_NOTIFICATION_ENABLE));
+        return intentFilter;
+    }
+    private final BroadcastReceiver bluetootServiceRecieverData = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if ((action != null) && (action.equalsIgnoreCase(getResources().getString(R.string.BLUETOOTHLE_SERVICE_CONNECTION_STATUS)))) {
+                /**
+                 * Connection/Disconnection of the Device.
+                 */
+                String bleAddress = intent.getStringExtra((getResources().getString(R.string.BLUETOOTHLE_SERVICE_CONNECTION_STATUS_BLE_ADDRESS)));
+                boolean connectionStatus = intent.getBooleanExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_CONNECTION_STATUS_CONNECTED_DISCONNECTED), false);
+                passConnectionSucesstoFragmentScanForUIChange(bleAddress, connectionStatus);
+            } else if ((action != null) && (action.equalsIgnoreCase(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION)))) {
+                /**
+                 * Data Written to the firmware getting loop back after write confermation.
+                 */
+                String bleAddress = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_ADDRESS));
+                byte[] dataWritten = intent.getByteArrayExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN));
+                int dataWrittenType = intent.getIntExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN_TYPE), -1);
+                System.out.println("what data written to the Firmware= "+convertHexToBigIntegert(bytesToHex(dataWritten)));
+                System.out.println("what data written to the Firmware bleAddres = "+bleAddress);
+                System.out.println("what data written to the Firmware type = "+dataWrittenType);
+            }else if ((action != null) && (action.equalsIgnoreCase(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED)))) {
+                /**
+                 * Data Obtained from the firmware.
+                 */
+                String bleAddress = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED_BLE_ADDRESS));
+                byte[] obtainedFromFirmware = intent.getByteArrayExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED_DATA_RECIEVED));
+                if(showDataForItemInRecycleView!=null){
+                    showDataForItemInRecycleView.recievedDataFromFirmware(bleAddress,obtainedFromFirmware);
+                }
+                System.out.println("DATA_FIRMWARE_OBTAINED= "+""+convertHexToBigIntegert(bytesToHex(obtainedFromFirmware)));
+
+            }else if ((action != null) && (action.equalsIgnoreCase(getResources().getString(R.string.BLUETOOTHLE_SERVICE_TIMER_ACTION)))) {
+                /**
+                 * Logic to cacen the progress dialog and hide it.
+                 * 1)show something went wrong try again later after some time...
+                 * 2)Clear scan device and Scan again.
+                 */
+                boolean timerCancelled=intent.getBooleanExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_TIMER_FINISH_KEY),false);
+                passTimerOutConnectionTag(timerCancelled);
+            }else  if ((action != null) && (action.equalsIgnoreCase(getResources().getString(R.string.BLUETOOTHLE_SERVICE_NOTIFICATION_ENABLE)))) {
+                /**
+                 * Send Data to BLE Device.
+                 */
+                boolean notificationEnabled=intent.getBooleanExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_NOTIFICATION_ENABLE_DATA),false);
+                System.out.println("ENABLE_NOTIFICATION_TRUE MainActivity "+notificationEnabled);
+                if(notificationEnabled){
+                    String bleAddress = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_NOTIFICATION_ENABLE_BLE_AADRESS));
+                    System.out.println("bleAddress= "+bleAddress);
+                    mBluetoothLeService.sendDataToBleDevice(bleAddress,WriteValue01());
+                }
+            }
+        }
+
+        private void passTimerOutConnectionTag(boolean result) {
+            if(deviceConnectionTimeOut!=null){
+                deviceConnectionTimeOut.connectionTimeOutTimer(result);
+            }
+        }
+
+        private void passConnectionSucesstoFragmentScanForUIChange(String connectedDeviceAddress, boolean connect_disconnect) {
+            if (passConnectionStatusToFragment != null) {
+                passConnectionStatusToFragment.connectDisconnect(connectedDeviceAddress, connect_disconnect);
+            }
+        }
+    };
+
+    private ScanCallback leScanCallback =
+            new ScanCallback() {
+                @Override
+                public void onScanResult(int callbackType, ScanResult result) {
+                    super.onScanResult(callbackType, result);
+                    if (passScanDeviceToActivity_interface != null) {
+                        if (result != null) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if ((result.getDevice().getName() != null) && (result.getDevice().getName().length() > 0)&&(result.getDevice().getName().startsWith("Succorfish"))) {
+                                        passScanDeviceToActivity_interface.sendCustomBleDevice(new CustBluetootDevices(result.getDevice().getAddress(), result.getDevice().getName(), result.getDevice(), false));
+                                    }
+                                }
+                            });
+
+
+                        }
+                    }
+                }
+            };
 }
 
 

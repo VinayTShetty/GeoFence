@@ -5,22 +5,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.clj.fastble.BleManager;
 import com.polidea.rxandroidble2.RxBleDevice;
 import com.succorfish.geofence.R;
-import com.succorfish.geofence.customObjects.CustomBluetooth;
 
 import java.util.ArrayList;
 import butterknife.BindView;
