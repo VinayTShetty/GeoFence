@@ -73,6 +73,7 @@ import com.succorfish.geofence.interfaceActivityToFragment.GeoFenceDialogAlertSh
 import com.succorfish.geofence.interfaceActivityToFragment.LiveRequestDataPassToFragment;
 import com.succorfish.geofence.interfaceActivityToFragment.OpenDialogToCheckDeviceName;
 import com.succorfish.geofence.interfaceActivityToFragment.PassChatObjectToFragment;
+import com.succorfish.geofence.interfaceActivityToFragment.PassScanDeviceToActivity_interface;
 import com.succorfish.geofence.interfaceFragmentToActivity.DeviceConfigurationPackets;
 import com.succorfish.geofence.interfaceFragmentToActivity.IndustrySpeificConfigurationPackets;
 import com.succorfish.geofence.interfaceFragmentToActivity.LiveLocationReq;
@@ -157,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements
         LiveLocationReq {
     private Unbinder unbinder;
     PassScanDevicesRxBle passScanDevicesRxBle;
+    PassScanDeviceToActivity_interface  passScanDeviceToActivity_interface;
 
     /**
      * interface from Activity to Fragment
@@ -686,6 +688,13 @@ public class MainActivity extends AppCompatActivity implements
         setUpPassChatObjectToFragment(new PassChatObjectToFragment() {
             @Override
             public void ChatObjetShare(ChattingObject chattingObject) {
+
+            }
+        });
+
+        setupPassScanDeviceToActivity_interface(new PassScanDeviceToActivity_interface() {
+            @Override
+            public void sendCustomBleDevice(CustBluetootDevices custBluetootDevices) {
 
             }
         });
@@ -2445,6 +2454,10 @@ public class MainActivity extends AppCompatActivity implements
                  */
             }
         }
+    }
+
+    public void setupPassScanDeviceToActivity_interface(PassScanDeviceToActivity_interface loc_passScanDeviceToActivity_interface) {
+        this.passScanDeviceToActivity_interface = loc_passScanDeviceToActivity_interface;
     }
 }
 
