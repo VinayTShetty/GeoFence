@@ -425,7 +425,8 @@ public class MainActivity extends AppCompatActivity implements
                                 UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
                                 UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(deviceToken__byteArray);
                                 byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
-                                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"WRITING DEVICE TOKEN");
+                              //  sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"WRITING DEVICE TOKEN");
+                                        sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"WRITING DEVICE TOKEN");
                             }else{
                                 System.out.println("Device is Disconnected cannot send Token");
                             }
