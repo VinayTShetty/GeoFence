@@ -464,7 +464,6 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
         });
-
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -597,7 +596,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
-    private void connectRxBleDevice(RxBleDevice bleDevice, int itemSelectedPositon) {
+  /*  private void connectRxBleDevice(RxBleDevice bleDevice, int itemSelectedPositon) {
         BleManager.getInstance().connect(new BleDevice(bleDevice.getBluetoothDevice()), new BleGattCallback() {
             @Override
             public void onStartConnect() {
@@ -648,7 +647,7 @@ public class MainActivity extends AppCompatActivity implements
                 checkisDisconnectedFromFirmware(bleDevice);
             }
         });
-    }
+    }*/
 
     GeoFenceObjectData geoFenceObjectData;
     private List<LatLong> latLong;
@@ -730,7 +729,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
-    private void writeAuthenicationToDevice(BleDevice bleDevice) {
+   /* private void writeAuthenicationToDevice(BleDevice bleDevice) {
         BleManager.getInstance().write(
                 bleDevice,
                 TRACKER_SERVICE_UUID,
@@ -752,9 +751,9 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 });
 
-    }
+    }*/
 
-    public void writeConnectionMaintainceCode(BleDevice bleDevice, byte[] datasent, int itemSelectedForConnection) {
+ /*   public void writeConnectionMaintainceCode(BleDevice bleDevice, byte[] datasent, int itemSelectedForConnection) {
         BleManager.getInstance().write(
                 bleDevice,
                 TRACKER_SERVICE_UUID,
@@ -770,29 +769,29 @@ public class MainActivity extends AppCompatActivity implements
                         from_firmware_ID_TimeStamp_A8_Packet = new ArrayList<String>();
                         System.gc();
 
-                        /**
+                        *//**
                          * Logic to checkDeviceName exits in the Table
-                         */
+                         *//*
                         AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
-                                  /*  if (!(CheckRecordAvaliableinDB(device_name_table, tbl_device_bleAddress, bleDevice.getMac().replace(":", "").toLowerCase()))) {
+                                  *//*  if (!(CheckRecordAvaliableinDB(device_name_table, tbl_device_bleAddress, bleDevice.getMac().replace(":", "").toLowerCase()))) {
                                         if ((openDialogToCheckDeviceName != null) && (itemSelectedForConnection != -1)) {
                                             openDialogToCheckDeviceName.showDialogNameNotAvaliable(itemSelectedForConnection);
                                         }
                                     }
 
-                                    *//**
+                                    *//**//**
                                  * Take the GeoFence Id and TimeStamp from the Table and Fill in the list.
                                  * Later compare it with Firmware Obtained Ids.
-                                 *//*
-                                    loadGeoFenceId_TimeStamp();*/
+                                 *//**//*
+                                    loadGeoFenceId_TimeStamp();*//*
                             }
                         });
 
-                        /**
+                        *//**
                          * Ask IMEI numner from the Firmware...
-                         */
+                         *//*
 
                         hexConverted_IMEIList = new ArrayList<String>();
                         hexConverted_IMEIList = getHexArrayList(askIMEI_number());
@@ -804,9 +803,9 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 });
 
-    }
+    }*/
 
-    public static void writeDataToFirmware(BleDevice bleDevice, byte[] datasent, String dataWritten_reason) {
+    /*public static void writeDataToFirmware(BleDevice bleDevice, byte[] datasent, String dataWritten_reason) {
         try {
             BleManager.getInstance().write(
                     bleDevice,
@@ -851,7 +850,7 @@ public class MainActivity extends AppCompatActivity implements
         } catch (BadPaddingException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     private void insertIntoGeoFenceTable(GeoFenceObjectData geoFenceObjectData) {
         Geofence geofence=new Geofence();
@@ -887,7 +886,8 @@ public class MainActivity extends AppCompatActivity implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                writeDataToFirmware(bleDevice, askForGeoFenceId_timeStamp(), "Asking GeoFence ID TimeStamp after connection ");
+//                writeDataToFirmware(bleDevice, askForGeoFenceId_timeStamp(), "Asking GeoFence ID TimeStamp after connection ");
+                sendSinglePacketDataToBle(bleAddressResult,askForGeoFenceId_timeStamp(),"Asking GeoFence ID TimeStamp after connection");
             }
         });
 
@@ -895,56 +895,18 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void timeIntervalGiven(String bleAddress, String timeInterval) {
-        System.out.println("Time_Interval = " + timeInterval);
-        if (getBluetoothAdapter() != null) {
-            BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-            if (bluetoothAdapter.isEnabled()) {
-                final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddress);
-                BleDevice bleDevice = new BleDevice(getBleDevice);
-                if (BleManager.getInstance().isConnected(bleDevice)) {
-                    writeDataToFirmware(bleDevice, set_firmwareTimeStamp(Integer.parseInt(timeInterval)), "Firmware Time Stamp ");
-                }
+        if(ble_on_off()){
+            if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
+                sendSinglePacketDataToBle(bleAddress,set_firmwareTimeStamp(Integer.parseInt(timeInterval)),"FIRMWARE TIMES TAMP");
             }
         }
+        System.out.println("Time_Interval = " + timeInterval);
+
     }
 
     private void playAlertMusic() {
         final MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.fence_alert);
         mediaPlayer.start();
-    }
-
-
-    ArrayList<CustomBluetooth> customBleDeviceAfterDisconnection = new ArrayList<CustomBluetooth>();
-    private static boolean goForConnect = false;
-
-    private void checkisDisconnectedFromFirmware(RxBleDevice bleDevice) {
-        customBleDeviceAfterDisconnection = new ArrayList<CustomBluetooth>();
-       /* if (main_Activity_connectedDevicesAliasList.size() > 0) {
-            for (MainActivityConnectedDevices mainActivityConnectedDevices : main_Activity_connectedDevicesAliasList) {
-                if (mainActivityConnectedDevices.getBleDevice().getMac().equalsIgnoreCase(bleDevice.getMacAddress()) && (!mainActivityConnectedDevices.isIs_DisconnectedFromFirmware())) {
-
-                    *//**
-         * Here passing -1 is just dummy data to the device.
-         * Issue Resolving is.
-         * 1)Start scanning.
-         * 2)If avaliable in Scanning,then connect.
-         * 3)Stop scan.
-         *//*
-                    goForConnect = true;
-                    CustomBluetooth customBluetooth = new CustomBluetooth(bleDevice, getResources().getString(R.string.device_name_alias), bleDevice.getMacAddress());
-                    customBleDeviceAfterDisconnection.add(customBluetooth);
-                    start_stop_SCAN(this);
-                    // connectRxBleDevice(bleDevice, -1);
-                }
-            }
-        }*/
-
-        goForConnect = true;
-        CustomBluetooth customBluetooth = new CustomBluetooth(bleDevice, getResources().getString(R.string.device_name_alias), bleDevice.getMacAddress());
-        customBleDeviceAfterDisconnection.add(customBluetooth);
-        //  RxBleStartScanning(this);
-        start_stop_SCAN(this);
-        // connectRxBleDevice(bleDevice, -1);
     }
 
     private void process_TimeStamp_id_One_After_Other_A6_packet(String bleAddress) {
@@ -966,7 +928,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 //      writeDataToFirmware(bleDevice, geoFenceId(Integer.parseInt(geofenceId)), "Asking For GeoFenceID from Time Stamp=  ID= " + geofenceId);
 
-                sendSinglePacketDataToBle(bleAddress, geoFenceId(Integer.parseInt(geofenceId)),"Asking For GeoFenceID from Time Stamp=  ID= ");
+                sendSinglePacketDataToBle(bleAddress, geoFenceId(Integer.parseInt(geofenceId)),"Asking For GeoFenceID from Time Stamp=  ID= " + geofenceId);
             }
         } else {
             /**
@@ -979,7 +941,7 @@ public class MainActivity extends AppCompatActivity implements
              */
             //  writeDataToFirmware(bleDevice, send_Geo_fenceID_fetched_finished_Acknoledgement((byte) 0xa4), "ACK to Firmware i.e Ready to Recieve alerts A4FF");
 
-            sendSinglePacketDataToBle(bleAddress, send_Geo_fenceID_fetched_finished_Acknoledgement((byte) 0xa4),"Asking For GeoFenceID from Time Stamp=  ID= ");
+            sendSinglePacketDataToBle(bleAddress, send_Geo_fenceID_fetched_finished_Acknoledgement((byte) 0xa4),"ACK to Firmware i.e Ready to Recieve alerts A4FF");
 
         }
     }
@@ -1006,22 +968,18 @@ public class MainActivity extends AppCompatActivity implements
         if (from_firmware_ID_TimeStamp_A8_Packet.size() > 0) {
             String firmwareDetailsArray = from_firmware_ID_TimeStamp_A8_Packet.get(0);
             String geofenceId = getID_From_ArrayList(firmwareDetailsArray);
-            /**
-             * Remove Here....
-             */
-//            writeDataToFirmware(bleDevice, geoFenceId(Integer.parseInt(geofenceId)), "Asking For GeoFenceID from A8 PACKET " + geofenceId);
             sendSinglePacketDataToBle(bleAddress,geoFenceId(Integer.parseInt(geofenceId)),"Asking For GeoFenceID from A8 PACKET " + geofenceId);
         }
     }
 
-    private void remove_id_time_stamp_from_A8_packet_SendAck_if_packet_process_Finished(String id_stamp_from_firmware, BleDevice bleDevice) {
+    private void remove_id_time_stamp_from_A8_packet_SendAck_if_packet_process_Finished(String id_stamp_from_firmware, String bleAddresResult) {
         if (from_firmware_ID_TimeStamp_A8_Packet.size() > 0) {
             if (from_firmware_ID_TimeStamp_A8_Packet.contains(id_stamp_from_firmware)) {
                 from_firmware_ID_TimeStamp_A8_Packet.remove(id_stamp_from_firmware);
                 if (from_firmware_ID_TimeStamp_A8_Packet.isEmpty()) {
-                    writeDataToFirmware(bleDevice, send_Geo_fenceID_fetched_finished_Acknoledgement((byte) 0xa8), "ACK to Firmware i.e Ready to Recieve alerts A8FF");
+                    sendSinglePacketDataToBle(bleAddresResult,send_Geo_fenceID_fetched_finished_Acknoledgement((byte) 0xa8),"ACK to Firmware i.e Ready to Recieve alerts A8FF");
                 } else {
-                    process_TimeStamp_id_One_After_Other_A8_packet(bleDevice);
+                    process_TimeStamp_id_One_After_Other_A8_packet(bleAddresResult);
                 }
             }
         } else {
@@ -1071,7 +1029,20 @@ public class MainActivity extends AppCompatActivity implements
         /**
          * call back from the interface after typing the message.
          */
-        hexConverted_ChatMessageList = new ArrayList<String>();
+
+        if(ble_on_off()){
+            if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
+                UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
+                UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(messageArraylist);
+                byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
+                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress);
+            }
+        }
+
+
+
+
+      /*  hexConverted_ChatMessageList = new ArrayList<String>();
         if (getBluetoothAdapter() != null) {
             BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
             if (bluetoothAdapter.isEnabled()) {
@@ -1082,7 +1053,9 @@ public class MainActivity extends AppCompatActivity implements
                     writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_ChatMessageList.get(0).toCharArray()), "CHAT MESSAGE INTIAL PACKET", hexConverted_ChatMessageList);
                 }
             }
-        }
+        }*/
+
+
     }
 
     private void changeMessageStatusInDb(String bleAddress, String sequenceNumber, String messageStatus) {
