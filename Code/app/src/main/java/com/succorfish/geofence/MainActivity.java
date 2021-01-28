@@ -957,7 +957,7 @@ public class MainActivity extends AppCompatActivity implements
                 if(bytesToHex(dataWritten).length()==32){
                     try {
                         byte [] decryptedHexValue=   decryptData(dataWritten);
-                        System.out.println("ACTION_DATA_WRTTEN Data in Hex "+bytesToHex(decryptedHexValue));
+                        System.out.println("DATA_WRITTEN_IN_FIRMWARE_ACK_LOOPBACK Data in Hex "+bytesToHex(decryptedHexValue));
                     } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     } catch (NoSuchPaddingException e) {
@@ -970,7 +970,7 @@ public class MainActivity extends AppCompatActivity implements
                         e.printStackTrace();
                     }
                 }else {
-                    System.out.println("ACTION_DATA_WRTTEN Data in Hex "+bytesToHex(dataWritten));
+                    System.out.println("DATA_WRITTEN_IN_FIRMWARE_ACK_LOOPBACK Data in Hex "+bytesToHex(dataWritten));
                 }
 
                 if(UNIVERSAL_ARRAY_PACEKT_LIST.size()>0){
@@ -1879,9 +1879,15 @@ public class MainActivity extends AppCompatActivity implements
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if ((result.getDevice().getName() != null) && (result.getDevice().getName().length() > 0)&&(result.getDevice().getName().startsWith("Succorfish"))) {
-                                        passScanDeviceToActivity_interface.sendCustomBleDevice(new CustBluetootDevices(result.getDevice().getAddress(), result.getDevice().getName(), result.getDevice(), false));
+                                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.mainActivity_container);
+                                    if (fragment != null) {
+                                        if (fragment.toString().equalsIgnoreCase(new FragmentScan().toString())) {
+                                            if ((result.getDevice().getName() != null) && (result.getDevice().getName().length() > 0)&&(result.getDevice().getName().startsWith("Succorfish"))) {
+                                                passScanDeviceToActivity_interface.sendCustomBleDevice(new CustBluetootDevices(result.getDevice().getAddress(), result.getDevice().getName(), result.getDevice(), false));
+                                            }
+                                        }
                                     }
+
                                 }
                             });
 
