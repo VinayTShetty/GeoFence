@@ -346,6 +346,7 @@ public class FragmentScan extends BaseFragment {
                                                     public void run() {
                                                         int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
                                                         if(postionToChange!=-1){
+                                                            customBluetoothDeviceList.get(postionToChange).setDeviceName(devicealiasName + " " + "1");
                                                             fragmentScanAdapter.notifyItemChanged(postionToChange);
                                                             dialog.dismiss();
                                                         }
@@ -373,6 +374,7 @@ public class FragmentScan extends BaseFragment {
                                                     public void run() {
                                                         int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
                                                         if(postionToChange!=-1){
+                                                            customBluetoothDeviceList.get(postionToChange).setDeviceName(devicealiasName + " " + number_of_Records_Avaliable_device_name_table);
                                                             fragmentScanAdapter.notifyItemChanged(postionToChange);
                                                             dialog.dismiss();
                                                         }
@@ -401,6 +403,7 @@ public class FragmentScan extends BaseFragment {
                                         public void run() {
                                             int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
                                             if(postionToChange!=-1){
+                                                customBluetoothDeviceList.get(postionToChange).setDeviceName(devicealiasName_givenFromuser);
                                                 fragmentScanAdapter.notifyItemChanged(postionToChange);
                                                 dialog.dismiss();
                                             }
@@ -435,6 +438,8 @@ public class FragmentScan extends BaseFragment {
                                                 public void run() {
                                                     int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
                                                     if(postionToChange!=-1){
+                                                        customBluetoothDeviceList.get(postionToChange).setDeviceName(devicealiasName + " " + "1");
+
                                                         fragmentScanAdapter.notifyItemChanged(postionToChange);
                                                         dialog.dismiss();
                                                     }
@@ -460,6 +465,7 @@ public class FragmentScan extends BaseFragment {
                                                 public void run() {
                                                     int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
                                                     if(postionToChange!=-1){
+                                                        customBluetoothDeviceList.get(postionToChange).setDeviceName(devicealiasName + " " + number_of_Records_Avaliable_device_name_table);
                                                         fragmentScanAdapter.notifyItemChanged(postionToChange);
                                                         dialog.dismiss();
                                                     }
