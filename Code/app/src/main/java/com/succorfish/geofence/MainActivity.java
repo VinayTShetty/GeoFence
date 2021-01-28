@@ -428,7 +428,8 @@ public class MainActivity extends AppCompatActivity implements
                               //  sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"WRITING DEVICE TOKEN");
                                         sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"WRITING DEVICE TOKEN");
                             }else{
-                                System.out.println("Device is Disconnected cannot send Token");
+                              //  System.out.println("Device is Disconnected cannot send Token");
+                                Log.d(TAG, "processDeviceTokenAndSend: Device Disconncted From Firmware ");
                             }
                         }
 
@@ -734,7 +735,8 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
         } else {
-            System.out.println("NOT_SENDING A8 ACK TO FIRMWARE ");
+//            System.out.println("NOT_SENDING A8 ACK TO FIRMWARE ");
+            Log.d(TAG, "remove_id_time_stamp_from_A8_packet_SendAck_if_packet_process_Finished: NOT_SENDING A8 ACK TO FIRMWARE  ");
         }
     }
 
@@ -957,7 +959,8 @@ public class MainActivity extends AppCompatActivity implements
                 if(bytesToHex(dataWritten).length()==32){
                     try {
                         byte [] decryptedHexValue=   decryptData(dataWritten);
-                        System.out.println("LOOP_BACK_DATA_FROM_FIRMWARE  "+bytesToHex(decryptedHexValue));
+                     //   System.out.println("LOOP_BACK_DATA_FROM_FIRMWARE  "+bytesToHex(decryptedHexValue));
+                        Log.d(TAG, "onReceive: DATA_WRITEN_ACK "+bytesToHex(decryptedHexValue));
                     } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     } catch (NoSuchPaddingException e) {
@@ -970,7 +973,8 @@ public class MainActivity extends AppCompatActivity implements
                         e.printStackTrace();
                     }
                 }else {
-                    System.out.println("LOOP_BACK_DATA_FROM_FIRMWARE  "+bytesToHex(dataWritten));
+//                    System.out.println("LOOP_BACK_DATA_FROM_FIRMWARE  "+bytesToHex(dataWritten));
+                    Log.d(TAG, "onReceive: DATA_WRITEN_ACK "+bytesToHex(dataWritten));
                 }
 
                 if(UNIVERSAL_ARRAY_PACEKT_LIST.size()>0){
@@ -997,7 +1001,8 @@ public class MainActivity extends AppCompatActivity implements
                  * Differentiate here for connection maintainence code and encryption data mainpulation.
                  */
                 if ((blehexObtainedFrom_Firmware.length() == 6) && (blehexObtainedFrom_Firmware.substring(0, 4).equalsIgnoreCase("0101"))) {
-                    System.out.println(" For Connection Maintainence Code  " + blehexObtainedFrom_Firmware);
+//                    System.out.println(" For Connection Maintainence Code  " + blehexObtainedFrom_Firmware);
+                    Log.d(TAG, "onReceive: Connection MainTainence Code= "+blehexObtainedFrom_Firmware);
                     int m_auth_key = hexToint(blehexObtainedFrom_Firmware.substring(4, 6));
                     int calculatedMagicNumber = calculateAlgorithmValue(m_auth_key);
                     byte[] connectionArray = getConnectionMainCode(calculatedMagicNumber);
@@ -1030,7 +1035,8 @@ public class MainActivity extends AppCompatActivity implements
                         byte[] decrypted_byteArray_FromFirmware = decryptData(obtainedFromFirmware);
                         String hex_converted_decrypted_byte_array = bytesToHex(decrypted_byteArray_FromFirmware);
                         blehexObtainedFrom_Firmware = hex_converted_decrypted_byte_array.toLowerCase();
-                        System.out.println("Decrypted Firmware HEX Value= " + blehexObtainedFrom_Firmware);
+//                        System.out.println("Decrypted Firmware HEX Value= " + blehexObtainedFrom_Firmware);
+                        Log.d(TAG, "onReceive: DECRYPED FIRMWARE HEXVALUE= "+blehexObtainedFrom_Firmware);
                     } catch (IllegalBlockSizeException e) {
                         e.printStackTrace();
                     } catch (InvalidKeyException e) {
@@ -2017,7 +2023,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public static void sendDataToBleDeviceWithoutEncryption(String bleAddress,byte[] dataNeedToSend,String reasonToWriteData){
-        System.out.println("Reason For Writing= "+reasonToWriteData);
+     //   System.out.println("Reason For Writing= "+reasonToWriteData);
+        Log.d(TAG, "sendDataToBleDeviceWithoutEncryption: "+reasonToWriteData);
         mBluetoothLeService.sendDataToBleDevice(bleAddress,dataNeedToSend);
     }
 
