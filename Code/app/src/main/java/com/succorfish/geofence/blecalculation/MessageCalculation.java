@@ -1,10 +1,9 @@
 package com.succorfish.geofence.blecalculation;
 
-import com.clj.fastble.utils.HexUtil;
+
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-
 import static com.succorfish.geofence.blecalculation.Blecalculation.intToBytes;
 import static com.succorfish.geofence.blecalculation.ByteConversion.convert_TimeStampTo_4bytes;
 import static com.succorfish.geofence.utility.Utility.ConvertStringToByteArray;
@@ -100,8 +99,8 @@ public class MessageCalculation {
         return message_array;
     }
 
-    public static ArrayList<byte[]> incommingMessageACK(String sequenceNumber,byte channelId,byte response){
-        ArrayList<byte[]> incommigMessageACkList=new ArrayList<byte[]>();
+    public static byte [] incommingMessageACK(String sequenceNumber,byte channelId,byte response){
+
         byte [] sequenceArray=convert_TimeStampTo_4bytes(Integer.parseInt(sequenceNumber));
         byte [] message_array=new byte[16];
         message_array[0]=(byte)0xb2;//command
@@ -121,7 +120,6 @@ public class MessageCalculation {
         int positionToAddChannelId=2+sequenceArray.length;
         message_array[positionToAddChannelId]=channelId;
         message_array[positionToAddChannelId+1]=response;
-        incommigMessageACkList.add(message_array);
-             return  incommigMessageACkList;
+             return  message_array;
     }
 }

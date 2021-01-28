@@ -223,20 +223,6 @@ public class Utility {
         byte[] byteArrray = inputString.getBytes();
         return byteArrray;
     }
-    public static boolean checkDeviceIsConnected(String bleAddres){
-        boolean result=false;
-        if (getBluetoothAdapter() != null) {
-            BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-            if (bluetoothAdapter.isEnabled()) {
-                final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddres);
-                BleDevice bleDevice = new BleDevice(getBleDevice);
-                if (BleManager.getInstance().isConnected(bleDevice)) {
-                    result=true;
-                }
-            }
-        }
-        return result;
-    }
 
     public static boolean checkEditTextDataIsEmpty(EditText editTextInput){
         boolean result=false;

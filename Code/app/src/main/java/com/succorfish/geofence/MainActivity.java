@@ -472,7 +472,8 @@ public class MainActivity extends AppCompatActivity implements
                         UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
                         UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(deviceToken__byteArray);
                         byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
-                        sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress);
+                        sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"DEVICE_TOKEN");
+//                        sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE_TOKEN");
                     }
                 }
            /*     if (getBluetoothAdapter() != null) {
@@ -1035,7 +1036,8 @@ public class MainActivity extends AppCompatActivity implements
                 UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
                 UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(messageArraylist);
                 byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
-                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress);
+                sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"MESSAGE_PACKET_ARRAY");
+               // sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"MESSAGE_PACKET_ARRAY");
             }
         }
 
@@ -1072,7 +1074,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void deviceConfigurationDetails(String bleAddress, ArrayList<byte[]> configurationList) {
-        if (getBluetoothAdapter() != null) {
+      /*  if (getBluetoothAdapter() != null) {
             BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
             if (bluetoothAdapter.isEnabled()) {
                 final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddress);
@@ -1084,10 +1086,24 @@ public class MainActivity extends AppCompatActivity implements
                     showProgressDialog("Saving Setting");
                 }
             }
+        }*/
+
+
+        if(ble_on_off()){
+            if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
+                UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
+                UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(configurationList);
+                byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
+                sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"DEVICE CONFIGURATION INTIAL PACKET");
+                showProgressDialog("Saving Setting");
+//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
+            }
         }
+
+
     }
 
-    private void writeDataToFirmwareAfterConfermation(BleDevice bleDevice, byte[] datasent, String dataWritten_reason, ArrayList<String> arrayListInHex) {
+    /*private void writeDataToFirmwareAfterConfermation(BleDevice bleDevice, byte[] datasent, String dataWritten_reason, ArrayList<String> arrayListInHex) {
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -1145,11 +1161,11 @@ public class MainActivity extends AppCompatActivity implements
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     @Override
     public void ServerConfigurationPacketArray(String bleAddress, ArrayList<byte[]> entitemessageList) {
-        hexConverted_ServerConfigurationList = new ArrayList<String>();
+       /* hexConverted_ServerConfigurationList = new ArrayList<String>();
         if (getBluetoothAdapter() != null) {
             BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
             if (bluetoothAdapter.isEnabled()) {
@@ -1161,12 +1177,30 @@ public class MainActivity extends AppCompatActivity implements
                     showProgressDialog("Saving Setting");
                 }
             }
+        }*/
+
+
+        if(ble_on_off()){
+            if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
+                UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
+                UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(entitemessageList);
+                byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
+                sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"SERVER DEVICE CONFIGURATION");
+                showProgressDialog("Saving Setting");
+//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
+            }
         }
+
+
+
+
+
+
     }
 
     @Override
     public void industrySpcificConfigurationDetails(String bleAddress, ArrayList<byte[]> entitemessageList) {
-        hexConverted_IndustrySpecificList = new ArrayList<String>();
+      /*  hexConverted_IndustrySpecificList = new ArrayList<String>();
         if (getBluetoothAdapter() != null) {
             BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
             if (bluetoothAdapter.isEnabled()) {
@@ -1178,12 +1212,26 @@ public class MainActivity extends AppCompatActivity implements
                     showProgressDialog("Saving Setting");
                 }
             }
+        }*/
+
+
+        if(ble_on_off()){
+            if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
+                UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
+                UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(entitemessageList);
+                byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
+                sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"INDUSTRY SPECIFIC CONFIGURATION");
+//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
+                showProgressDialog("Saving Setting");
+            }
         }
+
+
     }
 
     @Override
     public void wifiConfigurationDetails(String bleAddress, ArrayList<byte[]> configArrayList) {
-        hexConverted_WifiConfigurationList = new ArrayList<String>();
+      /*  hexConverted_WifiConfigurationList = new ArrayList<String>();
         if (getBluetoothAdapter() != null) {
             BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
             if (bluetoothAdapter.isEnabled()) {
@@ -1195,13 +1243,27 @@ public class MainActivity extends AppCompatActivity implements
                     showProgressDialog("Saving Setting");
                 }
             }
+        }*/
+
+
+        if(ble_on_off()){
+            if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
+                UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
+                UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(configArrayList);
+                byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
+                sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"WIFI CONFIGURATION DETAILS ");
+//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
+                showProgressDialog("Saving Setting");
+            }
         }
+
+
     }
 
 
     @Override
     public void SimConfigurationDetails(String bleAddress, ArrayList<byte[]> simconfigurationList) {
-        hexConverted_SimConfigurationList = new ArrayList<String>();
+      /*  hexConverted_SimConfigurationList = new ArrayList<String>();
         if (getBluetoothAdapter() != null) {
             BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
             if (bluetoothAdapter.isEnabled()) {
@@ -1213,12 +1275,27 @@ public class MainActivity extends AppCompatActivity implements
                     showProgressDialog("Saving Setting");
                 }
             }
+        }*/
+
+
+        if(ble_on_off()){
+            if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
+                UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
+                UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(simconfigurationList);
+                byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
+                sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"SIM CONFIGURATION DATA PARSING");
+//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
+                showProgressDialog("Saving Setting");
+            }
         }
+
+
+
     }
 
     @Override
     public void resetDevicePacketSend(String bleaddress, ArrayList<byte[]> resetFirmware) {
-        if (getBluetoothAdapter() != null) {
+       /* if (getBluetoothAdapter() != null) {
             BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
             if (bluetoothAdapter.isEnabled()) {
                 final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleaddress);
@@ -1230,12 +1307,26 @@ public class MainActivity extends AppCompatActivity implements
                     showProgressDialog("Reseting Device");
                 }
             }
+        }*/
+
+
+        if(ble_on_off()){
+            if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleaddress)){
+                UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
+                UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(resetFirmware);
+                byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
+                sendSinglePacketDataToBle(bleaddress,bytesDataToWrite,"Reset Device");
+//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
+                showProgressDialog("Saving Setting");
+            }
         }
+
+
     }
 
     @Override
     public void requestLiveLocationFromFirmware(String bleAddress,ArrayList<byte[]> liveLocationRequestPakets) {
-            hexConverted_liveLocation = new ArrayList<String>();
+          /*  hexConverted_liveLocation = new ArrayList<String>();
             if (getBluetoothAdapter() != null) {
                 BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
                 if (bluetoothAdapter.isEnabled()) {
@@ -1246,22 +1337,20 @@ public class MainActivity extends AppCompatActivity implements
                         writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_liveLocation.get(0).toCharArray()), "Live Location Request", hexConverted_liveLocation);
                     }
                 }
-            }
-    }
+            }*/
 
-    private void sendAckIncommigMessageRecievedFromDevice(String blAddress,ArrayList<byte[]> incomingMessagePacektRecieved){
-        if (getBluetoothAdapter() != null) {
-            BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-            if (bluetoothAdapter.isEnabled()) {
-                final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(blAddress);
-                BleDevice bleDevice = new BleDevice(getBleDevice);
-                if (BleManager.getInstance().isConnected(bleDevice)) {
-                    HexConverted_IncommingMessagePacket=new ArrayList<String>();
-                    HexConverted_IncommingMessagePacket = getHexArrayList(incomingMessagePacektRecieved);
-                    writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(HexConverted_IncommingMessagePacket.get(0).toCharArray()), "INCOMMING MESSGE REQUEST ACK", HexConverted_IncommingMessagePacket);
-                }
+
+        if(ble_on_off()){
+            if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
+                UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
+                UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(liveLocationRequestPakets);
+                byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
+                sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"LIVE LOCATION REQUEST");
+//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
+                showProgressDialog("Saving Setting");
             }
         }
+
     }
 
 
@@ -1322,7 +1411,7 @@ public class MainActivity extends AppCompatActivity implements
                 String bleAddress = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_ADDRESS));
                 byte[] dataWritten = intent.getByteArrayExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN));
                 int dataWrittenType = intent.getIntExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN_TYPE), -1);
-                sendNextDataToFirmmWareAfterConfermation(dataWritten,bleAddress);
+                sendNextDataToFirmmWareAfterConfermation(dataWritten,bleAddress,null);
               /*
                 System.out.println("what data written to the Firmware= "+convertHexToBigIntegert(bytesToHex(dataWritten)));
                 System.out.println("what data written to the Firmware bleAddres = "+bleAddress);
@@ -1362,7 +1451,8 @@ public class MainActivity extends AppCompatActivity implements
                         UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
                         UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(askIMEI_number());
                         byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
-                        sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddressFromNotificationChanged);
+                        sendSinglePacketDataToBle(bleAddressFromNotificationChanged,bytesDataToWrite,"ASKING_IMEI_NUMBER ");
+                    //    sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddressFromNotificationChanged);
                     }else (auth_sucess==0){
                         /**
                          * Disconnect the device..
@@ -2165,7 +2255,8 @@ public class MainActivity extends AppCompatActivity implements
                                 /**
                                  * Recieveed incomming message sucess
                                  */
-                                sendAckIncommigMessageRecievedFromDevice(bleDevice.getMac(),incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 1));
+                                sendAckIncommigMessageRecievedFromDevice(bleAddressFromNotificationChanged,incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 1));
+                                sendSinglePacketDataToBle(bleAddressFromNotificationChanged,incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 1),"INCOMMING MESSAGE SUCESS");
                                 /**
                                  * insert chat to table and send UI updte for recycleView.
                                  */
@@ -2176,6 +2267,7 @@ public class MainActivity extends AppCompatActivity implements
                                  * incomming message recieved failure..
                                  */
                                 sendAckIncommigMessageRecievedFromDevice(bleDevice.getMac(),incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 0));
+                                sendSinglePacketDataToBle(bleAddressFromNotificationChanged,incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 0),"INCOMMING MESSAGE FAILURE");
                             }
 
                         }
@@ -2320,7 +2412,7 @@ public class MainActivity extends AppCompatActivity implements
      * Write Data to BLE device After Confermation.
      */
 
-    private static void sendNextDataToFirmmWareAfterConfermation(byte [] obtainedFromOnCharcterticWrite,String bleAddressToWrite){
+    private static void sendNextDataToFirmmWareAfterConfermation(byte [] obtainedFromOnCharcterticWrite,String bleAddressToWrite,String reasonToWrite){
         try {
             byte[] decrypted_byteArray_FromFirmware =decryptData(obtainedFromOnCharcterticWrite);
             String hex_converted_decrypted_byte_array = bytesToHex(decrypted_byteArray_FromFirmware);
