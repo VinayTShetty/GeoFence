@@ -401,9 +401,9 @@ public class BluetoothLeService extends Service {
             BluetoothDevice device=  mBluetoothAdapter.getRemoteDevice(bleAddressToCheckConnectionStatus);
             int connectionStatus=mBluetoothManager.getConnectionState(device, BluetoothProfile.GATT);
             if(connectionStatus==BluetoothProfile.STATE_DISCONNECTED){
-                //connect your Device.
+                    result=false;
             }else if(connectionStatus==BluetoothProfile.STATE_CONNECTED){
-                // already connected...
+                result=true;
             }
         }else {
             result=false;

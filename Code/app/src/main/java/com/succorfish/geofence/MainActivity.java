@@ -88,6 +88,7 @@ import com.succorfish.geofence.utility.URL_helper;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -189,48 +190,6 @@ public class MainActivity extends AppCompatActivity implements
     String deviceToken_fromFirmware = "";
     private static String imeiNumberFomFirmware="";
     public static RoomDBHelper roomDBHelperInstance;
-    /**
-     * Device Configuration Arraylist.
-     */
-    ArrayList<String> hexConverted_DeviceConfigurationList = new ArrayList<String>();
-    /**
-     * Chat Message ArrayList
-     */
-    ArrayList<String> hexConverted_ChatMessageList = new ArrayList<String>();
-    /**
-     * Server Configuration ArrayList
-     */
-    ArrayList<String> hexConverted_ServerConfigurationList = new ArrayList<String>();
-    /**
-     * Industry specific configurarion
-     */
-    ArrayList<String> hexConverted_IndustrySpecificList = new ArrayList<String>();
-    /**
-     * Wifi Configuration
-     */
-    ArrayList<String> hexConverted_WifiConfigurationList = new ArrayList<String>();
-    /**
-     * Sim Configuration
-     */
-    ArrayList<String> hexConverted_SimConfigurationList = new ArrayList<String>();
-    /**
-     * IMEI number asking
-     */
-    ArrayList<String> hexConverted_IMEIList = new ArrayList<String>();
-    /**
-     * Device Token ArrayList
-     */
-    ArrayList<String> hexConverted_deviceToken = new ArrayList<String>();
-    /**
-     * Live location Request
-     */
-    ArrayList<String> hexConverted_liveLocation = new ArrayList<String>();
-    /**
-     * Rest Devie Request
-     */
-    ArrayList<String> HexConverted_DevicePacektList=new ArrayList<String>();
-
-
    private static ArrayList<String> UNIVERSAL_ARRAY_PACEKT_LIST=new ArrayList<String>();
 
     /**
@@ -256,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(MainActivity.this);
+        UNIVERSAL_ARRAY_PACEKT_LIST=new ArrayList<String>();
         intializeView();
         bindBleServiceToMainActivity();
         intializeRoomDataBaseInstance();
@@ -456,34 +416,26 @@ public class MainActivity extends AppCompatActivity implements
                     deviceToken__byteArray.add(deviceTokenpacketArray(indexPosition, individualString));
                     indexPosition--;
                 }
-            }
-        });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(ble_on_off()){
-                    if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
-                        UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
-                        UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(deviceToken__byteArray);
-                        byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
-                        sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"DEVICE_TOKEN");
-//                        sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE_TOKEN");
-                    }
-                }
-           /*     if (getBluetoothAdapter() != null) {
-                    BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-                    if (bluetoothAdapter.isEnabled()) {
-                        final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddress);
-                        BleDevice bleDevice = new BleDevice(getBleDevice);
-                        if (BleManager.getInstance().isConnected(bleDevice)) {
-                            hexConverted_deviceToken = new ArrayList<String>();
-                            hexConverted_deviceToken = getHexArrayList(deviceToken__byteArray);
-                            writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_deviceToken.get(0).toCharArray()), "SERVER DEVICE CONFIGURATION", hexConverted_deviceToken);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(ble_on_off()){
+                            if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
+                                UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
+                                UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(deviceToken__byteArray);
+                                byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
+                                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"WRITING DEVICE TOKEN");
+                            }else{
+                                System.out.println("Device is Disconnected cannot send Token");
+                            }
                         }
+
                     }
-                }*/
+                });
             }
         });
+
     }
 
     private void intializePreferenceInstance() {
@@ -588,67 +540,9 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-
-
-
-  /*  private void connectRxBleDevice(RxBleDevice bleDevice, int itemSelectedPositon) {
-        BleManager.getInstance().connect(new BleDevice(bleDevice.getBluetoothDevice()), new BleGattCallback() {
-            @Override
-            public void onStartConnect() {
-                System.out.println("onStartConnect ");
-                if (connectionProgressDialogShow != null) {
-                    connectionProgressDialogShow.connectProgress(true);
-                }
-            }
-
-            @Override
-            public void onConnectFail(BleDevice bleDevice, BleException exception) {
-                System.out.println("onConnectFail " + bleDevice.getMac());
-                if (connectionProgressDialogShow != null) {
-                    connectionProgressDialogShow.connectProgress(false);
-                }
-
-                if (connectionStatus != null) {
-                    connectionStatus.connectedDevicePostion(bleDevice.getDevice(), false);
-                }
-            }
-
-            @Override
-            public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
-                if (connectionProgressDialogShow != null) {
-                    connectionProgressDialogShow.connectProgress(false);
-                }
-
-                System.out.println("TagCheck onConnectSuccess " + bleDevice.getMac());
-                if (connectionStatus != null) {
-                    connectionStatus.connectedDevicePostion(bleDevice.getDevice(), true);
-                }
-                notifyDataCharctersticChanged(bleDevice, itemSelectedPositon);
-            }
-
-            @Override
-            public void onDisConnected(boolean isActiveDisConnected, BleDevice device, BluetoothGatt gatt, int status) {
-                System.out.println("TagCheck onDisConnected " + device.getMac() + " isActiveDisconnected= " + isActiveDisConnected);
-
-                if (connectionProgressDialogShow != null) {
-                    connectionProgressDialogShow.connectProgress(false);
-                }
-
-                if (connectionStatus != null) {
-                    connectionStatus.connectedDevicePostion(device.getDevice(), false);
-                }
-                Utility utility = new Utility();
-                utility.showTaost(MainActivity.this, "Disconnected", getResources().getDrawable(R.drawable.ic_location_not_enabled));
-                checkisDisconnectedFromFirmware(bleDevice);
-            }
-        });
-    }*/
-
     GeoFenceObjectData geoFenceObjectData;
     private List<LatLong> latLong;
     List<RuleId_Value_ActionBitMask> ruleId_value_actionBitMasks;
-
-
     /**
      * Used for Checking the log issues issues with setWriteType.
      */
@@ -722,131 +616,6 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-
-
-   /* private void writeAuthenicationToDevice(BleDevice bleDevice) {
-        BleManager.getInstance().write(
-                bleDevice,
-                TRACKER_SERVICE_UUID,
-                TRACKER_CHARCTERSTICS_UUID,
-                WriteValue01(),
-                new BleWriteCallback() {
-                    @Override
-                    public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                System.out.println("DATA Authnenication to Device written");
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onWriteFailure(final BleException exception) {
-                    }
-                });
-
-    }*/
-
- /*   public void writeConnectionMaintainceCode(BleDevice bleDevice, byte[] datasent, int itemSelectedForConnection) {
-        BleManager.getInstance().write(
-                bleDevice,
-                TRACKER_SERVICE_UUID,
-                TRACKER_CHARCTERSTICS_UUID,
-                datasent,
-                new BleWriteCallback() {
-                    @Override
-                    public void onWriteSuccess(final int current, final int total, final byte[] Write) {
-                        System.out.println("DATA writeConnectionMaintainceCode");
-
-                        from_DataBase_ID_TimeStamp = new ArrayList<String>();
-                        from_firmware_ID_TimeStamp = new ArrayList<String>();
-                        from_firmware_ID_TimeStamp_A8_Packet = new ArrayList<String>();
-                        System.gc();
-
-                        *//**
-                         * Logic to checkDeviceName exits in the Table
-                         *//*
-                        AsyncTask.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                  *//*  if (!(CheckRecordAvaliableinDB(device_name_table, tbl_device_bleAddress, bleDevice.getMac().replace(":", "").toLowerCase()))) {
-                                        if ((openDialogToCheckDeviceName != null) && (itemSelectedForConnection != -1)) {
-                                            openDialogToCheckDeviceName.showDialogNameNotAvaliable(itemSelectedForConnection);
-                                        }
-                                    }
-
-                                    *//**//**
-                                 * Take the GeoFence Id and TimeStamp from the Table and Fill in the list.
-                                 * Later compare it with Firmware Obtained Ids.
-                                 *//**//*
-                                    loadGeoFenceId_TimeStamp();*//*
-                            }
-                        });
-
-                        *//**
-                         * Ask IMEI numner from the Firmware...
-                         *//*
-
-                        hexConverted_IMEIList = new ArrayList<String>();
-                        hexConverted_IMEIList = getHexArrayList(askIMEI_number());
-                        writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_IMEIList.get(0).toCharArray()), "ASKING IMEI NUMBER", hexConverted_IMEIList);
-                    }
-
-                    @Override
-                    public void onWriteFailure(final BleException exception) {
-                    }
-                });
-
-    }*/
-
-    /*public static void writeDataToFirmware(BleDevice bleDevice, byte[] datasent, String dataWritten_reason) {
-        try {
-            BleManager.getInstance().write(
-                    bleDevice,
-                    TRACKER_SERVICE_UUID,
-                    TRACKER_CHARCTERSTICS_UUID,
-                    encryptData(datasent),
-                    new BleWriteCallback() {
-                        @Override
-                        public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
-
-                            byte[] decrypted_byteArray_FromFirmware = new byte[0];
-                            try {
-                                decrypted_byteArray_FromFirmware = decryptData(encryptData(datasent));
-                            } catch (NoSuchAlgorithmException e) {
-                                e.printStackTrace();
-                            } catch (NoSuchPaddingException e) {
-                                e.printStackTrace();
-                            } catch (InvalidKeyException e) {
-                                e.printStackTrace();
-                            } catch (IllegalBlockSizeException e) {
-                                e.printStackTrace();
-                            } catch (BadPaddingException e) {
-                                e.printStackTrace();
-                            }
-                            String hex_converted_decrypted_byte_array = HexUtil.encodeHexStr(decrypted_byteArray_FromFirmware);
-                            System.out.println("Data Written= " + dataWritten_reason + " HexValue Written to Firmware " + hex_converted_decrypted_byte_array);
-                        }
-
-                        @Override
-                        public void onWriteFailure(final BleException exception) {
-                            System.out.println("Data Written Failed " + dataWritten_reason + " Error= " + exception.getDescription());
-                        }
-                    });
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        }
-    }*/
-
     private void insertIntoGeoFenceTable(GeoFenceObjectData geoFenceObjectData) {
         Geofence geofence=new Geofence();
         geofence.setName("NA");
@@ -881,7 +650,6 @@ public class MainActivity extends AppCompatActivity implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                writeDataToFirmware(bleDevice, askForGeoFenceId_timeStamp(), "Asking GeoFence ID TimeStamp after connection ");
                 sendSinglePacketDataToBle(bleAddressResult,askForGeoFenceId_timeStamp(),"Asking GeoFence ID TimeStamp after connection");
             }
         });
@@ -916,13 +684,6 @@ public class MainActivity extends AppCompatActivity implements
                 String firmwareDetailsArray = from_firmware_ID_TimeStamp.get(0);
                 String geofenceId = getID_From_ArrayList(firmwareDetailsArray);
                 String geofenceTimeStamp = get_TimeStamp_ArrayList(firmwareDetailsArray);
-
-                /**
-                 * Remove later...
-                 */
-
-                //      writeDataToFirmware(bleDevice, geoFenceId(Integer.parseInt(geofenceId)), "Asking For GeoFenceID from Time Stamp=  ID= " + geofenceId);
-
                 sendSinglePacketDataToBle(bleAddress, geoFenceId(Integer.parseInt(geofenceId)),"Asking For GeoFenceID from Time Stamp=  ID= " + geofenceId);
             }
         } else {
@@ -930,12 +691,6 @@ public class MainActivity extends AppCompatActivity implements
              * Send Ack that no geoFence id there..so ready to recieve geoFence alert.
              */
             cancelProgressDialog();
-
-            /**
-             * Remove later..
-             */
-            //  writeDataToFirmware(bleDevice, send_Geo_fenceID_fetched_finished_Acknoledgement((byte) 0xa4), "ACK to Firmware i.e Ready to Recieve alerts A4FF");
-
             sendSinglePacketDataToBle(bleAddress, send_Geo_fenceID_fetched_finished_Acknoledgement((byte) 0xa4),"ACK to Firmware i.e Ready to Recieve alerts A4FF");
 
         }
@@ -1031,25 +786,11 @@ public class MainActivity extends AppCompatActivity implements
                 UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(messageArraylist);
                 byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
                 sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"MESSAGE_PACKET_ARRAY");
-               // sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"MESSAGE_PACKET_ARRAY");
             }
         }
 
 
 
-
-      /*  hexConverted_ChatMessageList = new ArrayList<String>();
-        if (getBluetoothAdapter() != null) {
-            BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-            if (bluetoothAdapter.isEnabled()) {
-                final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddress);
-                BleDevice bleDevice = new BleDevice(getBleDevice);
-                if (BleManager.getInstance().isConnected(bleDevice)) {
-                    hexConverted_ChatMessageList = getHexArrayList(messageArraylist);
-                    writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_ChatMessageList.get(0).toCharArray()), "CHAT MESSAGE INTIAL PACKET", hexConverted_ChatMessageList);
-                }
-            }
-        }*/
 
 
     }
@@ -1068,21 +809,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void deviceConfigurationDetails(String bleAddress, ArrayList<byte[]> configurationList) {
-      /*  if (getBluetoothAdapter() != null) {
-            BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-            if (bluetoothAdapter.isEnabled()) {
-                final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddress);
-                BleDevice bleDevice = new BleDevice(getBleDevice);
-                if (BleManager.getInstance().isConnected(bleDevice)) {
-                    hexConverted_DeviceConfigurationList = new ArrayList<String>();
-                    hexConverted_DeviceConfigurationList = getHexArrayList(configurationList);
-                    writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_DeviceConfigurationList.get(0).toCharArray()), "DEVICE CONFIGURATION INTIAL PACKET", hexConverted_DeviceConfigurationList);
-                    showProgressDialog("Saving Setting");
-                }
-            }
-        }*/
-
-
         if(ble_on_off()){
             if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
                 UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
@@ -1090,90 +816,13 @@ public class MainActivity extends AppCompatActivity implements
                 byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
                 sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"DEVICE CONFIGURATION INTIAL PACKET");
                 showProgressDialog("Saving Setting");
-//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
             }
         }
 
 
     }
-
-    /*private void writeDataToFirmwareAfterConfermation(BleDevice bleDevice, byte[] datasent, String dataWritten_reason, ArrayList<String> arrayListInHex) {
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        try {
-            BleManager.getInstance().write(
-                    bleDevice,
-                    TRACKER_SERVICE_UUID,
-                    TRACKER_CHARCTERSTICS_UUID,
-                    encryptData(datasent),
-                    new BleWriteCallback() {
-                        @Override
-                        public void onWriteSuccess(final int current, final int total, final byte[] byteArrayOnWriteSucess) {
-                            byte[] decrypted_byteArray_FromFirmware = new byte[0];
-                            try {
-                                decrypted_byteArray_FromFirmware = decryptData(byteArrayOnWriteSucess);
-                            } catch (NoSuchAlgorithmException e) {
-                                e.printStackTrace();
-                            } catch (NoSuchPaddingException e) {
-                                e.printStackTrace();
-                            } catch (InvalidKeyException e) {
-                                e.printStackTrace();
-                            } catch (IllegalBlockSizeException e) {
-                                e.printStackTrace();
-                            } catch (BadPaddingException e) {
-                                e.printStackTrace();
-                            }
-                            String hex_converted_decrypted_byte_array = HexUtil.encodeHexStr(decrypted_byteArray_FromFirmware);
-                            System.out.println("DATA WRITTEN " + hex_converted_decrypted_byte_array);
-                            if (!arrayListInHex.isEmpty() && (arrayListInHex.contains(hex_converted_decrypted_byte_array))) {
-                                arrayListInHex.remove(hex_converted_decrypted_byte_array);
-                                System.out.println("DATA REMOVED AFTER WRITING " + hex_converted_decrypted_byte_array);
-                                if (arrayListInHex.size() > 0) {
-                                    byte[] bytes = HexUtil.decodeHex(arrayListInHex.get(0).toCharArray());
-                                    writeDataToFirmwareAfterConfermation(bleDevice, bytes, "DATA WRITING AFTER REMOVING = " + arrayListInHex.get(0).toString().toUpperCase(), arrayListInHex);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onWriteFailure(final BleException exception) {
-                            System.out.println("DATA FAILED " + dataWritten_reason + " Error= " + exception.getDescription() + " Error Code " + exception.getCode());
-                        }
-                    });
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        }
-
-    }*/
-
     @Override
     public void ServerConfigurationPacketArray(String bleAddress, ArrayList<byte[]> entitemessageList) {
-       /* hexConverted_ServerConfigurationList = new ArrayList<String>();
-        if (getBluetoothAdapter() != null) {
-            BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-            if (bluetoothAdapter.isEnabled()) {
-                final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddress);
-                BleDevice bleDevice = new BleDevice(getBleDevice);
-                if (BleManager.getInstance().isConnected(bleDevice)) {
-                    hexConverted_ServerConfigurationList = getHexArrayList(entitemessageList);
-                    writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_ServerConfigurationList.get(0).toCharArray()), "SERVER DEVICE CONFIGURATION", hexConverted_ServerConfigurationList);
-                    showProgressDialog("Saving Setting");
-                }
-            }
-        }*/
-
-
         if(ble_on_off()){
             if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
                 UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
@@ -1181,41 +830,19 @@ public class MainActivity extends AppCompatActivity implements
                 byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
                 sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"SERVER DEVICE CONFIGURATION");
                 showProgressDialog("Saving Setting");
-//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
             }
         }
-
-
-
-
-
 
     }
 
     @Override
     public void industrySpcificConfigurationDetails(String bleAddress, ArrayList<byte[]> entitemessageList) {
-      /*  hexConverted_IndustrySpecificList = new ArrayList<String>();
-        if (getBluetoothAdapter() != null) {
-            BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-            if (bluetoothAdapter.isEnabled()) {
-                final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddress);
-                BleDevice bleDevice = new BleDevice(getBleDevice);
-                if (BleManager.getInstance().isConnected(bleDevice)) {
-                    hexConverted_IndustrySpecificList = getHexArrayList(entitemessageList);
-                    writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_IndustrySpecificList.get(0).toCharArray()), "Industry Specific Configuration", hexConverted_IndustrySpecificList);
-                    showProgressDialog("Saving Setting");
-                }
-            }
-        }*/
-
-
         if(ble_on_off()){
             if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
                 UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
                 UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(entitemessageList);
                 byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
                 sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"INDUSTRY SPECIFIC CONFIGURATION");
-//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
                 showProgressDialog("Saving Setting");
             }
         }
@@ -1225,28 +852,12 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void wifiConfigurationDetails(String bleAddress, ArrayList<byte[]> configArrayList) {
-      /*  hexConverted_WifiConfigurationList = new ArrayList<String>();
-        if (getBluetoothAdapter() != null) {
-            BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-            if (bluetoothAdapter.isEnabled()) {
-                final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddress);
-                BleDevice bleDevice = new BleDevice(getBleDevice);
-                if (BleManager.getInstance().isConnected(bleDevice)) {
-                    hexConverted_WifiConfigurationList = getHexArrayList(configArrayList);
-                    writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_WifiConfigurationList.get(0).toCharArray()), "SERVER DEVICE CONFIGURATION", hexConverted_WifiConfigurationList);
-                    showProgressDialog("Saving Setting");
-                }
-            }
-        }*/
-
-
         if(ble_on_off()){
             if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
                 UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
                 UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(configArrayList);
                 byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
                 sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"WIFI CONFIGURATION DETAILS ");
-//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
                 showProgressDialog("Saving Setting");
             }
         }
@@ -1257,28 +868,12 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void SimConfigurationDetails(String bleAddress, ArrayList<byte[]> simconfigurationList) {
-      /*  hexConverted_SimConfigurationList = new ArrayList<String>();
-        if (getBluetoothAdapter() != null) {
-            BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-            if (bluetoothAdapter.isEnabled()) {
-                final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddress);
-                BleDevice bleDevice = new BleDevice(getBleDevice);
-                if (BleManager.getInstance().isConnected(bleDevice)) {
-                    hexConverted_SimConfigurationList = getHexArrayList(simconfigurationList);
-                    writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_SimConfigurationList.get(0).toCharArray()), "SIM CONFIGURATION DATA PARSING", hexConverted_SimConfigurationList);
-                    showProgressDialog("Saving Setting");
-                }
-            }
-        }*/
-
-
         if(ble_on_off()){
             if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
                 UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
                 UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(simconfigurationList);
                 byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
                 sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"SIM CONFIGURATION DATA PARSING");
-//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
                 showProgressDialog("Saving Setting");
             }
         }
@@ -1289,65 +884,18 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void resetDevicePacketSend(String bleaddress, ArrayList<byte[]> resetFirmware) {
-       /* if (getBluetoothAdapter() != null) {
-            BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-            if (bluetoothAdapter.isEnabled()) {
-                final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleaddress);
-                BleDevice bleDevice = new BleDevice(getBleDevice);
-                if (BleManager.getInstance().isConnected(bleDevice)) {
-                    HexConverted_DevicePacektList=new ArrayList<String>();
-                    HexConverted_DevicePacektList = getHexArrayList(resetFirmware);
-                    writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(HexConverted_DevicePacektList.get(0).toCharArray()), "Reset Device", HexConverted_DevicePacektList);
-                    showProgressDialog("Reseting Device");
-                }
-            }
-        }*/
-
-
         if(ble_on_off()){
             if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleaddress)){
                 UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
                 UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(resetFirmware);
                 byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
                 sendSinglePacketDataToBle(bleaddress,bytesDataToWrite,"Reset Device");
-//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
                 showProgressDialog("Saving Setting");
             }
         }
 
 
     }
-
-   /* @Override
-    public void requestLiveLocationFromFirmware(String bleAddress,ArrayList<byte[]> liveLocationRequestPakets) {
-          *//*  hexConverted_liveLocation = new ArrayList<String>();
-            if (getBluetoothAdapter() != null) {
-                BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-                if (bluetoothAdapter.isEnabled()) {
-                    final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddress);
-                    BleDevice bleDevice = new BleDevice(getBleDevice);
-                    if (BleManager.getInstance().isConnected(bleDevice)) {
-                        hexConverted_liveLocation = getHexArrayList(liveLocationRequestPakets);
-                        writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_liveLocation.get(0).toCharArray()), "Live Location Request", hexConverted_liveLocation);
-                    }
-                }
-            }*//*
-
-
-        if(ble_on_off()){
-            if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
-                UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
-                UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(liveLocationRequestPakets);
-                byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
-                sendSinglePacketDataToBle(bleAddress,bytesDataToWrite,"LIVE LOCATION REQUEST");
-//                sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress,"DEVICE CONFIGURATION INTIAL PACKET");
-                showProgressDialog("Saving Setting");
-            }
-        }
-
-    }*/
-
-
     /**
      * Google BLE libraray implementation.
      */
@@ -1405,7 +953,14 @@ public class MainActivity extends AppCompatActivity implements
                 String bleAddress = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_ADDRESS));
                 byte[] dataWritten = intent.getByteArrayExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN));
                 int dataWrittenType = intent.getIntExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN_TYPE), -1);
-                sendNextDataToFirmmWareAfterConfermation(dataWritten,bleAddress,null);
+
+
+                System.out.println("ACTION_DATA_WRTTEN size list"+UNIVERSAL_ARRAY_PACEKT_LIST.size());
+                System.out.println("ACTION_DATA_WRTTEN Data in Hex "+bytesToHex(dataWritten));
+
+                if(UNIVERSAL_ARRAY_PACEKT_LIST.size()>0){
+                    sendNextDataToFirmmWareAfterConfermation(dataWritten,bleAddress,null);
+                }
               /*
                 System.out.println("what data written to the Firmware= "+convertHexToBigIntegert(bytesToHex(dataWritten)));
                 System.out.println("what data written to the Firmware bleAddres = "+bleAddress);
@@ -1417,12 +972,12 @@ public class MainActivity extends AppCompatActivity implements
                  */
                 String bleAddressFromNotificationChanged = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED_BLE_ADDRESS));
                 byte[] obtainedFromFirmware = intent.getByteArrayExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED_DATA_RECIEVED));
-                System.out.println("DATA_FIRMWARE_OBTAINED= "+""+bytesToHex(obtainedFromFirmware));
+             //   System.out.println("DATA_FIRMWARE_OBTAINED= "+""+bytesToHex(obtainedFromFirmware));
                 /**
                  * Pasting Old NotifyDataChanrcterstic changed here...
                  */
                 String blehexObtainedFrom_Firmware = "";
-                blehexObtainedFrom_Firmware = bytesToHex(obtainedFromFirmware);
+                blehexObtainedFrom_Firmware = bytesToHex(obtainedFromFirmware).toLowerCase();
                 /**
                  * Differentiate here for connection maintainence code and encryption data mainpulation.
                  */
@@ -1432,7 +987,7 @@ public class MainActivity extends AppCompatActivity implements
                     int calculatedMagicNumber = calculateAlgorithmValue(m_auth_key);
                     byte[] connectionArray = getConnectionMainCode(calculatedMagicNumber);
                     writeConnectionMainTaincenceCodeToFirmware(bleAddressFromNotificationChanged,connectionArray);
-                }else if((blehexObtainedFrom_Firmware.length()==6)&&(blehexObtainedFrom_Firmware.substring(0,2).equalsIgnoreCase("0201"))){
+                }else if((blehexObtainedFrom_Firmware.length()==6)&&(blehexObtainedFrom_Firmware.substring(0,4).equalsIgnoreCase("0201"))){
                     int auth_sucess = hexToint(blehexObtainedFrom_Firmware.substring(4, 6));
                     if(auth_sucess==1){
                         /**
@@ -1442,11 +997,7 @@ public class MainActivity extends AppCompatActivity implements
                         from_firmware_ID_TimeStamp = new ArrayList<String>();
                         from_firmware_ID_TimeStamp_A8_Packet = new ArrayList<String>();
                         System.gc();
-                        UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
-                        UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(askIMEI_number());
-                        byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
-                        sendSinglePacketDataToBle(bleAddressFromNotificationChanged,bytesDataToWrite,"ASKING_IMEI_NUMBER ");
-                    //    sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddressFromNotificationChanged);
+                        sendSinglePacketDataToBle(bleAddressFromNotificationChanged,askIMEI_number(),"ASKING_IMEI_NUMBER ");
                     }else if (auth_sucess==0){
                         /**
                          * Disconnect the device..
@@ -2293,13 +1844,8 @@ public class MainActivity extends AppCompatActivity implements
             from_firmware_ID_TimeStamp = new ArrayList<String>();
             from_firmware_ID_TimeStamp_A8_Packet = new ArrayList<String>();
             System.gc();
+            sendDataToBleDeviceWithoutEncryption(bleAddress,connectionArray,"WRITING CONNECTION MAINTAINENCE CODE ");
         }
-
-       /* private void passTimerOutConnectionTag(boolean result) {
-            if(deviceConnectionTimeOut!=null){
-                deviceConnectionTimeOut.connectionTimeOutTimer(result);
-            }
-        }*/
 
         private void passConnectionSucesstoFragmentScanForUIChange(String connectedDeviceAddress, boolean connect_disconnect) {
             if (passConnectionStatusToFragment != null) {
@@ -2403,6 +1949,7 @@ public class MainActivity extends AppCompatActivity implements
      */
 
     private static void sendNextDataToFirmmWareAfterConfermation(byte [] obtainedFromOnCharcterticWrite,String bleAddressToWrite,String reasonToWrite){
+        System.out.println(" UNIVERSAL_ARRAY_PACEKT_LIST SIZE= "+UNIVERSAL_ARRAY_PACEKT_LIST.size());
         try {
             byte[] decrypted_byteArray_FromFirmware =decryptData(obtainedFromOnCharcterticWrite);
             String hex_converted_decrypted_byte_array = bytesToHex(decrypted_byteArray_FromFirmware);
@@ -2448,6 +1995,11 @@ public class MainActivity extends AppCompatActivity implements
         } catch (BadPaddingException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void sendDataToBleDeviceWithoutEncryption(String bleAddress,byte[] dataNeedToSend,String reasonToWriteData){
+        System.out.println("Reason For Writing= "+reasonToWriteData);
+        mBluetoothLeService.sendDataToBleDevice(bleAddress,dataNeedToSend);
     }
 
 
