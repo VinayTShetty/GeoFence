@@ -34,10 +34,8 @@ import com.succorfish.geofence.MainActivity;
 import com.succorfish.geofence.R;
 import com.succorfish.geofence.dialog.DialogProvider;
 import com.succorfish.geofence.interfaceActivityToFragment.LiveRequestDataPassToFragment;
-import com.succorfish.geofence.interfaceFragmentToActivity.LiveLocationReq;
 
 import java.util.Calendar;
-import java.util.PrimitiveIterator;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -45,13 +43,13 @@ import butterknife.Unbinder;
 
 import static com.succorfish.geofence.MainActivity.CONNECTED_BLE_ADDRESS;
 import static com.succorfish.geofence.blecalculation.LiveLocationPacketManufacturer.Start_Stop_LIVE_LOCATION;
+import static com.succorfish.geofence.utility.Utility.ble_on_off;
 
 public class FragmentLiveTracking extends BaseFragment {
     View fragmentLiveTrackingView;
     private Unbinder unbinder;
     MainActivity mainActivity;
     MapView mMapView;
-    LiveLocationReq liveLocationReq;
     String connected_bleAddress="";
     GoogleMap fgragmentLiveTrackinggoogleMap;
     final Handler handler = new Handler();
@@ -77,7 +75,6 @@ public class FragmentLiveTracking extends BaseFragment {
         intializeView();
         intializeCounter();
         getConnectedBleAddress();
-        interfaceIntialization();
         setUpMap(fragmentLiveTrackingView, savedInstanceState);
         interfaceImplementation_CallBack();
         return fragmentLiveTrackingView;
@@ -102,9 +99,6 @@ public class FragmentLiveTracking extends BaseFragment {
         connected_bleAddress=CONNECTED_BLE_ADDRESS;
     }
 
-    private void interfaceIntialization() {
-        liveLocationReq =(LiveLocationReq)getActivity();
-    }
     private void intializeView() {
         hud = KProgressHUD.create(getActivity());
         dialogProvider = new DialogProvider(getActivity());
@@ -146,8 +140,16 @@ public class FragmentLiveTracking extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         progressBarUIChangeTimer.cancel();
-        if(liveLocationReq!=null){
-            liveLocationReq.requestLiveLocationFromFirmware(connected_bleAddress,Start_Stop_LIVE_LOCATION(false));
+        start_stop_live_request(false);
+
+    }
+
+    private void start_stop_live_request(boolean start_stop) {
+        if(ble_on_off()){
+            if(mainActivity.mBluetoothLeService.checkDeviceIsAlreadyConnected(connected_bleAddress)){
+                byte [] stopReuestLcoation=Start_Stop_LIVE_LOCATION(start_stop);
+                mainActivity.sendSinglePacketDataToBle(connected_bleAddress,stopReuestLcoation,"STOP LIVE LOCAITON ");
+            }
         }
     }
 
@@ -172,9 +174,7 @@ public class FragmentLiveTracking extends BaseFragment {
                  */
 
                 fgragmentLiveTrackinggoogleMap=mMap;
-                if(liveLocationReq!=null){
-                    liveLocationReq.requestLiveLocationFromFirmware(connected_bleAddress,Start_Stop_LIVE_LOCATION(true));
-                }
+                start_stop_live_request(true);
                 showProgressDialog();
                 progressBarUIChangeTimer.start();
             }

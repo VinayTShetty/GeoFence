@@ -15,7 +15,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
@@ -77,7 +76,6 @@ import com.succorfish.geofence.interfaceActivityToFragment.PassScanDeviceToActiv
 import com.succorfish.geofence.interfaceFragmentToActivity.DeviceConfigurationPackets;
 import com.succorfish.geofence.interfaceFragmentToActivity.DeviceConnectDisconnect;
 import com.succorfish.geofence.interfaceFragmentToActivity.IndustrySpeificConfigurationPackets;
-import com.succorfish.geofence.interfaceFragmentToActivity.LiveLocationReq;
 import com.succorfish.geofence.interfaceFragmentToActivity.MessageChatPacket;
 import com.succorfish.geofence.interfaceFragmentToActivity.PassBuzzerVolumeToDevice;
 import com.succorfish.geofence.interfaceFragmentToActivity.ResetDeviceInterface;
@@ -87,12 +85,11 @@ import com.succorfish.geofence.interfaceFragmentToActivity.WifiConfigurationPack
 import com.succorfish.geofence.interfaces.API;
 import com.succorfish.geofence.interfaces.onAlertDialogCallBack;
 import com.succorfish.geofence.utility.URL_helper;
-import com.succorfish.geofence.utility.Utility;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -130,8 +127,6 @@ import static com.succorfish.geofence.blecalculation.LiveLocationPacketManufactu
 import static com.succorfish.geofence.blecalculation.MessageCalculation.incommingMessageACK;
 import static com.succorfish.geofence.encryption.Encryption.decryptData;
 import static com.succorfish.geofence.encryption.Encryption.encryptData;
-import static com.succorfish.geofence.helper.UUID.TRACKER_CHARCTERSTICS_UUID;
-import static com.succorfish.geofence.helper.UUID.TRACKER_SERVICE_UUID;
 import static com.succorfish.geofence.utility.RetrofitHelperClass.getClientWithAutho;
 import static com.succorfish.geofence.utility.RetrofitHelperClass.haveInternet;
 import static com.succorfish.geofence.utility.Utility.ble_on_off;
@@ -155,7 +150,6 @@ public class MainActivity extends AppCompatActivity implements
         WifiConfigurationPackets,
         SimConfigurationPackets,
         ResetDeviceInterface,
-        LiveLocationReq,
         DeviceConnectDisconnect {
     private final static String TAG = MainActivity.class.getSimpleName();
     private Unbinder unbinder;
@@ -1324,9 +1318,9 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-    @Override
+   /* @Override
     public void requestLiveLocationFromFirmware(String bleAddress,ArrayList<byte[]> liveLocationRequestPakets) {
-          /*  hexConverted_liveLocation = new ArrayList<String>();
+          *//*  hexConverted_liveLocation = new ArrayList<String>();
             if (getBluetoothAdapter() != null) {
                 BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
                 if (bluetoothAdapter.isEnabled()) {
@@ -1337,7 +1331,7 @@ public class MainActivity extends AppCompatActivity implements
                         writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_liveLocation.get(0).toCharArray()), "Live Location Request", hexConverted_liveLocation);
                     }
                 }
-            }*/
+            }*//*
 
 
         if(ble_on_off()){
@@ -1351,7 +1345,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
 
-    }
+    }*/
 
 
     /**
@@ -1453,10 +1447,12 @@ public class MainActivity extends AppCompatActivity implements
                         byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
                         sendSinglePacketDataToBle(bleAddressFromNotificationChanged,bytesDataToWrite,"ASKING_IMEI_NUMBER ");
                     //    sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddressFromNotificationChanged);
-                    }else (auth_sucess==0){
+                    }else if (auth_sucess==0){
                         /**
                          * Disconnect the device..
                          */
+                        dialogProvider.errorDialog("INVALID AUTHENICATION");
+                        mBluetoothLeService.disconnect(bleAddressFromNotificationChanged);
                     }
 
                 }
@@ -1689,7 +1685,7 @@ public class MainActivity extends AppCompatActivity implements
                                 /**
                                  * Used to remove the TimeStamp and ID from A8 packets.
                                  */
-                                remove_id_time_stamp_from_A8_packet_SendAck_if_packet_process_Finished(geoFenceObjectData.getGeoId() + ":" + geoFenceObjectData.getFirmwareTimeStamp(), bleDevice);
+                                remove_id_time_stamp_from_A8_packet_SendAck_if_packet_process_Finished(geoFenceObjectData.getGeoId() + ":" + geoFenceObjectData.getFirmwareTimeStamp(), bleAddressFromNotificationChanged);
                             }
                         });
 
@@ -2060,14 +2056,10 @@ public class MainActivity extends AppCompatActivity implements
 
                             }
                         }else {
-                            hexConverted_liveLocation = new ArrayList<String>();
-                            if (getBluetoothAdapter() != null) {
-                                BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
-                                if (bluetoothAdapter.isEnabled()) {
-                                    if (BleManager.getInstance().isConnected(bleDevice)) {
-                                        hexConverted_liveLocation = getHexArrayList(Start_Stop_LIVE_LOCATION(false));
-                                        writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_liveLocation.get(0).toCharArray()), "Live Location Request "+false, hexConverted_liveLocation);
-                                    }
+                            if(ble_on_off()){
+                                if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddressFromNotificationChanged)){
+                                    byte [] stopReuestLcoation=Start_Stop_LIVE_LOCATION(false);
+                                    sendSinglePacketDataToBle(bleAddressFromNotificationChanged,stopReuestLcoation,"STOP LIVE LOCAITON ");
                                 }
                             }
                         }
@@ -2255,18 +2247,18 @@ public class MainActivity extends AppCompatActivity implements
                                 /**
                                  * Recieveed incomming message sucess
                                  */
-                                sendAckIncommigMessageRecievedFromDevice(bleAddressFromNotificationChanged,incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 1));
+                              //  sendAckIncommigMessageRecievedFromDevice(bleAddressFromNotificationChanged,incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 1));
                                 sendSinglePacketDataToBle(bleAddressFromNotificationChanged,incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 1),"INCOMMING MESSAGE SUCESS");
                                 /**
                                  * insert chat to table and send UI updte for recycleView.
                                  */
-                                insertChatInfoToTable(incommingMessagePacket.getMessageData(),incommingMessagePacket.getSequenceNumber(),bleDevice.getMac().toLowerCase().replace(":",""), incommingMessagePacket.getEndpacketChannelID());
+                                insertChatInfoToTable(incommingMessagePacket.getMessageData(),incommingMessagePacket.getSequenceNumber(),bleAddressFromNotificationChanged.toLowerCase().replace(":",""), incommingMessagePacket.getEndpacketChannelID());
 
                             }else {
                                 /**
                                  * incomming message recieved failure..
                                  */
-                                sendAckIncommigMessageRecievedFromDevice(bleDevice.getMac(),incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 0));
+                              //  sendAckIncommigMessageRecievedFromDevice(bleDevice.getMac(),incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 0));
                                 sendSinglePacketDataToBle(bleAddressFromNotificationChanged,incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 0),"INCOMMING MESSAGE FAILURE");
                             }
 
@@ -2443,7 +2435,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private static void  sendSinglePacketDataToBle(String bleAddress,byte[] dataNeedToSend,String reasonToWriteData){
+    public static void  sendSinglePacketDataToBle(String bleAddress,byte[] dataNeedToSend,String reasonToWriteData){
         Log.d(TAG, "sendSinglePacketDataToBle: Hex Data needs to be Passed= "+bytesToHex(dataNeedToSend)+" DATA REASON= "+reasonToWriteData+" BLE ADDRESS= "+bleAddress);
         try {
             byte [] encryptedData=encryptData(dataNeedToSend);
