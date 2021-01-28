@@ -289,28 +289,6 @@ public class FragmentScan extends BaseFragment {
             }
         });
 
-
-        /**
-         * Remvoe not Required..
-         */
-
-       /* mainActivity.setUpconnectionProgressDialogShow(new ConnectionProgressDialogShow() {
-            @Override
-            public void connectProgress(boolean connectStatus) {
-                if (connectStatus) {
-                    *//**
-                     * show the Progress Dialog
-                     *//*
-                    showProgressDialog();
-                } else {
-                    *//**
-                     * Hide the Progerss Dialog
-                     *//*
-                    cancelProgressDialog();
-                }
-            }
-        });*/
-
         mainActivity.setupPassConnectionStatusToFragment(new PassConnectionStatusToFragment() {
             @Override
             public void connectDisconnect(String bleAddress, boolean connected_disconnected) {
@@ -366,8 +344,6 @@ public class FragmentScan extends BaseFragment {
                                                 mainActivity.runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
-
-                                                       // customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName + " " + "1");
                                                         int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
                                                         if(postionToChange!=-1){
                                                             fragmentScanAdapter.notifyItemChanged(postionToChange);
@@ -395,10 +371,6 @@ public class FragmentScan extends BaseFragment {
                                                 mainActivity.runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
-                                                       /* customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName + " " + number_of_Records_Avaliable_device_name_table);
-                                                        fragmentScanAdapter.notifyItemChanged(postionSelected);
-                                                        dialog.dismiss();*/
-
                                                         int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
                                                         if(postionToChange!=-1){
                                                             fragmentScanAdapter.notifyItemChanged(postionToChange);
@@ -427,10 +399,6 @@ public class FragmentScan extends BaseFragment {
                                     mainActivity.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            /*customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName_givenFromuser);
-                                            fragmentScanAdapter.notifyItemChanged(postionSelected);
-                                            dialog.dismiss();*/
-
                                             int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
                                             if(postionToChange!=-1){
                                                 fragmentScanAdapter.notifyItemChanged(postionToChange);
@@ -465,11 +433,6 @@ public class FragmentScan extends BaseFragment {
                                             mainActivity.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-
-                                                    /*customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName + " " + "1");
-                                                    fragmentScanAdapter.notifyItemChanged(postionSelected);
-                                                    dialog.dismiss();*/
-
                                                     int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
                                                     if(postionToChange!=-1){
                                                         fragmentScanAdapter.notifyItemChanged(postionToChange);
@@ -495,10 +458,6 @@ public class FragmentScan extends BaseFragment {
                                             mainActivity.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                   /* customBluetoothDeviceList.get(postionSelected).setDeviceName(devicealiasName + " " + number_of_Records_Avaliable_device_name_table);
-                                                    fragmentScanAdapter.notifyItemChanged(postionSelected);
-                                                    dialog.dismiss();*/
-
                                                     int postionToChange=getPositionOfItemFromBleAddress(bleAddressForDeviceAfterConfermation);
                                                     if(postionToChange!=-1){
                                                         fragmentScanAdapter.notifyItemChanged(postionToChange);
