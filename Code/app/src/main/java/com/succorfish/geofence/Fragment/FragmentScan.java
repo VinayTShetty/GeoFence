@@ -262,7 +262,9 @@ public class FragmentScan extends BaseFragment {
         mainActivity.setupPassScanDeviceToActivity_interface(new PassScanDeviceToActivity_interface() {
             @Override
             public void sendCustomBleDevice(CustBluetootDevices custBluetootDevices) {
+                System.out.println("FC devices= "+custBluetootDevices.getBleAddress());
                 if(!customBluetoothDeviceList.contains(custBluetootDevices)){
+                    customBluetoothDeviceList.add(custBluetootDevices);
                     String deviceName = getdevialiasNamefromDB(custBluetootDevices.getBleAddress());
                     custBluetootDevices.setDeviceName(deviceName);
                     connect_inst_Txtview.setVisibility(View.VISIBLE);

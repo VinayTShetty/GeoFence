@@ -2420,8 +2420,7 @@ public class MainActivity extends AppCompatActivity implements
                     Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation: NEXT DATA WRITTEN "+bytesToHex(bytesDataToWrite));
                 }
             }
-            
-            
+
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
