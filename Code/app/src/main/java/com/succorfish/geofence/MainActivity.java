@@ -1849,10 +1849,8 @@ public class MainActivity extends AppCompatActivity implements
                  * 1)Ask for the Code.(i.e write 01 to BleDevice.)
                  */
                 boolean notificationEnabled=intent.getBooleanExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_NOTIFICATION_ENABLE_DATA),false);
-                System.out.println("ENABLE_NOTIFICATION_TRUE MainActivity "+notificationEnabled);
                 if(notificationEnabled){
                     String bleAddress = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_NOTIFICATION_ENABLE_BLE_AADRESS));
-                    System.out.println("bleAddress= "+bleAddress);
                     mBluetoothLeService.sendDataToBleDevice(bleAddress,WriteValue01());
                 }
             }
