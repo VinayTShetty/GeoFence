@@ -954,10 +954,24 @@ public class MainActivity extends AppCompatActivity implements
                 String bleAddress = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_ADDRESS));
                 byte[] dataWritten = intent.getByteArrayExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN));
                 int dataWrittenType = intent.getIntExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN_TYPE), -1);
-
-
-                System.out.println("ACTION_DATA_WRTTEN size list"+UNIVERSAL_ARRAY_PACEKT_LIST.size());
-                System.out.println("ACTION_DATA_WRTTEN Data in Hex "+bytesToHex(dataWritten));
+                if(bytesToHex(dataWritten).length()==32){
+                    try {
+                        byte [] decryptedHexValue=   decryptData(dataWritten);
+                        System.out.println("ACTION_DATA_WRTTEN Data in Hex "+bytesToHex(decryptedHexValue));
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchPaddingException e) {
+                        e.printStackTrace();
+                    } catch (InvalidKeyException e) {
+                        e.printStackTrace();
+                    } catch (IllegalBlockSizeException e) {
+                        e.printStackTrace();
+                    } catch (BadPaddingException e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    System.out.println("ACTION_DATA_WRTTEN Data in Hex "+bytesToHex(dataWritten));
+                }
 
                 if(UNIVERSAL_ARRAY_PACEKT_LIST.size()>0){
                     sendNextDataToFirmmWareAfterConfermation(dataWritten,bleAddress,null);
