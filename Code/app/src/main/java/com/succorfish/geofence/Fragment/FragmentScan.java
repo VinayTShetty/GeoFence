@@ -114,7 +114,6 @@ public class FragmentScan extends BaseFragment {
     }
 
     private void interfaceIntialization(){
-        passClickedDeviceForConnection = (PassClickedDeviceForConnection) getActivity();
         deviceConnectDisconnect = (DeviceConnectDisconnect) getActivity();
     }
 

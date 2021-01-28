@@ -19,7 +19,6 @@ public class DeviceTokenPacket {
             deviceToken[indexPositionToStart]=deviceTokenArray[i];
             indexPositionToStart++;
         }
-        System.out.println("Device_Token in HEX array= "+ HexUtil.encodeHexStr(deviceToken));
         return deviceToken;
     }
 }
