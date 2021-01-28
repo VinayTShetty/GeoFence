@@ -2388,13 +2388,11 @@ public class MainActivity extends AppCompatActivity implements
         if (connect_disconnect) {
             boolean connectissue = mBluetoothLeService.connect(custBluetootDevices.getBleAddress());
             if (SCAN_TAG.equalsIgnoreCase(getResources().getString(R.string.SCAN_STARTED))) {
-                SCAN_TAG = getResources().getString(R.string.SCAN_STOPED);
                 stopScan();
             }
         } else {
             mBluetoothLeService.disconnect(custBluetootDevices.getBleAddress());
             if (SCAN_TAG.equalsIgnoreCase(getResources().getString(R.string.SCAN_STARTED))) {
-                SCAN_TAG = getResources().getString(R.string.SCAN_STOPED);
                 stopScan();
             }
         }
