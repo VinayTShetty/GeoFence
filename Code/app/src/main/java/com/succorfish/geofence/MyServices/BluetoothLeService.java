@@ -339,10 +339,6 @@ public class BluetoothLeService extends Service {
         if (device == null) {
             return false;
         }
-        if(mBluetoothGatt!=null){
-            mBluetoothGatt.close();
-            mBluetoothGatt.disconnect();
-        }
         mBluetoothGatt=null;
         mBluetoothGatt = device.connectGatt(this, false, gattCallback);
         mBluetoothDeviceAddress = address;
