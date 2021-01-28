@@ -44,7 +44,7 @@
                 android:justificationMode="inter_word"
                 android:paddingBottom="8dp"
                 android:maxLength="160"
-                android:text="Incomming"
+                android:text=""
                 android:textColor="@android:color/black"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintStart_toEndOf="@+id/marginSpacer_beforeMessage_reverse"

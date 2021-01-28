@@ -85,10 +85,13 @@ public class FragmentChattingAdapter extends RecyclerView.Adapter<FragmentChatti
                 incommingMessage_layout.setVisibility(View.VISIBLE);
                 incommming_message_text.setVisibility(View.VISIBLE);
                 incommming_message_time_text.setVisibility(View.VISIBLE);
-                outgoing_message_text.setVisibility(View.INVISIBLE);
+
+               /* outgoing_message_text.setVisibility(View.INVISIBLE);
                 outgoing_message_time_text.setVisibility(View.INVISIBLE);
                 outgoing_message_status.setVisibility(View.INVISIBLE);
-                outgoingMessage_layout.setVisibility(View.INVISIBLE);
+                outgoingMessage_layout.setVisibility(View.INVISIBLE);*/
+
+
                 /**
                  * showing messageDetials.
                  */
@@ -97,9 +100,9 @@ public class FragmentChattingAdapter extends RecyclerView.Adapter<FragmentChatti
                 /**
                  * UI handling.
                  */
-                incommming_message_text.setVisibility(View.INVISIBLE);
+           /*     incommming_message_text.setVisibility(View.INVISIBLE);
                 incommming_message_time_text.setVisibility(View.INVISIBLE);
-                incommingMessage_layout.setVisibility(View.INVISIBLE);
+                incommingMessage_layout.setVisibility(View.INVISIBLE);*/
                  /**
                  * showing messageDetials.
                  */
