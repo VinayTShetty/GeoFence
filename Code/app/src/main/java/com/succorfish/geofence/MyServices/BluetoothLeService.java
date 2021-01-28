@@ -290,7 +290,7 @@ public class BluetoothLeService extends Service {
         sendBroadcast(intent);
     }
     public void sendDataToBleDevice(String bleAddress,byte [] data){
-        System.out.println("Sending Data to BLE Device. ");
+      //  System.out.println("Sending Data to BLE Device. ");
         if(mutlipleBluetooDeviceGhatt!=null && mutlipleBluetooDeviceGhatt.size()>0 &&mutlipleBluetooDeviceGhatt.containsKey(bleAddress)){
             BluetoothGattService service = mutlipleBluetooDeviceGhatt.get(bleAddress).getService(GEO_FENCE_SERVICE_UUID);
             BluetoothGattCharacteristic characteristic= service.getCharacteristic(GEO_FENCE_CHARCTERSTICS_UUID);
@@ -299,7 +299,7 @@ public class BluetoothLeService extends Service {
             boolean status=false;
             BluetoothGatt bluetoothGatt=  mutlipleBluetooDeviceGhatt.get(bleAddress);
             status=bluetoothGatt.writeCharacteristic(characteristic);
-            System.out.println("DATA WRITTEN SUCESSFULLY "+status);
+           // System.out.println("DATA WRITTEN SUCESSFULLY "+status);
         }
     }
 

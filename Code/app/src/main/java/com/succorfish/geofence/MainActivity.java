@@ -957,7 +957,7 @@ public class MainActivity extends AppCompatActivity implements
                 if(bytesToHex(dataWritten).length()==32){
                     try {
                         byte [] decryptedHexValue=   decryptData(dataWritten);
-                        System.out.println("DATA_WRITTEN_IN_FIRMWARE_ACK_LOOPBACK Data in Hex "+bytesToHex(decryptedHexValue));
+                        System.out.println("LOOP_BACK_DATA_FROM_FIRMWARE  "+bytesToHex(decryptedHexValue));
                     } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     } catch (NoSuchPaddingException e) {
@@ -970,7 +970,7 @@ public class MainActivity extends AppCompatActivity implements
                         e.printStackTrace();
                     }
                 }else {
-                    System.out.println("DATA_WRITTEN_IN_FIRMWARE_ACK_LOOPBACK Data in Hex "+bytesToHex(dataWritten));
+                    System.out.println("LOOP_BACK_DATA_FROM_FIRMWARE  "+bytesToHex(dataWritten));
                 }
 
                 if(UNIVERSAL_ARRAY_PACEKT_LIST.size()>0){
@@ -1008,9 +1008,6 @@ public class MainActivity extends AppCompatActivity implements
                         /**
                          * Ask imei number and Procedd further
                          */
-                        from_DataBase_ID_TimeStamp = new ArrayList<String>();
-                        from_firmware_ID_TimeStamp = new ArrayList<String>();
-                        from_firmware_ID_TimeStamp_A8_Packet = new ArrayList<String>();
                         System.gc();
                         sendSinglePacketDataToBle(bleAddressFromNotificationChanged,askIMEI_number(),"ASKING_IMEI_NUMBER ");
                     }else if (auth_sucess==0){
@@ -1032,7 +1029,7 @@ public class MainActivity extends AppCompatActivity implements
                     try {
                         byte[] decrypted_byteArray_FromFirmware = decryptData(obtainedFromFirmware);
                         String hex_converted_decrypted_byte_array = bytesToHex(decrypted_byteArray_FromFirmware);
-                        blehexObtainedFrom_Firmware = hex_converted_decrypted_byte_array;
+                        blehexObtainedFrom_Firmware = hex_converted_decrypted_byte_array.toLowerCase();
                         System.out.println("Decrypted Firmware HEX Value= " + blehexObtainedFrom_Firmware);
                     } catch (IllegalBlockSizeException e) {
                         e.printStackTrace();
@@ -1649,6 +1646,7 @@ public class MainActivity extends AppCompatActivity implements
                         dialogProvider.errorDialogWithCallBack("SC2 Companion App","Sim Details\nsaved", 0, false, new onAlertDialogCallBack() {
                             @Override
                             public void PositiveMethod(DialogInterface dialog, int id) {
+                       //         dialog.dismiss();
                                 onBackPressed();
                             }
 
@@ -1970,16 +1968,16 @@ public class MainActivity extends AppCompatActivity implements
      */
 
     private static void sendNextDataToFirmmWareAfterConfermation(byte [] obtainedFromOnCharcterticWrite,String bleAddressToWrite,String reasonToWrite){
-        System.out.println(" UNIVERSAL_ARRAY_PACEKT_LIST SIZE= "+UNIVERSAL_ARRAY_PACEKT_LIST.size());
+       // System.out.println(" UNIVERSAL_ARRAY_PACEKT_LIST SIZE= "+UNIVERSAL_ARRAY_PACEKT_LIST.size());
         try {
             byte[] decrypted_byteArray_FromFirmware =decryptData(obtainedFromOnCharcterticWrite);
             String hex_converted_decrypted_byte_array = bytesToHex(decrypted_byteArray_FromFirmware);
             System.out.println("" + hex_converted_decrypted_byte_array);
-            Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation:  DATA_WRITTEN_SUCEFFULLY "+hex_converted_decrypted_byte_array);
+         //   Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation:  DATA_WRITTEN_SUCEFFULLY "+hex_converted_decrypted_byte_array);
             if (!UNIVERSAL_ARRAY_PACEKT_LIST.isEmpty() && (UNIVERSAL_ARRAY_PACEKT_LIST.contains(hex_converted_decrypted_byte_array))) {
                 UNIVERSAL_ARRAY_PACEKT_LIST.remove(hex_converted_decrypted_byte_array);
-                System.out.println("DATA REMOVED AFTER WRITING " + hex_converted_decrypted_byte_array);
-                Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation: DATA_REMOVED_CONFERMATION= "+hex_converted_decrypted_byte_array);
+           //     System.out.println("DATA REMOVED AFTER WRITING " + hex_converted_decrypted_byte_array);
+             //   Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation: DATA_REMOVED_CONFERMATION= "+hex_converted_decrypted_byte_array);
                 if (UNIVERSAL_ARRAY_PACEKT_LIST.size() > 0) {
                     byte[] bytesDataToWrite = encryptData(byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0)));
                     mBluetoothLeService.sendDataToBleDevice(bleAddressToWrite,bytesDataToWrite);
