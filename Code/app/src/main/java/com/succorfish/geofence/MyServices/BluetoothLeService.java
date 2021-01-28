@@ -395,7 +395,7 @@ public class BluetoothLeService extends Service {
     }
 
 
-    private boolean checkDeviceIsAlreadyConnected(String bleAddressToCheckConnectionStatus){
+    public boolean checkDeviceIsAlreadyConnected(String bleAddressToCheckConnectionStatus){
         boolean result=false;
         if(ble_on_off()){
             BluetoothDevice device=  mBluetoothAdapter.getRemoteDevice(bleAddressToCheckConnectionStatus);

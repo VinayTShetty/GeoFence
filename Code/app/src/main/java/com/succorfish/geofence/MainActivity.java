@@ -124,7 +124,6 @@ import static com.succorfish.geofence.blecalculation.ByteConversion.byteConverst
 import static com.succorfish.geofence.blecalculation.ByteConversion.bytesToHex;
 import static com.succorfish.geofence.blecalculation.ByteConversion.convert7bytesToLong;
 import static com.succorfish.geofence.blecalculation.ByteConversion.convertHexStringToString;
-import static com.succorfish.geofence.blecalculation.ByteConversion.convertHexToBigIntegert;
 import static com.succorfish.geofence.blecalculation.DeviceTokenPacket.deviceTokenpacketArray;
 import static com.succorfish.geofence.blecalculation.IMEIpacket.askIMEI_number;
 import static com.succorfish.geofence.blecalculation.LiveLocationPacketManufacturer.Start_Stop_LIVE_LOCATION;
@@ -469,7 +468,15 @@ public class MainActivity extends AppCompatActivity implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (getBluetoothAdapter() != null) {
+                if(ble_on_off()){
+                    if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
+                        UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
+                        UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(deviceToken__byteArray);
+                        byte[] bytesDataToWrite = byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0));
+                        sendNextDataToFirmmWareAfterConfermation(bytesDataToWrite,bleAddress);
+                    }
+                }
+           /*     if (getBluetoothAdapter() != null) {
                     BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
                     if (bluetoothAdapter.isEnabled()) {
                         final BluetoothDevice getBleDevice = bluetoothAdapter.getRemoteDevice(bleAddress);
@@ -480,7 +487,7 @@ public class MainActivity extends AppCompatActivity implements
                             writeDataToFirmwareAfterConfermation(bleDevice, HexUtil.decodeHex(hexConverted_deviceToken.get(0).toCharArray()), "SERVER DEVICE CONFIGURATION", hexConverted_deviceToken);
                         }
                     }
-                }
+                }*/
             }
         });
     }
