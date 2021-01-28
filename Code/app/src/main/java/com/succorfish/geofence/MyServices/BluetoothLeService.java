@@ -95,13 +95,13 @@ public class BluetoothLeService extends Service {
         @Override
         public void onPhyUpdate(BluetoothGatt gatt, int txPhy, int rxPhy, int status) {
             super.onPhyUpdate(gatt, txPhy, rxPhy, status);
-            Log.d(TAG,"onPhyUpdate ");
+      //      Log.d(TAG,"onPhyUpdate ");
         }
 
         @Override
         public void onPhyRead(BluetoothGatt gatt, int txPhy, int rxPhy, int status) {
             super.onPhyRead(gatt, txPhy, rxPhy, status);
-            Log.d(TAG,"onPhyRead");
+       //     Log.d(TAG,"onPhyRead");
         }
 
 
@@ -157,7 +157,7 @@ public class BluetoothLeService extends Service {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                Log.d(TAG,"onServicesDiscovered");
+          //      Log.d(TAG,"onServicesDiscovered");
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
                 enableChartersticNotification(gatt);
             }
@@ -166,7 +166,7 @@ public class BluetoothLeService extends Service {
         @Override
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                Log.d(TAG,"onCharacteristicRead");
+              //  Log.d(TAG,"onCharacteristicRead");
                 broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
             }
         }
@@ -177,13 +177,13 @@ public class BluetoothLeService extends Service {
             /**
              * Confermed data recieved in the firmware.
              */
-            Log.d(TAG,"onCharacteristicWrite");
+        //    Log.d(TAG,"onCharacteristicWrite");
             send_Confermation_WhatDataWriteen_InFirmware(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION),gatt.getDevice().getAddress(),characteristic.getWriteType(),characteristic.getValue());
         }
 
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-            Log.d(TAG,"onCharacteristicChanged");
+         //   Log.d(TAG,"onCharacteristicChanged");
             sendDataRecievedFromFirmware(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_OBTAINED),gatt.getDevice().getAddress(),characteristic.getValue());
 
         }
@@ -191,32 +191,32 @@ public class BluetoothLeService extends Service {
         @Override
         public void onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
             super.onDescriptorRead(gatt, descriptor, status);
-            Log.d(TAG,"onDescriptorRead");
+          //  Log.d(TAG,"onDescriptorRead");
         }
 
         @Override
         public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
             super.onDescriptorWrite(gatt, descriptor, status);
-            Log.d(TAG,"onDescriptorWrite "+convertHexToBigIntegert(bytesToHex(descriptor.getValue())));
+        //    Log.d(TAG,"onDescriptorWrite "+convertHexToBigIntegert(bytesToHex(descriptor.getValue())));
             enableNotiticationToFirmwareCompleted(true,gatt.getDevice().getAddress());
         }
 
         @Override
         public void onReliableWriteCompleted(BluetoothGatt gatt, int status) {
             super.onReliableWriteCompleted(gatt, status);
-            Log.d(TAG,"onReliableWriteCompleted");
+         //   Log.d(TAG,"onReliableWriteCompleted");
         }
 
         @Override
         public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
             super.onReadRemoteRssi(gatt, rssi, status);
-            Log.d(TAG,"onReadRemoteRssi");
+          //  Log.d(TAG,"onReadRemoteRssi");
         }
 
         @Override
         public void onMtuChanged(BluetoothGatt gatt, int mtu, int status) {
             super.onMtuChanged(gatt, mtu, status);
-            Log.d(TAG,"onMtuChanged");
+           // Log.d(TAG,"onMtuChanged");
         }
     };
     /**

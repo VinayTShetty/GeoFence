@@ -664,7 +664,7 @@ public class MainActivity extends AppCompatActivity implements
                 sendSinglePacketDataToBle(bleAddress,set_firmwareTimeStamp(Integer.parseInt(timeInterval)),"FIRMWARE TIMES TAMP");
             }
         }
-        System.out.println("Time_Interval = " + timeInterval);
+       // System.out.println("Time_Interval = " + timeInterval);
 
     }
 
