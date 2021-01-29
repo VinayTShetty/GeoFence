@@ -45,7 +45,7 @@ public class FragmentSimConfiguration extends BaseFragment {
     private  String connected_bleAddress="";
     Map<String,Byte> mapValuesbandConfiguration;
     byte UART_CONFIGURATION_VALUE;
-    long BAND_CONFIGURATION_VALUE;
+    int BAND_CONFIGURATION_VALUE;
     private ArrayList<byte[]> completeSimConfigurationPacket;
     @BindView(R.id.e_sim)
     RadioButton esim_radiobutton;
@@ -103,7 +103,7 @@ public class FragmentSimConfiguration extends BaseFragment {
         String bandConfigurationValue= mainActivity.preferenceHelper.getConfiguration_BANDCONFIG(connected_bleAddress+" "+ FragmentBandConfiguration.class.getSimpleName());
         if(!(bandConfigurationValue.equalsIgnoreCase(""))&&(!bandConfigurationValue.equalsIgnoreCase("0"))){
             bandConfigurationSelection.setText("Band Configuration \n"+bandConfigurationValue);
-            BAND_CONFIGURATION_VALUE=Long.parseLong(bandConfigurationValue);
+            BAND_CONFIGURATION_VALUE=Integer.parseInt(bandConfigurationValue);
         }else if(bandConfigurationValue.equalsIgnoreCase("")||(bandConfigurationValue.equalsIgnoreCase("0"))){
             bandConfigurationSelection.setText("Band Configuration");
         }

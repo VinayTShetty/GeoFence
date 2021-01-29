@@ -1,10 +1,12 @@
 package com.succorfish.geofence.blecalculation;
 
+import java.nio.ByteBuffer;
+
 import static com.succorfish.geofence.blecalculation.ByteConversion.convert_LongTo_4_bytes;
 
 public class SimConfiguration {
 
-    public static byte [] StartSimConfigurationFristPacket(String Esim_NANOsim,byte UART_configValue,long band_configValue){
+    public static byte [] StartSimConfigurationFristPacket(String Esim_NANOsim,byte UART_configValue,int band_configValue){
         byte [] startPacket=new byte[16];
         startPacket[0]=(byte)0XC3;//command.
         /**
@@ -23,7 +25,11 @@ public class SimConfiguration {
         }
         startPacket[4]=UART_configValue;
         int startIndex=5;
-        byte [] bandConfigArray=convert_LongTo_4_bytes(band_configValue);
+     //   byte [] bandConfigArray=convert_LongTo_4_bytes(band_configValue);
+        Integer reversedbytes=Integer.reverseBytes(band_configValue);
+        byte [] bandConfigArray= ByteBuffer.allocate(4).putInt(reversedbytes).array();
+
+
         for (int i = 0; i < bandConfigArray.length; i++) {
             startPacket[startIndex]=bandConfigArray[i];
                     startIndex++;
@@ -59,6 +65,8 @@ public class SimConfiguration {
             messageDataArray[startIndex]=stringDataArray[i];
             startIndex++;
         }
+
+
         return messageDataArray;
     }
 }
