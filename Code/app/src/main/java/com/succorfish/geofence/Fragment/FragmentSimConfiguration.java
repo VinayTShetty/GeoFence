@@ -194,7 +194,7 @@ public class FragmentSimConfiguration extends BaseFragment {
         List<String> listOfString_startPacket_apn=  splitString(apn_passowrd_textView.getText().toString(),12);
         int sizeOfTotalPackts= listOfString_startPacket_apn.size();
         for (String individualString:listOfString_startPacket_apn) {
-            byte opcode=0x03;
+            byte opcode=0x04;
             completeSimConfigurationPacket.add(simConfigurationDataArray(opcode,sizeOfTotalPackts,individualString));
             sizeOfTotalPackts--;
         }

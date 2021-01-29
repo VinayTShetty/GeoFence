@@ -1652,8 +1652,8 @@ public class MainActivity extends AppCompatActivity implements
                         dialogProvider.errorDialogWithCallBack("SC2 Companion App","Sim Details\nsaved", 0, false, new onAlertDialogCallBack() {
                             @Override
                             public void PositiveMethod(DialogInterface dialog, int id) {
-                       //         dialog.dismiss();
-                                onBackPressed();
+                              dialog.dismiss();
+                           //     onBackPressed();
                             }
 
                             @Override
