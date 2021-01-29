@@ -52,14 +52,14 @@ public class FragmentChattingAdapter extends RecyclerView.Adapter {
     }
 
 
-    public FragmentChattingAdapter(ArrayList<ChattingObject> chattingObjects) {
+    public FragmentChattingAdapter(ArrayList<ChattingObject> chattingObjects,Context loc_context) {
         this.chattingObjectList = chattingObjects;
+        this.context=loc_context;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
         View view;
         switch (viewType) {
             case 0:
@@ -76,7 +76,32 @@ public class FragmentChattingAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ChattingObject chattingObject=chattingObjectList.get(position);
             if(chattingObject!=null){
-                switch (chattingObject.getMode()){
+
+                if(chattingObjectList.get(position).getMode().equalsIgnoreCase(context.getResources().getString(R.string.fragment_chat_message_mesaage_incomming_message))){
+                       ((Incoming_MessageLayoutHolder) holder).textView_message_incomming.setText(chattingObject.getMessage());
+                        ((Incoming_MessageLayoutHolder) holder).textView_message_incomming_timings.setText(chattingObject.getTime_chat());
+                }else if(chattingObjectList.get(position).getMode().equalsIgnoreCase(context.getResources().getString(R.string.fragment_chat_message_mesaage_outgoing_message))){
+                    ((OutGoing_MessageLayoutHolder) holder).textView_message_outgoing.setText(chattingObject.getMessage());
+                    ((OutGoing_MessageLayoutHolder) holder).textView_message_outgoing_timings.setText(chattingObject.getTime_chat());
+                    String chatDevlieveryStatus=chattingObject.getDelivery_status();
+                    if (chatDevlieveryStatus.equalsIgnoreCase(context.getString(R.string.fragment_chat_message_mesaage_invalid_channel_id))) {
+                        ((OutGoing_MessageLayoutHolder) holder).imageView_message_outgoing_status.setImageDrawable(context.getDrawable(R.drawable.failed_message_icon));
+                    } else if (chatDevlieveryStatus.equalsIgnoreCase(context.getString(R.string.fragment_chat_message_mesaage_full_message_recieved_by_device))) {
+                        ((OutGoing_MessageLayoutHolder) holder).imageView_message_outgoing_status.setImageDrawable(context.getDrawable(R.drawable.chata_singletick));
+                    } else if (chatDevlieveryStatus.equalsIgnoreCase(context.getString(R.string.fragment_chat_message_mesaage_message_sent_gsm))) {
+                        ((OutGoing_MessageLayoutHolder) holder).imageView_message_outgoing_status.setImageDrawable(context.getDrawable(R.drawable.chat_double_tick_black));
+                    } else if (chatDevlieveryStatus.equalsIgnoreCase(context.getString(R.string.fragment_chat_message_mesaage_failed_message_gsm))) {
+                        ((OutGoing_MessageLayoutHolder) holder).imageView_message_outgoing_status.setImageDrawable(context.getDrawable(R.drawable.chat_message_fail_gsm));
+                    } else if (chatDevlieveryStatus.equalsIgnoreCase(context.getString(R.string.fragment_chat_message_mesaage_send_to_iridium))) {
+                        ((OutGoing_MessageLayoutHolder) holder).imageView_message_outgoing_status.setImageDrawable(context.getDrawable(R.drawable.chat_double_tick_green));
+                    } else if (chatDevlieveryStatus.equalsIgnoreCase(context.getString(R.string.fragment_chat_message_mesaage_server_sending_failed))) {
+                        ((OutGoing_MessageLayoutHolder) holder).imageView_message_outgoing_status.setImageDrawable(context.getDrawable(R.drawable.chat_server_failed_message));
+                    } else {
+                        ((OutGoing_MessageLayoutHolder) holder).imageView_message_outgoing_status.setImageDrawable(context.getDrawable(R.drawable.failed_message_icon));
+                    }
+                }
+
+              /*  switch (chattingObject.getMode()){
                     case 0:
                         ((OutGoing_MessageLayoutHolder) holder).textView_message_outgoing.setText(chattingObject.getMessage());
                         ((OutGoing_MessageLayoutHolder) holder).textView_message_outgoing_timings.setText(chattingObject.getTime_chat());
@@ -97,12 +122,12 @@ public class FragmentChattingAdapter extends RecyclerView.Adapter {
                             ((OutGoing_MessageLayoutHolder) holder).imageView_message_outgoing_status.setImageDrawable(context.getDrawable(R.drawable.failed_message_icon));
                         }
                         break;
-                    case 1:
-                        ((Incoming_MessageLayoutHolder) holder).textView_message_incomming.setText(chattingObject.getMessage());
-                        ((Incoming_MessageLayoutHolder) holder).textView_message_incomming_timings.setText(chattingObject.getTime_chat());
+                    case 10:
+                      *//*  ((Incoming_MessageLayoutHolder) holder).textView_message_incomming.setText(chattingObject.getMessage());
+                        ((Incoming_MessageLayoutHolder) holder).textView_message_incomming_timings.setText(chattingObject.getTime_chat());*//*
                         break;
 
-                }
+                }*/
             }
     }
 
@@ -114,13 +139,13 @@ public class FragmentChattingAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        switch (chattingObjectList.get(position).getMode()) {
-            case 0:
-                return 0;
-            case 1:
-                return 1;
-            default:
-                return -1;
+
+        if(chattingObjectList.get(position).getMode().equalsIgnoreCase(context.getResources().getString(R.string.fragment_chat_message_mesaage_incomming_message))){
+            return 1;
+        }else if(chattingObjectList.get(position).getMode().equalsIgnoreCase(context.getResources().getString(R.string.fragment_chat_message_mesaage_outgoing_message))){
+            return 0;
+        }else {
+            return -1;
         }
     }
 

@@ -231,8 +231,8 @@ public class MainActivity extends AppCompatActivity implements
         intializePreferenceInstance();
         intializeRetrofitInstance();
         intializeDialog();
-        replaceFragment(new FragmentScan(), null, null, false);
-     //   replaceFragment(new FragmentChatting(), null, null, false);
+    //    replaceFragment(new FragmentScan(), null, null, false);
+        replaceFragment(new FragmentChatting(), null, null, false);
     }
 
     private void intializeRoomDataBaseInstance() {
@@ -615,7 +615,7 @@ public class MainActivity extends AppCompatActivity implements
                         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.mainActivity_container);
                         if (fragment.toString().equalsIgnoreCase(new FragmentChatting().toString())) {
                             ChattingObject chattingObject = new ChattingObject();
-                            chattingObject.setMode(getResources().getString(R.string.fragment_chatting_incomming_message));
+                            chattingObject.setMode(getResources().getString(R.string.fragment_chat_message_mesaage_incomming_message));// Incomming 1 ,// out going 0
                             chattingObject.setMessage(messageRecieved);
                             chattingObject.setDate(date_time);
                             chattingObject.setTimeStamp(timeStampDateBase);

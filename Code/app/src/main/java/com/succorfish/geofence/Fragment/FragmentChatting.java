@@ -215,14 +215,14 @@ public class FragmentChatting extends BaseFragment {
     }*/
 
     private void getConnectedBleAddress() {
-        connected_bleAddress = CONNECTED_BLE_ADDRESS;
-   //     connected_bleAddress = "d4225031e495";
+   //     connected_bleAddress = CONNECTED_BLE_ADDRESS;
+       connected_bleAddress = "d4225031e495";
     }
 
     private void insertChat_To_table(String message_typed, String timeStampDataBase, String timeStampSequenceNumberBle) {
         String date_time = getDateWithtime();
         String delivery_status = getString(R.string.fragment_chat_message_mesaage_full_message_recieved_by_device);
-        showUiChangesInRecycleView(1, message_typed, date_time, delivery_status, timeStampDataBase, date_time.substring(11, 16), connected_bleAddress.replace(":", "").toLowerCase(), timeStampSequenceNumberBle);
+        showUiChangesInRecycleView(getResources().getString(R.string.fragment_chat_message_mesaage_outgoing_message), message_typed, date_time, delivery_status, timeStampDataBase, date_time.substring(11, 16), connected_bleAddress.replace(":", "").toLowerCase(), timeStampSequenceNumberBle);
         if (connected_bleAddress.length() > 1) {
             AsyncTask.execute(new Runnable() {
                 @Override
@@ -250,7 +250,7 @@ public class FragmentChatting extends BaseFragment {
             });
         }
     }
-    private void showUiChangesInRecycleView(int mode,
+    private void showUiChangesInRecycleView(String mode,
                                             String message_typed,
                                             String date_time,
                                             String deliveryStatus,
@@ -333,9 +333,9 @@ public class FragmentChatting extends BaseFragment {
                 for (ChatInfo chatInfo : chatInfoList) {
                     ChattingObject chattingObject = new ChattingObject();
                     if (chatInfo.getFrom_name().equalsIgnoreCase(getString(R.string.fragment_chat_owner_name)) && (chatInfo.getTo_name().equalsIgnoreCase(getString(R.string.fragment_chat_server_name)))) {
-                        chattingObject.setMode(1);// Incomming
+                        chattingObject.setMode(getResources().getString(R.string.fragment_chat_message_mesaage_outgoing_message));// Incomming
                     } else if (chatInfo.getFrom_name().equalsIgnoreCase(getString(R.string.fragment_chat_server_name)) && (chatInfo.getTo_name().equalsIgnoreCase(getString(R.string.fragment_chat_owner_name)))) {
-                        chattingObject.setMode(0);//outgoing.
+                        chattingObject.setMode(getResources().getString(R.string.fragment_chat_message_mesaage_incomming_message));// Incomming
                     }
                     chattingObject.setMessage(chatInfo.getMsg_txt());
                     chattingObject.setTime_chat(chatInfo.getTime().substring(11, 16));
@@ -359,7 +359,7 @@ public class FragmentChatting extends BaseFragment {
     }
 
     private void setupRecycleView(ArrayList<ChattingObject> chattingObjectList) {
-        fragmentChattingAdapter = new FragmentChattingAdapter(chattingObjectList);
+        fragmentChattingAdapter = new FragmentChattingAdapter(chattingObjectList,getActivity());
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         chatRecycleView.setLayoutManager(mLayoutManager);
         chatRecycleView.setAdapter(fragmentChattingAdapter);

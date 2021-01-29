@@ -49,6 +49,8 @@
     <string name="fragment_chat_message_mesaage_server_sending_failed">MESSAGE_FAILED_SERVER</string>
     <!--Incomming message Recieved From Server-->
     <string name="fragment_chat_message_mesaage_recieved_from_ble">INCOMMING_MESSAGE_DELIEVERED</string>
+    <string name="fragment_chat_message_mesaage_incomming_message">INCOMMING_MESSAGE</string>
+    <string name="fragment_chat_message_mesaage_outgoing_message">OUTGOING_MESSAGE</string>
 
     <!--back dialog String-->
     <string name="str_exit_confirmation">Are you sure want to exit?</string>
