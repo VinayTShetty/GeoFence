@@ -1,6 +1,7 @@
 package com.succorfish.geofence;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -9,12 +10,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.Manifest;
+import android.app.Activity;
 import android.app.KeyguardManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
@@ -92,6 +95,8 @@ import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -277,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements
              * make logic here for the Exit window.
              */
             if (exit) {
-                DialogProvider.ExitDialog(MainActivity.this, getString(R.string.str_exit_confirmation));
+                showExitDialog(getString(R.string.str_exit_confirmation));
             } else {
                 exit = true;
                 new Handler().postDelayed(new Runnable() {
@@ -312,6 +317,39 @@ public class MainActivity extends AppCompatActivity implements
         } else if (fragment.toString().equalsIgnoreCase(new FragmentLiveTracking().toString())) {
             replaceFragment(new FragmentScan(), null, null, false);
         }
+    }
+
+    private void showExitDialog(String dialogMessage) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
+            builder.setTitle("Exit");
+            builder.setCancelable(false);
+            builder.setMessage(dialogMessage);
+            builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(ble_on_off()){
+                   Map<String , BluetoothGatt> instanceOFBluetoothGhatt= mBluetoothLeService.getConnectedBluetoothGhatt();
+                        for (Map.Entry<String,BluetoothGatt> entry:instanceOFBluetoothGhatt.entrySet() ) {
+                                if(entry.getValue()!=null){
+                                    BluetoothGatt ghatt=entry.getValue();
+                                    ghatt.disconnect();
+                                    ghatt.close();
+                                }
+                        }
+                    }
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+            builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+
+
     }
 
     private void intializeView() {

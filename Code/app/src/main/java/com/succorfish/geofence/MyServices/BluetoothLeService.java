@@ -410,6 +410,12 @@ public class BluetoothLeService extends Service {
         }
         return result;
     }
+
+
+    public Map<String ,BluetoothGatt> getConnectedBluetoothGhatt(){
+        return mutlipleBluetooDeviceGhatt;
+    }
+
     /**
      * 133 status error logs
      * BluetoothLeService: onConnectionStateChange: STATUS= 133 NEW STATE= 0
