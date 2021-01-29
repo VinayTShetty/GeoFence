@@ -333,9 +333,9 @@ public class FragmentChatting extends BaseFragment {
                 for (ChatInfo chatInfo : chatInfoList) {
                     ChattingObject chattingObject = new ChattingObject();
                     if (chatInfo.getFrom_name().equalsIgnoreCase(getString(R.string.fragment_chat_owner_name)) && (chatInfo.getTo_name().equalsIgnoreCase(getString(R.string.fragment_chat_server_name)))) {
-                        chattingObject.setMode(1);
+                        chattingObject.setMode(1);// Incomming
                     } else if (chatInfo.getFrom_name().equalsIgnoreCase(getString(R.string.fragment_chat_server_name)) && (chatInfo.getTo_name().equalsIgnoreCase(getString(R.string.fragment_chat_owner_name)))) {
-                        chattingObject.setMode(0);
+                        chattingObject.setMode(0);//outgoing.
                     }
                     chattingObject.setMessage(chatInfo.getMsg_txt());
                     chattingObject.setTime_chat(chatInfo.getTime().substring(11, 16));

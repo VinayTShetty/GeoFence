@@ -1,6 +1,8 @@
 package com.succorfish.geofence.customObjects;
 
 public class ChattingObject {
+
+
     private int mode;
     private String message;
     private String date;

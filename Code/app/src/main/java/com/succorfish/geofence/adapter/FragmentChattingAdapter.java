@@ -19,7 +19,14 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-public class FragmentChattingAdapter extends RecyclerView.Adapter<FragmentChattingAdapter.FragmentChattingItemViewHolder> {
+public class FragmentChattingAdapter extends RecyclerView.Adapter {
+
+    public static class Incoming_MessageLayoutHolder extends RecyclerView.ViewHolder{
+
+        public Incoming_MessageLayoutHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
     private ArrayList<ChattingObject> chattingObjectList;
     private Context context;
    public FragmentChattingAdapter(ArrayList<ChattingObject> chattingObjects){
@@ -31,6 +38,11 @@ public class FragmentChattingAdapter extends RecyclerView.Adapter<FragmentChatti
        context=parent.getContext();
         View itemView = LayoutInflater.from(context).inflate(R.layout.fragmentchatting_listitem, parent, false);
         return new FragmentChattingAdapter.FragmentChattingItemViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
     }
 
     @Override
