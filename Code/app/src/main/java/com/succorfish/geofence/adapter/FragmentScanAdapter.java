@@ -91,7 +91,6 @@ public class FragmentScanAdapter extends RecyclerView.Adapter<FragmentScanAdapte
                 @Override
                 public void onClick(View v) {
                     if(onItemClickInterface!=null){
-                        System.out.println("clicked connection satus");
                         if((customBluetoothdevices!=null)&&(getAdapterPosition()>=0)){
                             onItemClickInterface.ConnectionStatusClick(customBluetooth,getAdapterPosition());
                         }

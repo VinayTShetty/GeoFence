@@ -2,6 +2,7 @@ package com.succorfish.geofence.Fragment;
 
 import android.Manifest;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +44,8 @@ import com.succorfish.geofence.interfaces.onDeviceNameAlert;
 import com.succorfish.geofence.utility.Utility;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -691,8 +694,17 @@ public class FragmentScan extends BaseFragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-  //              disconnectAllDevices(); // Remove
-//                BleManager.getInstance().disconnectAllDevice();// Remove
+                if(ble_on_off()){
+                    Map<String , BluetoothGatt> instanceOFBluetoothGhatt= mainActivity.mBluetoothLeService.getConnectedBluetoothGhatt();
+                    for (Map.Entry<String,BluetoothGatt> entry:instanceOFBluetoothGhatt.entrySet() ) {
+                        if(entry.getValue()!=null){
+                            BluetoothGatt ghatt=entry.getValue();
+                            ghatt.disconnect();3
+                            ghatt.close();
+                            ghatt=null;
+                        }
+                    }
+                }
                 dialog.dismiss();
                 mainActivity.preferenceHelper.resetPreferenceData();
                 Intent mIntent = new Intent(getActivity(), LoginActivity.class);

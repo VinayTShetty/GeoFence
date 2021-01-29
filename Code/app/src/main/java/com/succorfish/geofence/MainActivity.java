@@ -334,6 +334,7 @@ public class MainActivity extends AppCompatActivity implements
                                     BluetoothGatt ghatt=entry.getValue();
                                     ghatt.disconnect();
                                     ghatt.close();
+                                    ghatt=null;
                                 }
                         }
                     }
