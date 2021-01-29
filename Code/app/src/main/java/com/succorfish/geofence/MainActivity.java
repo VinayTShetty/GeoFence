@@ -2023,6 +2023,11 @@ public class MainActivity extends AppCompatActivity implements
              //   Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation: DATA_REMOVED_CONFERMATION= "+hex_converted_decrypted_byte_array);
                 if (UNIVERSAL_ARRAY_PACEKT_LIST.size() > 0) {
                     byte[] bytesDataToWrite = encryptData(byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0)));
+                    /*try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }*/
                     mBluetoothLeService.sendDataToBleDevice(bleAddressToWrite,bytesDataToWrite);
                     Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation: NEXT DATA WRITTEN "+bytesToHex(bytesDataToWrite));
                 }

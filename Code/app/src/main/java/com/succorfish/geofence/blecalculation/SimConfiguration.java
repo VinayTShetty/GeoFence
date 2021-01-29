@@ -65,8 +65,6 @@ public class SimConfiguration {
             messageDataArray[startIndex]=stringDataArray[i];
             startIndex++;
         }
-
-
         return messageDataArray;
     }
 }
