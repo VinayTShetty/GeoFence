@@ -231,8 +231,8 @@ public class MainActivity extends AppCompatActivity implements
         intializePreferenceInstance();
         intializeRetrofitInstance();
         intializeDialog();
-    //    replaceFragment(new FragmentScan(), null, null, false);
-        replaceFragment(new FragmentChatting(), null, null, false);
+       replaceFragment(new FragmentScan(), null, null, false);
+     //   replaceFragment(new FragmentChatting(), null, null, false);
     }
 
     private void intializeRoomDataBaseInstance() {

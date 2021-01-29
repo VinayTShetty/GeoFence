@@ -64,10 +64,10 @@ public class FragmentChattingAdapter extends RecyclerView.Adapter {
         switch (viewType) {
             case 0:
                 view = LayoutInflater.from(context).inflate(R.layout.outgoing_message, parent, false);
-                return new Incoming_MessageLayoutHolder(view);
+                  return new OutGoing_MessageLayoutHolder(view);
             case 1:
                 view = LayoutInflater.from(context).inflate(R.layout.incomming_message, parent, false);
-                return new OutGoing_MessageLayoutHolder(view);
+                return new Incoming_MessageLayoutHolder(view);
         }
         return null;
     }

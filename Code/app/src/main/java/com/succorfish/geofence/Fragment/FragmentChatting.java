@@ -215,8 +215,8 @@ public class FragmentChatting extends BaseFragment {
     }*/
 
     private void getConnectedBleAddress() {
-   //     connected_bleAddress = CONNECTED_BLE_ADDRESS;
-       connected_bleAddress = "d4225031e495";
+       connected_bleAddress = CONNECTED_BLE_ADDRESS;
+    //   connected_bleAddress = "d4225031e495";
     }
 
     private void insertChat_To_table(String message_typed, String timeStampDataBase, String timeStampSequenceNumberBle) {
