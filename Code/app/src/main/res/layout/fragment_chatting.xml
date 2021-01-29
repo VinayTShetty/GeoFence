@@ -78,14 +78,13 @@
     <LinearLayout
         android:id="@+id/recycleView_layout_holder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:isScrollContainer="false">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chat_recycleView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/fragmentchatting_listitem">
+            android:layout_height="match_parent">
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
     <LinearLayout
