@@ -222,7 +222,7 @@ public class FragmentChatting extends BaseFragment {
     private void insertChat_To_table(String message_typed, String timeStampDataBase, String timeStampSequenceNumberBle) {
         String date_time = getDateWithtime();
         String delivery_status = getString(R.string.fragment_chat_message_mesaage_full_message_recieved_by_device);
-        showUiChangesInRecycleView(getString(R.string.fragment_chatting_out_going_message), message_typed, date_time, delivery_status, timeStampDataBase, date_time.substring(11, 16), connected_bleAddress.replace(":", "").toLowerCase(), timeStampSequenceNumberBle);
+        showUiChangesInRecycleView(1, message_typed, date_time, delivery_status, timeStampDataBase, date_time.substring(11, 16), connected_bleAddress.replace(":", "").toLowerCase(), timeStampSequenceNumberBle);
         if (connected_bleAddress.length() > 1) {
             AsyncTask.execute(new Runnable() {
                 @Override
@@ -250,7 +250,7 @@ public class FragmentChatting extends BaseFragment {
             });
         }
     }
-    private void showUiChangesInRecycleView(String mode,
+    private void showUiChangesInRecycleView(int mode,
                                             String message_typed,
                                             String date_time,
                                             String deliveryStatus,
@@ -333,9 +333,9 @@ public class FragmentChatting extends BaseFragment {
                 for (ChatInfo chatInfo : chatInfoList) {
                     ChattingObject chattingObject = new ChattingObject();
                     if (chatInfo.getFrom_name().equalsIgnoreCase(getString(R.string.fragment_chat_owner_name)) && (chatInfo.getTo_name().equalsIgnoreCase(getString(R.string.fragment_chat_server_name)))) {
-                        chattingObject.setMode(getString(R.string.fragment_chatting_out_going_message));
+                        chattingObject.setMode(1);
                     } else if (chatInfo.getFrom_name().equalsIgnoreCase(getString(R.string.fragment_chat_server_name)) && (chatInfo.getTo_name().equalsIgnoreCase(getString(R.string.fragment_chat_owner_name)))) {
-                        chattingObject.setMode(getString(R.string.fragment_chatting_incomming_message));
+                        chattingObject.setMode(0);
                     }
                     chattingObject.setMessage(chatInfo.getMsg_txt());
                     chattingObject.setTime_chat(chatInfo.getTime().substring(11, 16));
@@ -353,7 +353,6 @@ public class FragmentChatting extends BaseFragment {
                             }
                         }
                     });
-
                 }
             }
         });

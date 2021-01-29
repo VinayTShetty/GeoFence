@@ -1,7 +1,7 @@
 package com.succorfish.geofence.customObjects;
 
 public class ChattingObject {
-    private String mode;
+    private int mode;
     private String message;
     private String date;
     private String delivery_status;
@@ -21,15 +21,19 @@ public class ChattingObject {
     public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
     }
-    public String getMode() {
-        return mode;
-    }
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
+
     public String getMessage() {
         return message;
     }
+
+    public int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
+
     public void setMessage(String message) {
         this.message = message;
     }
