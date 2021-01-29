@@ -994,11 +994,12 @@ public class MainActivity extends AppCompatActivity implements
                 String bleAddress = intent.getStringExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_ADDRESS));
                 byte[] dataWritten = intent.getByteArrayExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN));
                 int dataWrittenType = intent.getIntExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN_TYPE), -1);
+                int status = intent.getIntExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_STATUS), -1);
                 if(bytesToHex(dataWritten).length()==32){
                     try {
                         byte [] decryptedHexValue=   decryptData(dataWritten);
                      //   System.out.println("LOOP_BACK_DATA_FROM_FIRMWARE  "+bytesToHex(decryptedHexValue));
-                        Log.d(TAG, "onReceive: DATA_WRITEN_ACK "+bytesToHex(decryptedHexValue));
+                        Log.d(TAG, "onReceive: DATA_WRITEN_ACK "+bytesToHex(decryptedHexValue)+" STATUS= "+status);
                     } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     } catch (NoSuchPaddingException e) {

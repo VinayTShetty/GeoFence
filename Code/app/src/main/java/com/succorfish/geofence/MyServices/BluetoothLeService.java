@@ -178,7 +178,7 @@ public class BluetoothLeService extends Service {
              * Confermed data recieved in the firmware.
              */
         //    Log.d(TAG,"onCharacteristicWrite");
-            send_Confermation_WhatDataWriteen_InFirmware(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION),gatt.getDevice().getAddress(),characteristic.getWriteType(),characteristic.getValue());
+            send_Confermation_WhatDataWriteen_InFirmware(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION),gatt.getDevice().getAddress(),characteristic.getWriteType(),characteristic.getValue(),status);
         }
 
         @Override
@@ -234,11 +234,12 @@ public class BluetoothLeService extends Service {
         sendBroadcast(intent);
     }
 
-    private void send_Confermation_WhatDataWriteen_InFirmware(final String action,final String bleaddress,int dataWriteenType,final  byte byteArrayData[]){
+    private void send_Confermation_WhatDataWriteen_InFirmware(final String action,final String bleaddress,int dataWriteenType,final  byte byteArrayData[],int status){
         Intent intent=new Intent(action);
         intent.putExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_ADDRESS),bleaddress);
         intent.putExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN),byteArrayData);
         intent.putExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_BLE_DATA_WRITTEN_TYPE),dataWriteenType);
+        intent.putExtra(getResources().getString(R.string.BLUETOOTHLE_SERVICE_DATA_WRITTEN_FOR_CONFERMATION_STATUS),status);
         sendBroadcast(intent);
     }
 
