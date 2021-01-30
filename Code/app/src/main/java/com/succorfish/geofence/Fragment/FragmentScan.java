@@ -699,7 +699,7 @@ public class FragmentScan extends BaseFragment {
                     for (Map.Entry<String,BluetoothGatt> entry:instanceOFBluetoothGhatt.entrySet() ) {
                         if(entry.getValue()!=null){
                             BluetoothGatt ghatt=entry.getValue();
-                            ghatt.disconnect();3
+                            ghatt.disconnect();
                             ghatt.close();
                             ghatt=null;
                         }
