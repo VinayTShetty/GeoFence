@@ -249,7 +249,7 @@ public class FragmentSetting extends BaseFragment {
 
     @OnClick(R.id.ota_update)
     public void otaUpdateClick(){
-        System.out.println("OTA UPDATE CLICK");
+
     }
     @OnClick(R.id.reset_device)
     public void resetDevice(){

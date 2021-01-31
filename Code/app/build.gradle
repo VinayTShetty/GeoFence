@@ -103,4 +103,9 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
+    /**
+     * Adding implementation Depedency for DFU library.
+     */
+    implementation 'no.nordicsemi.android:dfu:1.11.0'
+
 }
