@@ -120,7 +120,7 @@ public class FragmentSetting extends BaseFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+            System.out.println("OPEN FILE LOFIC HERE");
         }else {
             askStoragePermission();
         }
@@ -290,9 +290,11 @@ public class FragmentSetting extends BaseFragment {
     private void checkPermissionGiven() {
         if (isAdded()) {
             if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                
+                /**
+                 * opening of the file logic here
+                 */
             } else {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, internalStorageReadPermissionRequestCode);
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, internalStorageReadPermissionRequestCode);
             }
         }
     }
