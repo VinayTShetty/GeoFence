@@ -35,6 +35,7 @@ import com.succorfish.geofence.interfaces.onAlertDialogCallBack;
 import com.succorfish.geofence.utility.Utility;
 
 import static com.succorfish.geofence.MainActivity.CONNECTED_BLE_ADDRESS;
+import static com.succorfish.geofence.MainActivity.START_ACTIVITY_REQUEST_CODE;
 import static com.succorfish.geofence.blecalculation.ResetDevice.resetDeviceFirmware;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class FragmentSetting extends BaseFragment {
     String connected_bleAddress="";
     DialogProvider dialogProvider;
     ResetDeviceInterface resetDeviceInterface;
-    public static final int START_ACTIVITY_REQUEST_CODE=101;
+
 
     @Override
     public void onAttach(@NonNull Context context) {

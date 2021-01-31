@@ -55,6 +55,7 @@ import com.succorfish.geofence.Fragment.FragmentSimConfiguration;
 import com.succorfish.geofence.Fragment.FragmentUARTConfiguration;
 import com.succorfish.geofence.Fragment.FragmentWifiConfiguration;
 import com.succorfish.geofence.MyServices.BluetoothLeService;
+import com.succorfish.geofence.MyServices.DfuService;
 import com.succorfish.geofence.RoomDataBaseEntity.ChatInfo;
 import com.succorfish.geofence.RoomDataBaseEntity.Geofence;
 import com.succorfish.geofence.RoomDataBaseEntity.GeofenceAlert;
@@ -105,6 +106,7 @@ import javax.crypto.NoSuchPaddingException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import no.nordicsemi.android.dfu.DfuServiceInitiator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -160,8 +162,10 @@ public class MainActivity extends AppCompatActivity implements
         ResetDeviceInterface,
         DeviceConnectDisconnect {
     private final static String TAG = MainActivity.class.getSimpleName();
+    public static final int START_ACTIVITY_REQUEST_CODE=101;
     private Unbinder unbinder;
     PassScanDeviceToActivity_interface  passScanDeviceToActivity_interface;
+
 
     /**
      * interface from Activity to Fragment
@@ -275,16 +279,33 @@ public class MainActivity extends AppCompatActivity implements
         mBluetoothLeService = null;
     }
 
+
+    private Uri fileuri;
+    private String filepath;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult: requestCode= "+requestCode);
-        Log.d(TAG, "onActivityResult: resultCode= "+resultCode);
+        filepath="";
+        fileuri=null;
+        if(requestCode==START_ACTIVITY_REQUEST_CODE&&resultCode==RESULT_OK){
+            fileuri=data.getData();
+            filepath=fileuri.getPath();
+        }
     }
 
 
-    public void startDFUUpdate(Uri fileStreamURI,String filepath,String bleAddress){
+    public void startDFUUpdate(Uri fileStreamURI,String fileStreamPath,String bleAddress,String deviceName){
+        final DfuServiceInitiator starter = new DfuServiceInitiator(bleAddress)
+                .setForeground(false)
+                .setDeviceName(deviceName);
+        starter.setPrepareDataObjectDelay(300L);
 
+        if (0 == DfuService.TYPE_AUTO)
+            starter.setZip(fileStreamURI, fileStreamPath);
+        else {
+            starter.setBinOrHex(0, fileStreamURI, fileStreamPath).setInitFile(fileStreamURI, fileStreamPath);
+        }
+        starter.start(this, DfuService.class);
     }
 
     @Override
