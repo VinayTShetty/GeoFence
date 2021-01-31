@@ -1,5 +1,6 @@
 package com.succorfish.geofence;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +32,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -273,6 +275,16 @@ public class MainActivity extends AppCompatActivity implements
         mBluetoothLeService = null;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+
+    public void startDFUUpdate(Uri fileStreamURI,String filepath,String bleAddress){
+
+    }
 
     @Override
     public void onBackPressed() {
@@ -2072,6 +2084,7 @@ public class MainActivity extends AppCompatActivity implements
         Log.d(TAG, "sendDataToBleDeviceWithoutEncryption: "+reasonToWriteData);
         mBluetoothLeService.sendDataToBleDevice(bleAddress,dataNeedToSend);
     }
+
 
 }
 

@@ -368,7 +368,7 @@
             android:paddingRight="@dimen/_5sdp"
             android:paddingBottom="@dimen/_10sdp"
             android:layout_marginRight="20dp"
-            android:text="OTA UPDATE"
+            android:text="OTA Update"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_12sdp" />
 

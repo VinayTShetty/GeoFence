@@ -35,9 +35,12 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/map_api_key" />
         <service android:name=".MyServices.BluetoothLeService"
-            android:enabled="true"
-            >
+            android:enabled="true">
         </service>
+        <service android:name=".MyServices.DfuService"
+            android:enabled="true">
+        </service>
+
     </application>
 
 </manifest>
