@@ -233,7 +233,7 @@ public class FragmentScan extends BaseFragment {
 
     private void location_allow_setting() {
         Utility utility = new Utility();
-        utility.showPermissionDialog(getActivity());
+        utility.showPermissionDialog(getActivity(),"Permission Denied For Scanning");
     }
 
     private void setUpRecycleView() {

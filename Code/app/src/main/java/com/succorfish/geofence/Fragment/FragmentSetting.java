@@ -1,7 +1,9 @@
 package com.succorfish.geofence.Fragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,8 @@ import com.succorfish.geofence.interfaceFragmentToActivity.PassBuzzerVolumeToDev
 import com.succorfish.geofence.interfaceFragmentToActivity.ResetDeviceInterface;
 import com.succorfish.geofence.interfaces.ResetDeviceDialogCallBack;
 import com.succorfish.geofence.interfaces.onAlertDialogCallBack;
+import com.succorfish.geofence.utility.Utility;
+
 import static com.succorfish.geofence.MainActivity.CONNECTED_BLE_ADDRESS;
 import static com.succorfish.geofence.blecalculation.ResetDevice.resetDeviceFirmware;
 
@@ -38,6 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 public class FragmentSetting extends BaseFragment {
+    private final int internalStorageReadPermissionRequest = 100;
     View fragmentSettingView;
     private Unbinder unbinder;
     MainActivity mainActivity;
@@ -109,6 +114,35 @@ public class FragmentSetting extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+        }else {
+            askStoragePermission();
+        }
+    }
+
+    private void askStoragePermission() {
+        if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            readExternalStoragePermisionToast();
+        } else {
+            externalStorageSetting();
+        }
+    }
+
+    private void externalStorageSetting() {
+        Utility utility = new Utility();
+        utility.showPermissionDialog(getActivity(),"Permission Denied for Reading File");
+    }
+
+    private void readExternalStoragePermisionToast() {
+        Utility utility = new Utility();
+        utility.showTaost(getActivity(), "Permission Denied", getResources().getDrawable(R.drawable.ic_location_not_enabled));
+    }
+
     @Override
     public String toString() {
         return FragmentSetting.class.getSimpleName();

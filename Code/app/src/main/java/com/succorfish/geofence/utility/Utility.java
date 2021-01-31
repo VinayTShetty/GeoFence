@@ -54,7 +54,7 @@ public class Utility {
        Toasty.normal(context, message, image).show();
    }
 
-   public void showPermissionDialog(final Context context){
+   public void showPermissionDialog(final Context context,String headerTitle){
        AlertDialog.Builder builder = new AlertDialog.Builder(context);
        builder.setCancelable(false)
                .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
@@ -75,7 +75,7 @@ public class Utility {
        //Creating dialog box
        AlertDialog alert = builder.create();
        //Setting the title manually
-       alert.setTitle("Permission Denied For Scanning");
+       alert.setTitle(headerTitle);
        alert.show();
    }
 
