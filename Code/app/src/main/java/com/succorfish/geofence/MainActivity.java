@@ -282,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private Uri fileuri;
     private String filepath;
+    private String fileExtensionType;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -290,6 +291,7 @@ public class MainActivity extends AppCompatActivity implements
         if(requestCode==START_ACTIVITY_REQUEST_CODE&&resultCode==RESULT_OK){
             fileuri=data.getData();
             filepath=fileuri.getPath();
+            fileExtensionType=filepath.substring(filepath.lastIndexOf("."));
         }
     }
 
