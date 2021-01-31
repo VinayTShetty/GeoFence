@@ -3,6 +3,7 @@ package com.succorfish.geofence.Fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -57,6 +58,7 @@ public class FragmentSetting extends BaseFragment {
     String connected_bleAddress="";
     DialogProvider dialogProvider;
     ResetDeviceInterface resetDeviceInterface;
+    public static final int START_ACTIVITY_REQUEST_CODE=101;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -120,7 +122,7 @@ public class FragmentSetting extends BaseFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            System.out.println("OPEN FILE LOFIC HERE");
+            openFilesStorage();
         }else {
             askStoragePermission();
         }
@@ -293,6 +295,7 @@ public class FragmentSetting extends BaseFragment {
                 /**
                  * opening of the file logic here
                  */
+                openFilesStorage();
             } else {
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, internalStorageReadPermissionRequestCode);
             }
@@ -315,4 +318,12 @@ public class FragmentSetting extends BaseFragment {
             }
         });
     }
+
+    private void openFilesStorage(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        getActivity().startActivityForResult(intent, START_ACTIVITY_REQUEST_CODE);
+    }
+
+
 }
