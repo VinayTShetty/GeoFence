@@ -231,8 +231,8 @@ public class MainActivity extends AppCompatActivity implements
         intializePreferenceInstance();
         intializeRetrofitInstance();
         intializeDialog();
-       replaceFragment(new FragmentScan(), null, null, false);
-     //   replaceFragment(new FragmentChatting(), null, null, false);
+    //   replaceFragment(new FragmentScan(), null, null, false);
+        replaceFragment(new FragmentSetting(), null, null, false);
     }
 
     private void intializeRoomDataBaseInstance() {
@@ -852,6 +852,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void deviceConfigurationDetails(String bleAddress, ArrayList<byte[]> configurationList) {
         if(ble_on_off()){
+
+
             if(mBluetoothLeService.checkDeviceIsAlreadyConnected(bleAddress)){
                 UNIVERSAL_ARRAY_PACEKT_LIST = new ArrayList<String>();
                 UNIVERSAL_ARRAY_PACEKT_LIST = getHexArrayList(configurationList);
@@ -2070,7 +2072,6 @@ public class MainActivity extends AppCompatActivity implements
         Log.d(TAG, "sendDataToBleDeviceWithoutEncryption: "+reasonToWriteData);
         mBluetoothLeService.sendDataToBleDevice(bleAddress,dataNeedToSend);
     }
-
 
 }
 

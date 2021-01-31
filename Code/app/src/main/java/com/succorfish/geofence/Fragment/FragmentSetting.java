@@ -81,7 +81,8 @@ public class FragmentSetting extends BaseFragment {
         return fragmentSettingView;
     }
     private void getConnectedBleAddress(){
-        connected_bleAddress=CONNECTED_BLE_ADDRESS;
+        //connected_bleAddress=CONNECTED_BLE_ADDRESS;
+        connected_bleAddress="EB:A9:F8:DD:D8:52";
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -244,6 +245,11 @@ public class FragmentSetting extends BaseFragment {
     @OnClick(R.id.wifi_configuration)
     public void wifiConfiguration(){
         mainActivity.replaceFragment(new FragmentWifiConfiguration(),null , null, false);
+    }
+
+    @OnClick(R.id.ota_update)
+    public void otaUpdateClick(){
+        System.out.println("OTA UPDATE CLICK");
     }
     @OnClick(R.id.reset_device)
     public void resetDevice(){
