@@ -292,6 +292,7 @@ public class MainActivity extends AppCompatActivity implements
             fileuri=data.getData();
             filepath=fileuri.getPath();
             fileExtensionType=filepath.substring(filepath.lastIndexOf("."));
+            Log.d(TAG, "onActivityResult: type=  "+fileExtensionType+"  path=  "+filepath+"\n   tupe = "+fileuri);
         }
     }
 
