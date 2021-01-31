@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,7 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 public class FragmentSetting extends BaseFragment {
-    private final int internalStorageReadPermissionRequest = 100;
+    private final int internalStorageReadPermissionRequestCode = 100;
     View fragmentSettingView;
     private Unbinder unbinder;
     MainActivity mainActivity;
@@ -283,8 +284,19 @@ public class FragmentSetting extends BaseFragment {
 
     @OnClick(R.id.ota_update)
     public void otaUpdateClick(){
-
+        checkPermissionGiven();
     }
+
+    private void checkPermissionGiven() {
+        if (isAdded()) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                
+            } else {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, internalStorageReadPermissionRequestCode);
+            }
+        }
+    }
+
     @OnClick(R.id.reset_device)
     public void resetDevice(){
         dialogProvider.resetDeviceDialog(new ResetDeviceDialogCallBack() {
