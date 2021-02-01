@@ -303,10 +303,15 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    public void startDFUUpdate(Uri fileStreamURI,String fileStreamPath,String bleAddress,String deviceName){
+    public void startDFUUpdate(Uri fileStreamURI,String fileStreamPath,String bleAddress){
+        String deviceNameFOR_DFU="";
+          BluetoothDevice bluetoothDevice=   mBluetoothLeService.getBluetoothDevice_From_BleAddress(bleAddress);
+          if(bluetoothDevice!=null){
+              deviceNameFOR_DFU=bluetoothDevice.getName();
+          }
         final DfuServiceInitiator starter = new DfuServiceInitiator(bleAddress)
                 .setForeground(false)
-                .setDeviceName(deviceName);
+                .setDeviceName(deviceNameFOR_DFU);
         starter.setPrepareDataObjectDelay(300L);
 
         if (0 == DfuService.TYPE_AUTO)

@@ -416,6 +416,17 @@ public class BluetoothLeService extends Service {
         return mutlipleBluetooDeviceGhatt;
     }
 
+    public BluetoothDevice getBluetoothDevice_From_BleAddress(String bleAddressForBluetoothDevice){
+       BluetoothDevice bluetoothDevice=null;
+       if(checkDeviceIsAlreadyConnected(bleAddressForBluetoothDevice)){
+           BluetoothDevice deviceFromBluetootAdapter=  mBluetoothAdapter.getRemoteDevice(bleAddressForBluetoothDevice);
+           bluetoothDevice=deviceFromBluetootAdapter;
+           return bluetoothDevice;
+       }else {
+           return null;
+       }
+    }
+
     /**
      * 133 status error logs
      * BluetoothLeService: onConnectionStateChange: STATUS= 133 NEW STATE= 0

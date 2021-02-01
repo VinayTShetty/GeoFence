@@ -356,12 +356,12 @@ public class FragmentSetting extends BaseFragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
                 /**
                  * Continue OTA update
                  */
                 if(ble_on_off()){
-                    mainActivity.startDFUUpdate(selectedFileURI,filepath,connected_bleAddress,"");
+                    mainActivity.startDFUUpdate(selectedFileURI,filepath,connected_bleAddress);
+                    dialog.dismiss();
                 }
 
             }
