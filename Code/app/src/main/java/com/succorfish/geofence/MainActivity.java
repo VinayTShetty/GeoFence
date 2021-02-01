@@ -2203,16 +2203,21 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void showDFUProgressDialog_change_label(String label,String detailedlabel){
-        if(hud!=null&&!hud.isShowing()){
-            hud.setDetailsLabel(detailedlabel);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(hud!=null&&hud.isShowing()){
+                    hud.setDetailsLabel(detailedlabel);
+                }else {
+                    hud.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                            .setLabel(label)
+                            .setDetailsLabel(detailedlabel)
+                            .setCancellable(false);
+                    hud.show();
+                }
+            }
+        });
 
-        }else {
-            hud.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                    .setLabel(label)
-                    .setDetailsLabel(detailedlabel)
-                    .setCancellable(false);
-            hud.show();
-        }
 
     }
 
