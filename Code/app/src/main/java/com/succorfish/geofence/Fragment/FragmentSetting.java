@@ -1,6 +1,7 @@
 package com.succorfish.geofence.Fragment;
 
 import android.Manifest;
+import android.bluetooth.BluetoothGatt;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.succorfish.geofence.BaseFragment.BaseFragment;
+import com.succorfish.geofence.LoginActivity;
 import com.succorfish.geofence.MainActivity;
 import com.succorfish.geofence.R;
 import com.succorfish.geofence.adapter.FragmentSettingTimeAdapter;
@@ -38,8 +41,10 @@ import com.succorfish.geofence.utility.Utility;
 import static com.succorfish.geofence.MainActivity.CONNECTED_BLE_ADDRESS;
 import static com.succorfish.geofence.MainActivity.START_ACTIVITY_REQUEST_CODE;
 import static com.succorfish.geofence.blecalculation.ResetDevice.resetDeviceFirmware;
+import static com.succorfish.geofence.utility.Utility.ble_on_off;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -262,6 +267,7 @@ public class FragmentSetting extends BaseFragment {
                     /**
                      * Pop up Dialog For OTA Update..
                      */
+                    OTA_updateConferm_YES_NO();
                 }
             }
         });
@@ -335,6 +341,31 @@ public class FragmentSetting extends BaseFragment {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         getActivity().startActivityForResult(intent, START_ACTIVITY_REQUEST_CODE);
+    }
+
+
+    private void OTA_updateConferm_YES_NO(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
+        builder.setTitle("OTA update ");
+        builder.setCancelable(false);
+        builder.setMessage("Are you sure ?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                /**
+                 * Continue OTA update
+                 */
+
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
 
