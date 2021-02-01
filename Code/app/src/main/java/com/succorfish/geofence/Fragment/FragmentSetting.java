@@ -27,6 +27,7 @@ import com.succorfish.geofence.R;
 import com.succorfish.geofence.adapter.FragmentSettingTimeAdapter;
 import com.succorfish.geofence.blecalculation.Blecalculation;
 import com.succorfish.geofence.dialog.DialogProvider;
+import com.succorfish.geofence.interfaceActivityToFragment.DFUFileSelectedValid_Invalid;
 import com.succorfish.geofence.interfaceActivityToFragment.GeoFenceDialogAlertShow;
 import com.succorfish.geofence.interfaceFragmentToActivity.PassBuzzerVolumeToDevice;
 import com.succorfish.geofence.interfaceFragmentToActivity.ResetDeviceInterface;
@@ -251,6 +252,16 @@ public class FragmentSetting extends BaseFragment {
                         }
                     });
                 } else {
+                }
+            }
+        });
+        mainActivity.setUpDFUFileSelectedValid_Invalid(new DFUFileSelectedValid_Invalid() {
+            @Override
+            public void SelecetedFileForDFU(boolean selectedFileType_true_false) {
+                if(selectedFileType_true_false){
+                    /**
+                     * Pop up Dialog For OTA Update..
+                     */
                 }
             }
         });

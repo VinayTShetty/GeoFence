@@ -73,6 +73,7 @@ import com.succorfish.geofence.dialog.DialogProvider;
 import com.succorfish.geofence.helper.PreferenceHelper;
 import com.succorfish.geofence.interfaceActivityToFragment.ChatDeliveryACK;
 import com.succorfish.geofence.interfaceActivityToFragment.ConnectionStatus;
+import com.succorfish.geofence.interfaceActivityToFragment.DFUFileSelectedValid_Invalid;
 import com.succorfish.geofence.interfaceActivityToFragment.GeoFenceDialogAlertShow;
 import com.succorfish.geofence.interfaceActivityToFragment.LiveRequestDataPassToFragment;
 import com.succorfish.geofence.interfaceActivityToFragment.OpenDialogToCheckDeviceName;
@@ -91,7 +92,6 @@ import com.succorfish.geofence.interfaceFragmentToActivity.WifiConfigurationPack
 import com.succorfish.geofence.interfaces.API;
 import com.succorfish.geofence.interfaces.onAlertDialogCallBack;
 import com.succorfish.geofence.utility.URL_helper;
-
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLOutput;
@@ -99,7 +99,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -150,7 +149,6 @@ import static com.succorfish.geofence.utility.Utility.getTimeStampMilliSecondd;
 import static com.succorfish.geofence.utility.Utility.get_TimeStamp_ArrayList;
 import static com.succorfish.geofence.utility.Utility.removePreviousZero;
 import static com.succorfish.geofence.utility.Utility.splitString;
-
 public class MainActivity extends AppCompatActivity implements
         PassBuzzerVolumeToDevice,
         MessageChatPacket,
@@ -165,8 +163,6 @@ public class MainActivity extends AppCompatActivity implements
     public static final int START_ACTIVITY_REQUEST_CODE=101;
     private Unbinder unbinder;
     PassScanDeviceToActivity_interface  passScanDeviceToActivity_interface;
-
-
     /**
      * interface from Activity to Fragment
      */
@@ -177,6 +173,7 @@ public class MainActivity extends AppCompatActivity implements
     LiveRequestDataPassToFragment liveRequestDataPassToFragment;
     PassChatObjectToFragment passChatObjectToFragment;
     PassConnectionStatusToFragment passConnectionStatusToFragment;
+    DFUFileSelectedValid_Invalid dfuFileSelectedValid_invalid;
     /**
      * interface from Activity to Fragment
      */
@@ -189,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements
     private boolean exit = false;
     private Handler scanHandler;
     // Stops scanning after 10 seconds.
-
     ArrayList<String> from_firmware_ID_TimeStamp;
     ArrayList<String> from_DataBase_ID_TimeStamp;
     ArrayList<String> from_firmware_ID_TimeStamp_A6_Packet = new ArrayList<String>();
@@ -220,7 +216,6 @@ public class MainActivity extends AppCompatActivity implements
      *  Incomming message packet.
      */
   private   IncommingMessagePacket incommingMessagePacket;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -288,11 +283,22 @@ public class MainActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         filepath="";
         fileuri=null;
+        fileExtensionType="";
         if(requestCode==START_ACTIVITY_REQUEST_CODE&&resultCode==RESULT_OK){
             fileuri=data.getData();
             filepath=fileuri.getPath();
             fileExtensionType=filepath.substring(filepath.lastIndexOf("."));
-            Log.d(TAG, "onActivityResult: type=  "+fileExtensionType+"  path=  "+filepath+"\n   tupe = "+fileuri);
+            Log.d(TAG, "onActivityResult: fileUri "+fileuri);
+            Log.d(TAG, "onActivityResult: filePath "+filepath);
+            Log.d(TAG, "onActivityResult: fileExtensiongType "+fileExtensionType);
+            if((filepath!=null)&&(filepath.length()>0)&&(fileuri!=null)&&(filepath!=null)&&(fileExtensionType.equalsIgnoreCase(".zip"))){
+                /**
+                 * Selected proper zip file formatt..
+                 */
+                if(dfuFileSelectedValid_invalid!=null){
+                    dfuFileSelectedValid_invalid.SelecetedFileForDFU(true);
+                }
+            }
         }
     }
 
@@ -564,6 +570,10 @@ public class MainActivity extends AppCompatActivity implements
         this.passConnectionStatusToFragment = locpassConnectionStatusToFragment;
     }
 
+    public void setUpDFUFileSelectedValid_Invalid(DFUFileSelectedValid_Invalid loc_dfuFileSelectedValid_invalid){
+        dfuFileSelectedValid_invalid=loc_dfuFileSelectedValid_invalid;
+    }
+
     public void interfaceImpleMainActivity() {
         setUpGeoFenceAlertDialogInterface(new GeoFenceDialogAlertShow() {
             @Override
@@ -613,6 +623,13 @@ public class MainActivity extends AppCompatActivity implements
         setupPassConnectionStatusToFragment(new PassConnectionStatusToFragment() {
             @Override
             public void connectDisconnect(String bleAddress, boolean connected_disconnected) {
+
+            }
+        });
+
+        setUpDFUFileSelectedValid_Invalid(new DFUFileSelectedValid_Invalid() {
+            @Override
+            public void SelecetedFileForDFU(boolean selectedFileType_true_false) {
 
             }
         });
