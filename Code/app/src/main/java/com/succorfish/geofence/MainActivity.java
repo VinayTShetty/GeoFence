@@ -338,52 +338,57 @@ public class MainActivity extends AppCompatActivity implements
 
         @Override
         public void onDfuProcessStarting(@NonNull String s) {
+            showDFUProgressDialog_change_label("OTA Update","Processing OTA update");
 
         }
 
         @Override
         public void onDfuProcessStarted(@NonNull String s) {
-
+            showDFUProgressDialog_change_label(null,"OTA Update Started");
         }
 
         @Override
         public void onEnablingDfuMode(@NonNull String s) {
-
+            showDFUProgressDialog_change_label(null,"Enabling DFU");
         }
 
         @Override
         public void onProgressChanged(@NonNull String s, int i, float v, float v1, int i1, int i2) {
-
+            showDFUProgressDialog_change_label(null,"Progressing DFU");
         }
 
         @Override
         public void onFirmwareValidating(@NonNull String s) {
-
+            showDFUProgressDialog_change_label(null,"Validating DFU");
         }
 
         @Override
         public void onDeviceDisconnecting(String s) {
-
+            showDFUProgressDialog_change_label(null,"Device DisConnecting");
         }
 
         @Override
         public void onDeviceDisconnected(@NonNull String s) {
-
+            showDFUProgressDialog_change_label(null,"Device Disconnected");
         }
 
         @Override
         public void onDfuCompleted(@NonNull String s) {
-
+            showDFUProgressDialog_change_label(null,"DFU Completed.");
+            cancelProgressDialog();
+            dialogProvider.errorDialog("DFU COMPLETED");
         }
 
         @Override
         public void onDfuAborted(@NonNull String s) {
-
+            cancelProgressDialog();
+            dialogProvider.errorDialog("DFU Aborted");
         }
 
         @Override
         public void onError(@NonNull String s, int i, int i1, String s1) {
-
+            cancelProgressDialog();
+            dialogProvider.errorDialog("DFU ERROR");
         }
     };
 
@@ -2195,6 +2200,20 @@ public class MainActivity extends AppCompatActivity implements
      //   System.out.println("Reason For Writing= "+reasonToWriteData);
         Log.d(TAG, "sendDataToBleDeviceWithoutEncryption: "+reasonToWriteData);
         mBluetoothLeService.sendDataToBleDevice(bleAddress,dataNeedToSend);
+    }
+
+    private void showDFUProgressDialog_change_label(String label,String detailedlabel){
+        if(hud!=null&&!hud.isShowing()){
+            hud.setDetailsLabel(detailedlabel);
+
+        }else {
+            hud.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setLabel(label)
+                    .setDetailsLabel(detailedlabel)
+                    .setCancellable(false);
+            hud.show();
+        }
+
     }
 
 
