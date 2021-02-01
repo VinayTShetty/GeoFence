@@ -1,5 +1,6 @@
 package com.succorfish.geofence;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -105,7 +106,9 @@ import javax.crypto.NoSuchPaddingException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import no.nordicsemi.android.dfu.DfuProgressListener;
 import no.nordicsemi.android.dfu.DfuServiceInitiator;
+import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -232,8 +235,8 @@ public class MainActivity extends AppCompatActivity implements
         intializePreferenceInstance();
         intializeRetrofitInstance();
         intializeDialog();
-    //   replaceFragment(new FragmentScan(), null, null, false);
-        replaceFragment(new FragmentSetting(), null, null, false);
+       replaceFragment(new FragmentScan(), null, null, false);
+      //  replaceFragment(new FragmentSetting(), null, null, false);
     }
 
     private void intializeRoomDataBaseInstance() {
@@ -251,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onResume();
         application_Visible_ToUser = false;
         registerReceiver(bluetootServiceRecieverData, makeGattUpdateIntentFilter());
+        DfuServiceListenerHelper.registerProgressListener(this, dfuProgressListener);
     }
 
     @Override
@@ -258,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onPause();
         application_Visible_ToUser = true;
         unregisterReceiver(bluetootServiceRecieverData);
+        DfuServiceListenerHelper.unregisterProgressListener(this, dfuProgressListener);
     }
 
     @Override
@@ -321,6 +326,67 @@ public class MainActivity extends AppCompatActivity implements
         }
         starter.start(this, DfuService.class);
     }
+    private final DfuProgressListener dfuProgressListener=new DfuProgressListener() {
+        @Override
+        public void onDeviceConnecting(@NonNull String s) {
+            System.out.println("DFU_TESTING onDeviceConnecting");
+        }
+
+        @Override
+        public void onDeviceConnected(@NonNull String s) {
+            System.out.println("DFU_TESTING onDeviceConnected");
+        }
+
+        @Override
+        public void onDfuProcessStarting(@NonNull String s) {
+            System.out.println("DFU_TESTING onDfuProcessStarting");
+        }
+
+        @Override
+        public void onDfuProcessStarted(@NonNull String s) {
+            System.out.println("DFU_TESTING onDfuProcessStarted");
+        }
+
+        @Override
+        public void onEnablingDfuMode(@NonNull String s) {
+            System.out.println("DFU_TESTING onEnablingDfuMode");
+        }
+
+        @Override
+        public void onProgressChanged(@NonNull String s, int i, float v, float v1, int i1, int i2) {
+            System.out.println("DFU_TESTING onProgressChanged");
+        }
+
+        @Override
+        public void onFirmwareValidating(@NonNull String s) {
+            System.out.println("DFU_TESTING onFirmwareValidating");
+        }
+
+        @Override
+        public void onDeviceDisconnecting(String s) {
+            System.out.println("DFU_TESTING onDeviceDisconnecting");
+        }
+
+        @Override
+        public void onDeviceDisconnected(@NonNull String s) {
+            System.out.println("DFU_TESTING onDeviceDisconnected");
+        }
+
+        @Override
+        public void onDfuCompleted(@NonNull String s) {
+            System.out.println("DFU_TESTING onDfuCompleted");
+        }
+
+        @Override
+        public void onDfuAborted(@NonNull String s) {
+            System.out.println("DFU_TESTING onDfuAborted");
+        }
+
+        @Override
+        public void onError(@NonNull String s, int i, int i1, String s1) {
+            System.out.println("DFU_TESTING onError");
+        }
+    };
 
     @Override
     public void onBackPressed() {
