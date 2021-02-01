@@ -329,62 +329,61 @@ public class MainActivity extends AppCompatActivity implements
     private final DfuProgressListener dfuProgressListener=new DfuProgressListener() {
         @Override
         public void onDeviceConnecting(@NonNull String s) {
-            System.out.println("DFU_TESTING onDeviceConnecting");
         }
 
         @Override
         public void onDeviceConnected(@NonNull String s) {
-            System.out.println("DFU_TESTING onDeviceConnected");
+
         }
 
         @Override
         public void onDfuProcessStarting(@NonNull String s) {
-            System.out.println("DFU_TESTING onDfuProcessStarting");
+
         }
 
         @Override
         public void onDfuProcessStarted(@NonNull String s) {
-            System.out.println("DFU_TESTING onDfuProcessStarted");
+
         }
 
         @Override
         public void onEnablingDfuMode(@NonNull String s) {
-            System.out.println("DFU_TESTING onEnablingDfuMode");
+
         }
 
         @Override
         public void onProgressChanged(@NonNull String s, int i, float v, float v1, int i1, int i2) {
-            System.out.println("DFU_TESTING onProgressChanged");
+
         }
 
         @Override
         public void onFirmwareValidating(@NonNull String s) {
-            System.out.println("DFU_TESTING onFirmwareValidating");
+
         }
 
         @Override
         public void onDeviceDisconnecting(String s) {
-            System.out.println("DFU_TESTING onDeviceDisconnecting");
+
         }
 
         @Override
         public void onDeviceDisconnected(@NonNull String s) {
-            System.out.println("DFU_TESTING onDeviceDisconnected");
+
         }
 
         @Override
         public void onDfuCompleted(@NonNull String s) {
-            System.out.println("DFU_TESTING onDfuCompleted");
+
         }
 
         @Override
         public void onDfuAborted(@NonNull String s) {
-            System.out.println("DFU_TESTING onDfuAborted");
+
         }
 
         @Override
         public void onError(@NonNull String s, int i, int i1, String s1) {
-            System.out.println("DFU_TESTING onError");
+
         }
     };
 
