@@ -98,8 +98,8 @@ public class FragmentSetting extends BaseFragment {
         return fragmentSettingView;
     }
     private void getConnectedBleAddress(){
-        //connected_bleAddress=CONNECTED_BLE_ADDRESS;
-        connected_bleAddress="EB:A9:F8:DD:D8:52";
+        connected_bleAddress=CONNECTED_BLE_ADDRESS;
+     //   connected_bleAddress="EB:A9:F8:DD:D8:52";
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
