@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements
                  * Selected proper zip file formatt..
                  */
                 if(dfuFileSelectedValid_invalid!=null){
-                    dfuFileSelectedValid_invalid.SelecetedFileForDFU(true);
+                    dfuFileSelectedValid_invalid.SelecetedFileForDFU(true,fileuri,filepath,fileExtensionType);
                 }
             }
         }
@@ -629,7 +629,7 @@ public class MainActivity extends AppCompatActivity implements
 
         setUpDFUFileSelectedValid_Invalid(new DFUFileSelectedValid_Invalid() {
             @Override
-            public void SelecetedFileForDFU(boolean selectedFileType_true_false) {
+            public void SelecetedFileForDFU(boolean selectedFileType_true_false,Uri selectedFileUri,String filepath,String fileExtensiongType) {
 
             }
         });

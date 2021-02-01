@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.succorfish.geofence.MainActivity;
 import com.succorfish.geofence.R;
 import com.succorfish.geofence.adapter.FragmentSettingTimeAdapter;
 import com.succorfish.geofence.blecalculation.Blecalculation;
+import com.succorfish.geofence.customObjects.CustBluetootDevices;
 import com.succorfish.geofence.dialog.DialogProvider;
 import com.succorfish.geofence.interfaceActivityToFragment.DFUFileSelectedValid_Invalid;
 import com.succorfish.geofence.interfaceActivityToFragment.GeoFenceDialogAlertShow;
@@ -262,15 +264,17 @@ public class FragmentSetting extends BaseFragment {
         });
         mainActivity.setUpDFUFileSelectedValid_Invalid(new DFUFileSelectedValid_Invalid() {
             @Override
-            public void SelecetedFileForDFU(boolean selectedFileType_true_false) {
+            public void SelecetedFileForDFU(boolean selectedFileType_true_false, Uri selectedFileURI, String filepath, String fileExtensionType) {
                 if(selectedFileType_true_false){
                     /**
                      * Pop up Dialog For OTA Update..
                      */
-                    OTA_updateConferm_YES_NO();
+                    OTA_updateConferm_YES_NO(selectedFileURI,filepath,fileExtensionType);
                 }
             }
         });
+
+
     }
     @OnClick(R.id.device_configuration)
     public void showDeviceConfiguratoinScreen(){
@@ -344,7 +348,7 @@ public class FragmentSetting extends BaseFragment {
     }
 
 
-    private void OTA_updateConferm_YES_NO(){
+    private void OTA_updateConferm_YES_NO(Uri selectedFileURI,String filepath,String fileExtensionType){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
         builder.setTitle("OTA update ");
         builder.setCancelable(false);
@@ -356,6 +360,9 @@ public class FragmentSetting extends BaseFragment {
                 /**
                  * Continue OTA update
                  */
+                if(ble_on_off()){
+                    mainActivity.startDFUUpdate(selectedFileURI,filepath,connected_bleAddress,"");
+                }
 
             }
         });
