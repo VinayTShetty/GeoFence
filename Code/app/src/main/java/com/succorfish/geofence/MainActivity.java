@@ -282,9 +282,6 @@ public class MainActivity extends AppCompatActivity implements
             fileuri=data.getData();
             filepath=fileuri.getPath();
             fileExtensionType=filepath.substring(filepath.lastIndexOf("."));
-            Log.d(TAG, "onActivityResult: fileUri "+fileuri);
-            Log.d(TAG, "onActivityResult: filePath "+filepath);
-            Log.d(TAG, "onActivityResult: fileExtensiongType "+fileExtensionType);
             if((filepath!=null)&&(filepath.length()>0)&&(fileuri!=null)&&(filepath!=null)&&(fileExtensionType.equalsIgnoreCase(".zip"))){
                 /**
                  * Selected proper zip file formatt..
