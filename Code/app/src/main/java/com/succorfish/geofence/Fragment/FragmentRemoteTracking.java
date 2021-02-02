@@ -159,7 +159,6 @@ public class FragmentRemoteTracking extends BaseFragment {
             public void onResponse(Call<String> call, Response<String> response) {
                     Gson gson = new Gson();
                     if (response.code() == 200 || response.isSuccessful()) {
-                        mVoVesselListTemp = new ArrayList<>();
                         System.out.println("response mVesselData---------" + response.body());
                         try {
                             Object json = new JSONTokener(response.body().toString()).nextValue();
@@ -170,12 +169,30 @@ public class FragmentRemoteTracking extends BaseFragment {
                                 TypeToken<List<VoVessel>> token = new TypeToken<List<VoVessel>>() {
                                 };
                                 List<VoVessel> mVoVesselListResponse = gson.fromJson(response.body(), token.getType());
-                                if (mVoVesselListResponse != null) {
-                                    if (mVoVesselListResponse.size() > 0) {
-                                        mVoVesselListTemp.addAll(mVoVesselListResponse);
-                                        fragmentRemoteTrackAdapter.notifyDataSetChanged();
-                                    }
+                                for(VoVessel voVessel:mVoVesselListResponse) {
+                                    mVoVesselListTemp.add(voVessel);
                                 }
+
+                                if(mVoVesselListTemp.size()>0){
+                                    mainActivity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            fragmentRemoteTrackAdapter.notifyDataSetChanged();
+                                            cancelProgressDialog();
+                                        }
+                                    });
+                                }
+                                /*if (mVoVesselListResponse != null) {
+                                        mVoVesselListTemp.addAll(mVoVesselListResponse);
+                                        mainActivity.runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                fragmentRemoteTrackAdapter.notifyDataSetChanged();
+                                            }
+                                        });
+
+
+                                }*/
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -191,6 +208,7 @@ public class FragmentRemoteTracking extends BaseFragment {
                         /**
                          * Show Server Eror.
                          */
+                        cancelProgressDialog();
                         dialogProvider.errorDialog("Server Eror");
                     }
             }

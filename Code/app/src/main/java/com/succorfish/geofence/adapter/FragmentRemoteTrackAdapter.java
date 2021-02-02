@@ -43,7 +43,8 @@ public class FragmentRemoteTrackAdapter extends RecyclerView.Adapter<FragmentRem
 
     @Override
     public int getItemCount() {
-        return voVesselArrayList.size();
+        System.out.println("---------------ISZE= "+voVesselArrayList.size());
+       return voVesselArrayList.size();
     }
 
     public class FragmentRemoteTrackingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
