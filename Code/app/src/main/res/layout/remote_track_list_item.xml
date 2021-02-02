@@ -12,12 +12,12 @@
         android:padding="@dimen/_15sdp"
         android:background="@color/colorBlack">
         <TextView
+            android:id="@+id/remote_track_list_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Asset name"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_18sdp"
-            >
+            android:textSize="@dimen/_18sdp">
         </TextView>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -55,6 +55,7 @@ import com.succorfish.geofence.Fragment.FragmentHistory;
 import com.succorfish.geofence.Fragment.FragmentIndustrySpecificConfig;
 import com.succorfish.geofence.Fragment.FragmentLiveTracking;
 import com.succorfish.geofence.Fragment.FragmentMap;
+import com.succorfish.geofence.Fragment.FragmentRemoteTracking;
 import com.succorfish.geofence.Fragment.FragmentScan;
 import com.succorfish.geofence.Fragment.FragmentServerConfiguration;
 import com.succorfish.geofence.Fragment.FragmentSetting;
@@ -292,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.home:
+                        replaceFragment(new FragmentRemoteTracking(), null, null, false);
                         break;
                     case R.id.remote_tracking:
                         break;
