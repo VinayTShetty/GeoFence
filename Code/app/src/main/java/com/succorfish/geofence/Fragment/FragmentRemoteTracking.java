@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.succorfish.geofence.BaseFragment.BaseFragment;
 import com.succorfish.geofence.CustomObjectsAPI.VoVessel;
 import com.succorfish.geofence.MainActivity;
@@ -41,6 +42,7 @@ public class FragmentRemoteTracking extends BaseFragment {
     MainActivity mainActivity;
     ArrayList<VoVessel> mVoVesselList = new ArrayList<>();
     private ArrayList<VoVessel> mVoVesselListTemp = new ArrayList<>();
+    private KProgressHUD hud;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -58,7 +60,24 @@ public class FragmentRemoteTracking extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentRemoteTrackingView = inflater.inflate(R.layout.fragment_remote_tracking, container, false);
         unbinder = ButterKnife.bind(this, fragmentRemoteTrackingView);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        intializeView();
+        return fragmentRemoteTrackingView;
+    }
+
+    private void intializeView(){
+        hud = KProgressHUD.create(getActivity());
+    }
+    private void showProgressDialog(String label) {
+        hud.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel(label);
+        hud.show();
+    }
+    private void cancelProgressDialog(){
+        if (hud != null) {
+            if (hud.isShowing()) {
+                hud.dismiss();
+            }
+        }
     }
 
     @Override
