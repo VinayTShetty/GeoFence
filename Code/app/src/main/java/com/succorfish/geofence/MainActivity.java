@@ -40,7 +40,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.RelativeLayout;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.succorfish.geofence.Fragment.FragmentBandConfiguration;
 import com.succorfish.geofence.Fragment.FragmentChatting;
@@ -161,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements
         WifiConfigurationPackets,
         SimConfigurationPackets,
         ResetDeviceInterface,
-        DeviceConnectDisconnect {
+        DeviceConnectDisconnect{
     private final static String TAG = MainActivity.class.getSimpleName();
     public static final int START_ACTIVITY_REQUEST_CODE=101;
     private Unbinder unbinder;
@@ -182,6 +185,8 @@ public class MainActivity extends AppCompatActivity implements
      */
     @BindView(R.id.bottom_navigation_layout)
     public RelativeLayout bottomRelativelayout;
+    @BindView(R.id.home_bottom_navigation)
+    BottomNavigationView bottomNavigationView;
     FragmentTransaction fragmentTransction;
     /**
      * Exit window.
@@ -232,6 +237,7 @@ public class MainActivity extends AppCompatActivity implements
         intializePreferenceInstance();
         intializeRetrofitInstance();
         intializeDialog();
+        onClickBottomNavigationView();
        replaceFragment(new FragmentScan(), null, null, false);
       //  replaceFragment(new FragmentSetting(), null, null, false);
     }
@@ -268,6 +274,23 @@ public class MainActivity extends AppCompatActivity implements
         unbinder.unbind();
         unbindService(serviceConnection);
         mBluetoothLeService = null;
+    }
+
+    private void onClickBottomNavigationView(){
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.home:
+                        System.out.println(" Home Clicked");
+                        break;
+                    case R.id.remote_tracking:
+                        System.out.println(" Remote Trcking ");
+                        break;
+                }
+                return true;
+            }
+        });
     }
     private Uri fileuri;
     private String filepath;
@@ -2194,11 +2217,7 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
         });
-
-
     }
-
-
 }
 
 
