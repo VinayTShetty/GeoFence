@@ -3,11 +3,11 @@
     <item
         android:id="@+id/page_1"
         android:enabled="true"
-        android:icon="@drawable/delivered_message_icon"
-        android:title="Message Delivered"/>
+        android:icon="@drawable/connect_device"
+        android:title="@string/BOTTOM_NAVIGATION_HOME"/>
     <item
         android:id="@+id/page_2"
         android:enabled="true"
-        android:icon="@drawable/delivered_message_icon"
-        android:title="Sucess"/>
+        android:icon="@drawable/live_location"
+        android:title="@string/BOTTOM_NAVIGATION_REMOTE_TRACKING"/>/>
 </menu>

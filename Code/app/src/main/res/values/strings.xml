@@ -114,5 +114,8 @@
     <string name="SCAN_STARTED">SCAN_STARTED</string>
     <string name="SCAN_STOPED">SCAN_STOPED</string>
 
+    <!--Bottom Navigation String-->
+    <string name="BOTTOM_NAVIGATION_HOME">Home</string>
+    <string name="BOTTOM_NAVIGATION_REMOTE_TRACKING">Remote Tracking</string>
 
 </resources>
