@@ -39,11 +39,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.succorfish.geofence.Fragment.FragmentBandConfiguration;
 import com.succorfish.geofence.Fragment.FragmentChatting;
@@ -96,6 +99,12 @@ import com.succorfish.geofence.interfaceFragmentToActivity.WifiConfigurationPack
 import com.succorfish.geofence.interfaces.API;
 import com.succorfish.geofence.interfaces.onAlertDialogCallBack;
 import com.succorfish.geofence.utility.URL_helper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLOutput;
@@ -112,6 +121,7 @@ import butterknife.Unbinder;
 import no.nordicsemi.android.dfu.DfuProgressListener;
 import no.nordicsemi.android.dfu.DfuServiceInitiator;
 import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -282,10 +292,8 @@ public class MainActivity extends AppCompatActivity implements
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.home:
-                        System.out.println(" Home Clicked");
                         break;
                     case R.id.remote_tracking:
-                        System.out.println(" Remote Trcking ");
                         break;
                 }
                 return true;
