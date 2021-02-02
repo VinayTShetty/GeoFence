@@ -120,4 +120,5 @@
 
     <!--Remote Tracking Fragment-->
     <string name="REMOTE_FRAGMET_TOOL_BAR_HEADER">Remote Tracking</string>
+    <string name="REMOTE_FRAGMET_TOOL_BAR_REFRESH">Refresh</string>
 </resources>
