@@ -38,6 +38,13 @@
                 android:alpha="0.5"
                 android:background="@color/colorInActiveMenu"
                 android:visibility="gone" />
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:menu="@menu/bottom_navigation_menu"
+                android:backgroundTint="@color/colorWhite"
+                android:layout_gravity="bottom">
+            </com.google.android.material.bottomnavigation.BottomNavigationView>
          </RelativeLayout>
       </RelativeLayout>
    </RelativeLayout>

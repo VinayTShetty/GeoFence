@@ -71,13 +71,11 @@ dependencies {
      * Link:-https://github.com/ybq/Android-SpinKit
      */
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
-
     /**
      * Google FireBase
      */
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
-
     /**
      * Progress Dialog
      * link:-https://github.com/Kaopiz/KProgressHUD
@@ -87,22 +85,18 @@ dependencies {
     /*FireaBase Crashlytics*/
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
     implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
-
     /**
      * Retrofit Implementation
      */
     implementation 'com.squareup.retrofit2:retrofit:2.7.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
     implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
-
-
     /**
      * Room DataBase implementation
      */
     def room_version = "2.2.6"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
-
     /**
      * Adding implementation Depedency for DFU library.
      */
