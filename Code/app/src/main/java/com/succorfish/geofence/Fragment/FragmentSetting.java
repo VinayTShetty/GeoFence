@@ -67,8 +67,6 @@ public class FragmentSetting extends BaseFragment {
     String connected_bleAddress="";
     DialogProvider dialogProvider;
     ResetDeviceInterface resetDeviceInterface;
-
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

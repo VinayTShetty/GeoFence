@@ -201,20 +201,17 @@ public class MainActivity extends AppCompatActivity implements
     private static String imeiNumberFomFirmware="";
     public static RoomDBHelper roomDBHelperInstance;
    private static ArrayList<String> UNIVERSAL_ARRAY_PACEKT_LIST=new ArrayList<String>();
-
     /**
      * Used to Send the Connected BLE Address to different fragment.
      */
     ArrayList<String> HexConverted_IncommingMessagePacket=new ArrayList<>();
     private static String incommingMessageForConcatenation="";
     public static String CONNECTED_BLE_ADDRESS = "";
-
     /**
      * Retrofit Implementation
      */
     public Retrofit mRetrofit_instance;
     public API mApiService;
-
     /**
      *  Incomming message packet.
      */
@@ -242,13 +239,10 @@ public class MainActivity extends AppCompatActivity implements
     private void intializeRoomDataBaseInstance() {
         roomDBHelperInstance = getRoomDBInstance(this);
     }
-
-
     @Override
     protected void onStart() {
         super.onStart();
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -256,7 +250,6 @@ public class MainActivity extends AppCompatActivity implements
         registerReceiver(bluetootServiceRecieverData, makeGattUpdateIntentFilter());
         DfuServiceListenerHelper.registerProgressListener(this, dfuProgressListener);
     }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -264,13 +257,11 @@ public class MainActivity extends AppCompatActivity implements
         unregisterReceiver(bluetootServiceRecieverData);
         DfuServiceListenerHelper.unregisterProgressListener(this, dfuProgressListener);
     }
-
     @Override
     protected void onStop() {
         super.onStop();
         application_Visible_ToUser = true;
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -278,8 +269,6 @@ public class MainActivity extends AppCompatActivity implements
         unbindService(serviceConnection);
         mBluetoothLeService = null;
     }
-
-
     private Uri fileuri;
     private String filepath;
     private String fileExtensionType;
@@ -303,6 +292,8 @@ public class MainActivity extends AppCompatActivity implements
                 if(dfuFileSelectedValid_invalid!=null){
                     dfuFileSelectedValid_invalid.SelecetedFileForDFU(true,fileuri,filepath,fileExtensionType);
                 }
+            }else{
+                dialogProvider.errorDialog("File Formatt Not Supported");
             }
         }
     }
