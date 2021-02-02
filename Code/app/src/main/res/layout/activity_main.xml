@@ -43,7 +43,8 @@
                 android:layout_height="wrap_content"
                 app:menu="@menu/bottom_navigation_menu"
                 android:layout_gravity="bottom"
-                android:background="@color/colorBlack">
+                android:background="@color/colorBlack"
+                app:itemIconTint="@color/bottom_navigation_selectors">
             </com.google.android.material.bottomnavigation.BottomNavigationView>
          </RelativeLayout>
       </RelativeLayout>
