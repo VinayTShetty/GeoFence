@@ -212,7 +212,6 @@ public class FragmentRemoteTracking extends BaseFragment {
                         dialogProvider.errorDialog("Server Eror");
                     }
             }
-
             @Override
             public void onFailure(Call<String> call, Throwable t) {
 

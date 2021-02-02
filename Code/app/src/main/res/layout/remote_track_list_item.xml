@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="Asset name"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_18sdp">
+            android:textSize="@dimen/_14sdp">
         </TextView>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -118,4 +118,6 @@
     <string name="BOTTOM_NAVIGATION_HOME">Home</string>
     <string name="BOTTOM_NAVIGATION_REMOTE_TRACKING">Remote Tracking</string>
 
+    <!--Remote Tracking Fragment-->
+    <string name="REMOTE_FRAGMET_TOOL_BAR_HEADER">Remote Tracking</string>
 </resources>
