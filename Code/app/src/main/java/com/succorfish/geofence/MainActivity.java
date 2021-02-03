@@ -291,11 +291,18 @@ public class MainActivity extends AppCompatActivity implements
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.mainActivity_container);
                 switch (menuItem.getItemId()) {
                     case R.id.home:
-                        replaceFragment(new FragmentRemoteTracking(), null, null, false);
+                        if (fragment.toString().equalsIgnoreCase(new FragmentRemoteTracking().toString())) {
+                            replaceFragment(new FragmentScan(),null,false);
+                        }
                         break;
                     case R.id.remote_tracking:
+                         fragment = getSupportFragmentManager().findFragmentById(R.id.mainActivity_container);
+                        if (fragment.toString().equalsIgnoreCase(new FragmentScan().toString())) {
+                            replaceFragment(new FragmentRemoteTracking(),null,false);
+                        }
                         break;
                 }
                 return true;
@@ -455,6 +462,8 @@ public class MainActivity extends AppCompatActivity implements
             replaceFragment(new FragmentSimConfiguration(), null, null, false);
         } else if (fragment.toString().equalsIgnoreCase(new FragmentLiveTracking().toString())) {
             replaceFragment(new FragmentScan(), null, null, false);
+        }else if(fragment.toString().equalsIgnoreCase(new FragmentRemoteTracking().toString())){
+            replaceFragment(new FragmentScan(),null,false);
         }
     }
 
@@ -636,6 +645,18 @@ public class MainActivity extends AppCompatActivity implements
             sendBundle.putString(String_Tag, data_TobePassed);
             fragment.setArguments(sendBundle);
         }
+        fragmentTransction.commit();
+    }
+
+
+    public void replaceFragment(Fragment fragment,Bundle bundle,boolean addtoBackStack){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentTransction = fragmentManager.beginTransaction();
+        if (addtoBackStack) {
+            fragmentTransction.addToBackStack(fragment.toString());
+        }
+        fragment.setArguments(bundle);
+        fragmentTransction.replace(R.id.mainActivity_container, fragment, fragment.toString());
         fragmentTransction.commit();
     }
 

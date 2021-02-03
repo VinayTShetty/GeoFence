@@ -34,11 +34,11 @@
                 android:text="@string/REMOTE_FRAGMET_TOOL_BAR_HEADER"
                 android:textColor="@color/colorWhite"
                 android:textAlignment="center"
-                android:textStyle="bold"
                 android:gravity="center"
                 android:textSize="@dimen/_15sdp">
             </TextView>
             <TextView
+                android:id="@+id/refresh_fragmentRemoteTracking"
                 android:layout_width="0dp"
                 android:layout_weight="0.2"
                 android:layout_height="match_parent"
@@ -46,9 +46,7 @@
                 android:textColor="@color/colorWhite"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:textSize="@dimen/_12sdp"
-                android:textStyle="bold"
-                >
+                android:textSize="@dimen/_12sdp">
             </TextView>
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>

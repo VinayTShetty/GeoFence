@@ -36,6 +36,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -131,6 +132,26 @@ public class FragmentRemoteTracking extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
+    @Override
+    public String toString() {
+        return FragmentLiveTracking.class.getSimpleName();
+    }
+
+    @OnClick(R.id.fragmentRemoteTracking_backArrow)
+    public void fragmentRemoteTrackingBackArrow(){
+        mainActivity.onBackPressed();
+    }
+
+    @OnClick(R.id.refresh_fragmentRemoteTracking)
+    public void refreshOnClickButtonPress(){
+        mVoVesselListTemp.clear();
+        fragmentRemoteTrackAdapter.notifyDataSetChanged();
+        if(haveInternet(getActivity())){
+            getVesselAssetList();
+        }else {
+            dialogProvider.errorDialog("No Internet");
+        }
+    }
 
     private void setUpRecycleView() {
         fragmentRemoteTrackAdapter = new FragmentRemoteTrackAdapter(mVoVesselListTemp);
@@ -182,17 +203,6 @@ public class FragmentRemoteTracking extends BaseFragment {
                                         }
                                     });
                                 }
-                                /*if (mVoVesselListResponse != null) {
-                                        mVoVesselListTemp.addAll(mVoVesselListResponse);
-                                        mainActivity.runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                fragmentRemoteTrackAdapter.notifyDataSetChanged();
-                                            }
-                                        });
-
-
-                                }*/
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
