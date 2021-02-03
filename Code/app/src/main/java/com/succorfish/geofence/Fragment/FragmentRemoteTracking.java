@@ -134,7 +134,7 @@ public class FragmentRemoteTracking extends BaseFragment {
     }
     @Override
     public String toString() {
-        return FragmentLiveTracking.class.getSimpleName();
+        return FragmentRemoteTracking.class.getSimpleName();
     }
 
     @OnClick(R.id.fragmentRemoteTracking_backArrow)

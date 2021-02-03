@@ -303,6 +303,7 @@ public class MainActivity extends AppCompatActivity implements
                         if (fragment.toString().equalsIgnoreCase(new FragmentScan().toString())) {
                             replaceFragment(new FragmentRemoteTracking(),null,false);
                         }
+
                         break;
                 }
                 return true;
@@ -463,6 +464,7 @@ public class MainActivity extends AppCompatActivity implements
         } else if (fragment.toString().equalsIgnoreCase(new FragmentLiveTracking().toString())) {
             replaceFragment(new FragmentScan(), null, null, false);
         }else if(fragment.toString().equalsIgnoreCase(new FragmentRemoteTracking().toString())){
+            bottomNavigationView.setSelectedItemId(R.id.home);
             replaceFragment(new FragmentScan(),null,false);
         }
     }
