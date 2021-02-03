@@ -88,11 +88,15 @@ public class FragmentIndustrySpecificConfig extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentIndustrySpecificConfigView = inflater.inflate(R.layout.fragment_industryspecific_configuration, container, false);
         unbinder = ButterKnife.bind(this, fragmentIndustrySpecificConfigView);
+        bottomLayoutVisibility(false);
         interfaceIntialization();
         getConnectedBleAddress();
         return fragmentIndustrySpecificConfigView;
     }
 
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(true);
+    }
     private void getConnectedBleAddress(){
         connectedBleAddress=CONNECTED_BLE_ADDRESS;
     }

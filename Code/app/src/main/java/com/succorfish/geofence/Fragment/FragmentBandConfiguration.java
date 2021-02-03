@@ -52,7 +52,12 @@ public class FragmentBandConfiguration extends BaseFragment {
         unbinder = ButterKnife.bind(this, fragmentBandConfugurationView);
         getConnectedBleAddress();
         addAllbuttonToList();
+        bottomLayoutVisibility(false);
         return fragmentBandConfugurationView;
+    }
+
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(true);
     }
 
     @Override

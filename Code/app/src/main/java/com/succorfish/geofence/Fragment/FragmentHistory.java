@@ -61,6 +61,7 @@ public class FragmentHistory extends BaseFragment {
         fragmentHistoryView = inflater.inflate(R.layout.fragment_history, container, false);
         unbinder = ButterKnife.bind(this, fragmentHistoryView);
         historyReload_ImageButtom=(Button)fragmentHistoryView.findViewById(R.id.history_reload);
+        bottomLayoutVisibility(false);
         intializeViews();
         histroyRelaodImageButtonClick();
         loadHisttoryList();
@@ -68,8 +69,10 @@ public class FragmentHistory extends BaseFragment {
         historyItemClick();
         intializeDialog();
         geoFenceAlertImplementation();
-
         return fragmentHistoryView;
+    }
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(true);
     }
 
     private void histroyRelaodImageButtonClick(){

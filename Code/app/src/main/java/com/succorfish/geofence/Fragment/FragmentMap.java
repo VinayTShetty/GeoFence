@@ -76,6 +76,7 @@ public class FragmentMap extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentMapView = inflater.inflate(R.layout.fragment_map, container, false);
         unbinder = ButterKnife.bind(this, fragmentMapView);
+        bottomLayoutVisibility(false);
         intializeView();
         Bundle bundle = this.getArguments();
         if (bundle != null && bundle.containsKey(new FragmentMap().toString())) {
@@ -94,6 +95,10 @@ public class FragmentMap extends BaseFragment {
         geoFenceAlertImplementation();
         showProgressDialog();
         return fragmentMapView;
+    }
+
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(true);
     }
 
     private void makeNOtificationTagRead() {

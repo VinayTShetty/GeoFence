@@ -159,10 +159,14 @@ public class FragmentDeviceConfiguration extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentDeviceConfigurationView = inflater.inflate(R.layout.fragment_device_configuration, container, false);
         unbinder = ButterKnife.bind(this, fragmentDeviceConfigurationView);
+        bottomLayoutVisibility(false);
         interfaceIntialization();
         getConnectedBleAddress();
-
         return fragmentDeviceConfigurationView;
+    }
+
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(true);
     }
     private void interfaceIntialization(){
         deviceConfigurationPackets=(DeviceConfigurationPackets) getActivity();

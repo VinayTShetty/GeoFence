@@ -59,11 +59,18 @@ public class FragmentServerConfiguration extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentServerConfigurationView = inflater.inflate(R.layout.fragment_server_configuration, container, false);
         unbinder = ButterKnife.bind(this, fragmentServerConfigurationView);
+        bottomLayoutVisibility(false);
         interfaceIntialization();
         getConnectedBleAddress();
         intializeDialog();
         return fragmentServerConfigurationView;
     }
+
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(true);
+    }
+
+
     private void intializeDialog() {
         dialogProvider = new DialogProvider(getActivity());
     }

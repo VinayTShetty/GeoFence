@@ -73,11 +73,16 @@ public class FragmentLiveTracking extends BaseFragment {
         fragmentLiveTrackingView = inflater.inflate(R.layout.fragment_livetracking, container, false);
         unbinder = ButterKnife.bind(this, fragmentLiveTrackingView);
         intializeView();
+        bottomLayoutVisibility(false);
         intializeCounter();
         getConnectedBleAddress();
         setUpMap(fragmentLiveTrackingView, savedInstanceState);
         interfaceImplementation_CallBack();
         return fragmentLiveTrackingView;
+    }
+
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(true);
     }
 
     private void intializeCounter() {

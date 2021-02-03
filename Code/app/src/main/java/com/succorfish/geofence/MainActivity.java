@@ -42,6 +42,7 @@ import android.os.IBinder;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -466,6 +467,14 @@ public class MainActivity extends AppCompatActivity implements
         }else if(fragment.toString().equalsIgnoreCase(new FragmentRemoteTracking().toString())){
             bottomNavigationView.setSelectedItemId(R.id.home);
             replaceFragment(new FragmentScan(),null,false);
+        }
+    }
+
+    public void hideBottomLayout(boolean result){
+        if(result){
+            bottomRelativelayout.setVisibility(View.VISIBLE);
+        }else {
+            bottomRelativelayout.setVisibility(View.INVISIBLE);
         }
     }
 

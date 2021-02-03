@@ -56,12 +56,18 @@ public class FragmentUARTConfiguration extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmetnUARTconfigurationView = inflater.inflate(R.layout.fragment_uart_configuration, container, false);
         unbinder = ButterKnife.bind(this, fragmetnUARTconfigurationView);
+        bottomLayoutVisibility(false);
         load_UARTlist();
         getConnectedBleAddress();
         setUpRecycleView();
         UARTitemClick();
         return fragmetnUARTconfigurationView;
     }
+
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(true);
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

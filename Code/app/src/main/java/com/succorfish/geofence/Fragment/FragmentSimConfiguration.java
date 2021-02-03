@@ -73,6 +73,7 @@ public class FragmentSimConfiguration extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentSimConfigurationView = inflater.inflate(R.layout.fragment_sim_configuration, container, false);
         unbinder = ButterKnife.bind(this, fragmentSimConfigurationView);
+        bottomLayoutVisibility(false);
         addMapValuesForComparision();
         getConnectedBleAddress();
         setTextUART();
@@ -80,6 +81,10 @@ public class FragmentSimConfiguration extends BaseFragment {
         interfaceIntialization();
         showSimSelectedUI_IfuserAlreadySelected();
         return fragmentSimConfigurationView;
+    }
+
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(true);
     }
 
     private void getConnectedBleAddress(){

@@ -89,6 +89,7 @@ public class FragmentChatting extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentChattingView = inflater.inflate(R.layout.fragment_chatting, container, false);
         unbinder = ButterKnife.bind(this, fragmentChattingView);
+        bottomLayoutVisibility(false);
         getConnectedBleAddress();
         interfaceIntialization();
         intializeDialog();
@@ -98,6 +99,9 @@ public class FragmentChatting extends BaseFragment {
         interfaceImplementation_CallBack();
         longClick();
         return fragmentChattingView;
+    }
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(true);
     }
 
     private void interfaceIntialization() {

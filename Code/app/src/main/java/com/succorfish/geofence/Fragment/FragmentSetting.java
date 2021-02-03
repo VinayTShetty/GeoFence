@@ -88,6 +88,7 @@ public class FragmentSetting extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentSettingView=inflater.inflate(R.layout.fragment_setting,container,false);
         unbinder= ButterKnife.bind(this,fragmentSettingView);
+        bottomLayoutVisibility(false);
         bottomSheetfragmentbehaviour =BottomSheetBehavior.from(relativeLayoutBottomSheet);
         getConnectedBleAddress();
         intializeDialog();
@@ -95,6 +96,11 @@ public class FragmentSetting extends BaseFragment {
         geoFenceAlertImplementation();
         return fragmentSettingView;
     }
+
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(true);
+    }
+
     private void getConnectedBleAddress(){
         connected_bleAddress=CONNECTED_BLE_ADDRESS;
      //   connected_bleAddress="EB:A9:F8:DD:D8:52";

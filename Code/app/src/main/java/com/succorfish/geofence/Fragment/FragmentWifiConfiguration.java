@@ -69,9 +69,14 @@ public class FragmentWifiConfiguration extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentWifiConfigurationView = inflater.inflate(R.layout.fragment_wifi_configuration, container, false);
         unbinder = ButterKnife.bind(this, fragmentWifiConfigurationView);
+        bottomLayoutVisibility(false);
         interfaceIntialization();
         getConnectedBleAddress();
         return fragmentWifiConfigurationView;
+    }
+
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(true);
     }
 
     private void interfaceIntialization() {
