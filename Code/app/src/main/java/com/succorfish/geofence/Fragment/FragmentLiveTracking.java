@@ -82,7 +82,7 @@ public class FragmentLiveTracking extends BaseFragment {
     }
 
     private void bottomLayoutVisibility(boolean hide_true_unhide_false){
-        mainActivity.hideBottomLayout(true);
+        mainActivity.hideBottomLayout(hide_true_unhide_false);
     }
 
     private void intializeCounter() {

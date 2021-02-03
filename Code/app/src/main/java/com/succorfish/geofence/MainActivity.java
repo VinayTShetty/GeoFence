@@ -473,8 +473,9 @@ public class MainActivity extends AppCompatActivity implements
     public void hideBottomLayout(boolean result){
         if(result){
             bottomRelativelayout.setVisibility(View.VISIBLE);
+
         }else {
-            bottomRelativelayout.setVisibility(View.INVISIBLE);
+            bottomRelativelayout.setVisibility(View.GONE);
         }
     }
 

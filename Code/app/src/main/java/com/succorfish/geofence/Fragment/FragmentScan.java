@@ -101,6 +101,7 @@ public class FragmentScan extends BaseFragment {
         fragmenScanView = inflater.inflate(R.layout.fragment_scan, container, false);
         unbinder = ButterKnife.bind(this, fragmenScanView);
         mtextViewCountNotification = (TextView) fragmenScanView.findViewById(R.id.notificaiton_count);
+        bottomLayoutVisibility(true);
         loadDeviceTableData();
         intializeView();
         checkPermissionGiven();
@@ -110,10 +111,12 @@ public class FragmentScan extends BaseFragment {
         ItemClickonDevice();
         intializeDialog();
         geoFenceAlertImplementation();
-  //      addConnectedDevice(); // Remove
         getListOfConnectedDevices();
-    //    addNotification();
         return fragmenScanView;
+    }
+
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(hide_true_unhide_false);
     }
 
     private void interfaceIntialization(){

@@ -72,6 +72,7 @@ public class FragmentRemoteTracking extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentRemoteTrackingView = inflater.inflate(R.layout.fragment_remote_tracking, container, false);
         unbinder = ButterKnife.bind(this, fragmentRemoteTrackingView);
+        bottomLayoutVisibility(true);
         intializeView();
         intilializeDialogProvider();
         setUpRecycleView();
@@ -81,6 +82,9 @@ public class FragmentRemoteTracking extends BaseFragment {
             dialogProvider.errorDialog("NO Internet");
         }
         return fragmentRemoteTrackingView;
+    }
+    private void bottomLayoutVisibility(boolean hide_true_unhide_false){
+        mainActivity.hideBottomLayout(hide_true_unhide_false);
     }
 
     private void intializeView(){
