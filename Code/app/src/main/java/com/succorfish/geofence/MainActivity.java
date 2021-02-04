@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.Manifest;
-import android.app.Activity;
 import android.app.KeyguardManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -39,15 +38,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.ArrayMap;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.succorfish.geofence.Fragment.FragmentBandConfiguration;
 import com.succorfish.geofence.Fragment.FragmentChatting;
@@ -56,7 +52,7 @@ import com.succorfish.geofence.Fragment.FragmentHistory;
 import com.succorfish.geofence.Fragment.FragmentIndustrySpecificConfig;
 import com.succorfish.geofence.Fragment.FragmentLiveTracking;
 import com.succorfish.geofence.Fragment.FragmentMap;
-import com.succorfish.geofence.Fragment.FragmentRemoteTracking;
+import com.succorfish.geofence.Fragment.FragmentRemoteTrackingList;
 import com.succorfish.geofence.Fragment.FragmentScan;
 import com.succorfish.geofence.Fragment.FragmentServerConfiguration;
 import com.succorfish.geofence.Fragment.FragmentSetting;
@@ -102,14 +98,8 @@ import com.succorfish.geofence.interfaces.API;
 import com.succorfish.geofence.interfaces.onAlertDialogCallBack;
 import com.succorfish.geofence.utility.URL_helper;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -123,7 +113,6 @@ import butterknife.Unbinder;
 import no.nordicsemi.android.dfu.DfuProgressListener;
 import no.nordicsemi.android.dfu.DfuServiceInitiator;
 import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -157,7 +146,6 @@ import static com.succorfish.geofence.encryption.Encryption.encryptData;
 import static com.succorfish.geofence.utility.RetrofitHelperClass.getClientWithAutho;
 import static com.succorfish.geofence.utility.RetrofitHelperClass.haveInternet;
 import static com.succorfish.geofence.utility.Utility.ble_on_off;
-import static com.succorfish.geofence.utility.Utility.getBluetoothAdapter;
 import static com.succorfish.geofence.utility.Utility.getCurrenTimeStamp;
 import static com.succorfish.geofence.utility.Utility.getDateTime;
 import static com.succorfish.geofence.utility.Utility.getDateWithtime;
@@ -295,14 +283,14 @@ public class MainActivity extends AppCompatActivity implements
                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.mainActivity_container);
                 switch (menuItem.getItemId()) {
                     case R.id.home:
-                        if (fragment.toString().equalsIgnoreCase(new FragmentRemoteTracking().toString())) {
+                        if (fragment.toString().equalsIgnoreCase(new FragmentRemoteTrackingList().toString())) {
                             replaceFragment(new FragmentScan(),null,false);
                         }
                         break;
                     case R.id.remote_tracking:
                          fragment = getSupportFragmentManager().findFragmentById(R.id.mainActivity_container);
                         if (fragment.toString().equalsIgnoreCase(new FragmentScan().toString())) {
-                            replaceFragment(new FragmentRemoteTracking(),null,false);
+                            replaceFragment(new FragmentRemoteTrackingList(),null,false);
                         }
 
                         break;
@@ -464,7 +452,7 @@ public class MainActivity extends AppCompatActivity implements
             replaceFragment(new FragmentSimConfiguration(), null, null, false);
         } else if (fragment.toString().equalsIgnoreCase(new FragmentLiveTracking().toString())) {
             replaceFragment(new FragmentScan(), null, null, false);
-        }else if(fragment.toString().equalsIgnoreCase(new FragmentRemoteTracking().toString())){
+        }else if(fragment.toString().equalsIgnoreCase(new FragmentRemoteTrackingList().toString())){
             bottomNavigationView.setSelectedItemId(R.id.home);
             replaceFragment(new FragmentScan(),null,false);
         }
@@ -473,7 +461,6 @@ public class MainActivity extends AppCompatActivity implements
     public void hideBottomLayout(boolean result){
         if(result){
             bottomRelativelayout.setVisibility(View.VISIBLE);
-
         }else {
             bottomRelativelayout.setVisibility(View.GONE);
         }
@@ -2261,6 +2248,10 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
     }
+    /**
+     *
+     * Clean code Geofence
+     */
 }
 
 

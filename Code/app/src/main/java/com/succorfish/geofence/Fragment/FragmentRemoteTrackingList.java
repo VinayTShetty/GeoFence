@@ -1,8 +1,6 @@
 package com.succorfish.geofence.Fragment;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.ArrayMap;
 import android.view.LayoutInflater;
@@ -21,7 +19,6 @@ import com.succorfish.geofence.BaseFragment.BaseFragment;
 import com.succorfish.geofence.CustomObjectsAPI.VoVessel;
 import com.succorfish.geofence.MainActivity;
 import com.succorfish.geofence.R;
-import com.succorfish.geofence.adapter.FragmentHistoryAdapter;
 import com.succorfish.geofence.adapter.FragmentRemoteTrackAdapter;
 import com.succorfish.geofence.dialog.DialogProvider;
 
@@ -45,7 +42,7 @@ import retrofit2.Response;
 
 import static com.succorfish.geofence.utility.RetrofitHelperClass.haveInternet;
 
-public class FragmentRemoteTracking extends BaseFragment {
+public class FragmentRemoteTrackingList extends BaseFragment {
     View fragmentRemoteTrackingView;
     private Unbinder unbinder;
     MainActivity mainActivity;
@@ -76,12 +73,32 @@ public class FragmentRemoteTracking extends BaseFragment {
         intializeView();
         intilializeDialogProvider();
         setUpRecycleView();
+        onClickAssetname();
         if (haveInternet(getActivity())) {
             getVesselAssetList();
         }else {
             dialogProvider.errorDialog("NO Internet");
         }
         return fragmentRemoteTrackingView;
+    }
+
+    private void onClickAssetname(){
+        fragmentRemoteTrackAdapter.setOnItemClickListner(new FragmentRemoteTrackAdapter.RemoteTrackingClickItemInterfcae() {
+            @Override
+            public void clickOnAssetName(VoVessel voVessel, int ItemSlected) {
+         String deviecId=voVessel.getDeviceId();
+                if((deviecId!=null)&&(deviecId.length()>1)){
+                    /**
+                     * Call the Device ID API and replace the new Fragment.
+                     */
+                    if(haveInternet(getActivity())){
+                        Bundle bundle=new Bundle();
+                        bundle.putString(FragmentRemoteTrackingList.class.getName(),""+deviecId);
+                        mainActivity.replaceFragment(new FragmentRemoteTrackingMap(),bundle,false);
+                    }
+                }
+            }
+        });
     }
     private void bottomLayoutVisibility(boolean hide_true_unhide_false){
         mainActivity.hideBottomLayout(hide_true_unhide_false);
@@ -138,7 +155,7 @@ public class FragmentRemoteTracking extends BaseFragment {
     }
     @Override
     public String toString() {
-        return FragmentRemoteTracking.class.getSimpleName();
+        return FragmentRemoteTrackingList.class.getSimpleName();
     }
 
     @OnClick(R.id.fragmentRemoteTracking_backArrow)
