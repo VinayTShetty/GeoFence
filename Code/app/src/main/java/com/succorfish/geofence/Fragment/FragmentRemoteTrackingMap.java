@@ -57,6 +57,7 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
     GoogleMap fgragmentRemoteTrackinggoogleMap;
     String deviceIdToFetchForLatLong=null;
     final Handler handler = new Handler();
+    private Handler RemoteTrackingHandler = new Handler();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -114,6 +115,7 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
                                     double longitude=Double.parseDouble(assetDeatil.getLng());
 //                                    displayLocationInMap(latitude,longitude);
                                     showUpdatedMarkerInMap(latitude,longitude);
+                                    handler.postDelayed(remoteTrackingRunnable, 60000);
                                 }
                             }
                         } else {
@@ -280,4 +282,12 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
     public String toString() {
         return FragmentRemoteTrackingMap.class.getSimpleName();
     }
+
+    private Runnable remoteTrackingRunnable = new Runnable() {
+        @Override
+        public void run() {
+            latLongAPI();
+            handler.postDelayed(this, 60000);
+        }
+    };
 }
