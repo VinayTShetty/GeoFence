@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,7 +38,9 @@ import com.succorfish.geofence.R;
 import java.util.Calendar;
 import java.util.Locale;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +57,7 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
     GoogleMap fgragmentRemoteTrackinggoogleMap;
     String deviceIdToFetchForLatLong=null;
     final Handler handler = new Handler();
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -228,6 +232,11 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
             }
         });
 
+    }
+
+    @OnClick(R.id.fragment_remote_tracking_back)
+    public void backPressImageButton(){
+        mainActivity.onBackPressed();
     }
 
     @Override

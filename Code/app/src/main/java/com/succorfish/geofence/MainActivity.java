@@ -53,6 +53,7 @@ import com.succorfish.geofence.Fragment.FragmentIndustrySpecificConfig;
 import com.succorfish.geofence.Fragment.FragmentLiveTracking;
 import com.succorfish.geofence.Fragment.FragmentMap;
 import com.succorfish.geofence.Fragment.FragmentRemoteTrackingList;
+import com.succorfish.geofence.Fragment.FragmentRemoteTrackingMap;
 import com.succorfish.geofence.Fragment.FragmentScan;
 import com.succorfish.geofence.Fragment.FragmentServerConfiguration;
 import com.succorfish.geofence.Fragment.FragmentSetting;
@@ -455,6 +456,9 @@ public class MainActivity extends AppCompatActivity implements
         }else if(fragment.toString().equalsIgnoreCase(new FragmentRemoteTrackingList().toString())){
             bottomNavigationView.setSelectedItemId(R.id.home);
             replaceFragment(new FragmentScan(),null,false);
+        }else if(fragment.toString().equalsIgnoreCase(new FragmentRemoteTrackingMap().toString())){
+            bottomNavigationView.setSelectedItemId(R.id.remote_tracking);
+            replaceFragment(new FragmentRemoteTrackingList(),null,false);
         }
     }
 
