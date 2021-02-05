@@ -17,4 +17,7 @@ public interface API {
     Call<LoginData> userLoginAPI();
     @POST("asset/search")
     Call<String> getAllAssetList(@Query("view") String param1, @Body RequestBody params);
+    @GET("waypoint/getLatest/{id}")
+    Call<String> getLatLongOfAsset(@Path("id") String id);
+
 }

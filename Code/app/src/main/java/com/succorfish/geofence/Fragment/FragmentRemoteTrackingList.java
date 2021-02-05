@@ -88,14 +88,10 @@ public class FragmentRemoteTrackingList extends BaseFragment {
             public void clickOnAssetName(VoVessel voVessel, int ItemSlected) {
          String deviecId=voVessel.getDeviceId();
                 if((deviecId!=null)&&(deviecId.length()>1)){
-                    /**
-                     * Call the Device ID API and replace the new Fragment.
-                     */
-                    System.out.println("Device ID= "+voVessel.getDeviceId());
                     if(haveInternet(getActivity())){
                         Bundle bundle=new Bundle();
                         bundle.putString(FragmentRemoteTrackingList.class.getName(),""+deviecId);
-                        //mainActivity.replaceFragment(new FragmentRemoteTrackingMap(),bundle,false);
+                        mainActivity.replaceFragment(new FragmentRemoteTrackingMap(),bundle,false);
                     }
                 }
             }

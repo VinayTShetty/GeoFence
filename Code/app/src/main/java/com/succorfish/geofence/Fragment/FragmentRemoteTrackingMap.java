@@ -13,12 +13,22 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.gson.Gson;
 import com.succorfish.geofence.BaseFragment.BaseFragment;
+import com.succorfish.geofence.CustomObjectsAPI.AssetDeatils;
 import com.succorfish.geofence.MainActivity;
 import com.succorfish.geofence.R;
 
+import java.util.Calendar;
+import java.util.Locale;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.succorfish.geofence.utility.RetrofitHelperClass.haveInternet;
 
 public class FragmentRemoteTrackingMap extends BaseFragment {
     View fragmentRemoteTrackingView;
@@ -27,6 +37,7 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
     MapView mMapView;
     String connected_bleAddress="";
     GoogleMap fgragmentRemoteTrackinggoogleMap;
+    String deviceIdToFetchForLatLong=null;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -36,6 +47,17 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
+        /**
+         * Fetch Bundle Data.
+         */
+        getBundleData();
+    }
+
+    private void getBundleData() {
+     Bundle bundle=   this.getArguments();
+     if(bundle!=null){
+         deviceIdToFetchForLatLong=  bundle.getString(FragmentRemoteTrackingList.class.getName());
+     }
     }
 
     @Nullable
@@ -45,8 +67,51 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
         unbinder = ButterKnife.bind(this, fragmentRemoteTrackingView);
         bottomLayoutVisibility(false);
         setUpMap(fragmentRemoteTrackingView, savedInstanceState);
+        call_Lat_Long_API_ForDeviceId();
         return fragmentRemoteTrackingView;
     }
+
+    private void call_Lat_Long_API_ForDeviceId() {
+        if(deviceIdToFetchForLatLong!=null&&deviceIdToFetchForLatLong.length()>0){
+            latLongAPI();
+        }
+    }
+
+    private void latLongAPI() {
+        if(haveInternet(getActivity())){
+            Call<String> detailsOfAssetList=   mainActivity.mApiService.getLatLongOfAsset(deviceIdToFetchForLatLong);
+            detailsOfAssetList.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    Gson gson = new Gson();
+                    if (response.code() == 200 || response.isSuccessful()) {
+                        System.out.println("response mAddInstData---------" + response.body().toString());
+                        if (response.body() != null && !response.body().equalsIgnoreCase("") && !response.body().equalsIgnoreCase("null")) {
+                            AssetDeatils assetDeatil= gson.fromJson(response.body(), AssetDeatils.class);
+                            if(assetDeatil!=null){
+                                if((assetDeatil.getLat()!=null)&&(!assetDeatil.getLat().equalsIgnoreCase("")&&(assetDeatil.getLng()!=null)&&(!assetDeatil.getLng().equalsIgnoreCase("")))){
+                                    long latitude=Long.parseLong(assetDeatil.getLat());
+                                    long longitude=Long.parseLong(assetDeatil.getLng());
+                                    displayLocationInMap(latitude,longitude);
+                                }
+                            }
+                        } else {
+
+                        }
+
+                    } else {
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+
+                }
+            });
+        }
+    }
+
     private void bottomLayoutVisibility(boolean hide_true_unhide_false){
         mainActivity.hideBottomLayout(hide_true_unhide_false);
     }
