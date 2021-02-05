@@ -1,18 +1,33 @@
 package com.succorfish.geofence.Fragment;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.succorfish.geofence.BaseFragment.BaseFragment;
 import com.succorfish.geofence.CustomObjectsAPI.AssetDeatils;
@@ -38,6 +53,7 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
     String connected_bleAddress="";
     GoogleMap fgragmentRemoteTrackinggoogleMap;
     String deviceIdToFetchForLatLong=null;
+    final Handler handler = new Handler();
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -90,9 +106,10 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
                             AssetDeatils assetDeatil= gson.fromJson(response.body(), AssetDeatils.class);
                             if(assetDeatil!=null){
                                 if((assetDeatil.getLat()!=null)&&(!assetDeatil.getLat().equalsIgnoreCase("")&&(assetDeatil.getLng()!=null)&&(!assetDeatil.getLng().equalsIgnoreCase("")))){
-                                    long latitude=Long.parseLong(assetDeatil.getLat());
-                                    long longitude=Long.parseLong(assetDeatil.getLng());
-                                    displayLocationInMap(latitude,longitude);
+                                    double latitude=Double.parseDouble(assetDeatil.getLat());
+                                    double longitude=Double.parseDouble(assetDeatil.getLng());
+//                                    displayLocationInMap(latitude,longitude);
+                                    showUpdatedMarkerInMap(latitude,longitude);
                                 }
                             }
                         } else {
@@ -112,6 +129,85 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
         }
     }
 
+
+    private void showUpdatedMarkerInMap(Double inputLatitude,Double inputlongitude){
+        if(fgragmentRemoteTrackinggoogleMap!=null){
+            fgragmentRemoteTrackinggoogleMap.clear();
+            fgragmentRemoteTrackinggoogleMap.animateCamera(CameraUpdateFactory.zoomOut());
+            LatLng location = new LatLng(inputLatitude,inputlongitude);
+            Circle circle = fgragmentRemoteTrackinggoogleMap.addCircle(new CircleOptions()
+                    .center(new LatLng(inputLatitude,inputlongitude))
+                    .radius(2)
+                    .strokeColor(Color.BLACK).strokeWidth(3)
+                    .fillColor(R.color.colorAccent));
+            MarkerOptions markerOptions = new MarkerOptions().position(location);
+            fgragmentRemoteTrackinggoogleMap.addMarker(markerOptions.icon(bitmapDescriptorFromVector(getActivity(), R.drawable.circular_fence)));
+            LatLng breach_latitude_longitude = new LatLng(inputLatitude,inputlongitude);
+            MarkerOptions circular_lat_long = new MarkerOptions();
+            circular_lat_long.position(breach_latitude_longitude);
+            circular_lat_long.icon(bitmapDescriptorFromVector(getActivity(), R.drawable.map_custom_marker));
+            Marker marker =    fgragmentRemoteTrackinggoogleMap.addMarker(circular_lat_long);
+            fgragmentRemoteTrackinggoogleMap.getUiSettings().setRotateGesturesEnabled(true);
+            fgragmentRemoteTrackinggoogleMap.getUiSettings().setZoomControlsEnabled(true);
+            fgragmentRemoteTrackinggoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(breach_latitude_longitude, 20));
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if(isVisible()){
+                        fgragmentRemoteTrackinggoogleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                            @Override
+                            public View getInfoWindow(Marker marker) {
+                                return null;
+                            }
+
+                            @Override
+                            public View getInfoContents(Marker marker) {
+                                View markerinfoView=getLayoutInflater().inflate(R.layout.fence_info_window, null);
+                                TextView name=(TextView)markerinfoView.findViewById(R.id.name);
+                                TextView details=(TextView)markerinfoView.findViewById(R.id.details);
+                                String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+                                name.setText("Updated At \n"+mydate);
+                                return  markerinfoView;
+                            }
+                        });
+                        marker.showInfoWindow();
+                    }
+                }
+            },2000);
+            fgragmentRemoteTrackinggoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    fgragmentRemoteTrackinggoogleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                        @Override
+                        public View getInfoWindow(Marker marker) {
+                            return null;
+                        }
+
+                        @Override
+                        public View getInfoContents(Marker marker) {
+                            View markerinfoView=getLayoutInflater().inflate(R.layout.fence_info_window, null);
+                            TextView name=(TextView)markerinfoView.findViewById(R.id.name);
+                            TextView details=(TextView)markerinfoView.findViewById(R.id.details);
+                            String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+                            name.setText("Updated At\n"+mydate);
+                            return  markerinfoView;
+                        }
+                    });
+                    marker.showInfoWindow();
+                }
+            });
+        }
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int VectorResId) {
+        Drawable VectorDrawable = ContextCompat.getDrawable(context, VectorResId);
+        VectorDrawable.setBounds(0, 0, VectorDrawable.getIntrinsicWidth(), VectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(VectorDrawable.getIntrinsicWidth(), VectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canves = new Canvas(bitmap);
+        VectorDrawable.draw(canves);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
     private void bottomLayoutVisibility(boolean hide_true_unhide_false){
         mainActivity.hideBottomLayout(hide_true_unhide_false);
     }
@@ -128,9 +224,7 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
-                /**
-                 * ask for Updates on Live Location Tracking.
-                 */
+                fgragmentRemoteTrackinggoogleMap=mMap;
             }
         });
 
