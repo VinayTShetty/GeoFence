@@ -287,7 +287,6 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
         @Override
         public void run() {
             latLongAPI();
-            handler.postDelayed(this, 60000);
         }
     };
 }
