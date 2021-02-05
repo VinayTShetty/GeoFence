@@ -272,6 +272,7 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        handler.removeCallbacks(remoteTrackingRunnable);
     }
 
     @Override
@@ -286,7 +287,9 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
     private Runnable remoteTrackingRunnable = new Runnable() {
         @Override
         public void run() {
-            latLongAPI();
+            if(isVisible()){
+                latLongAPI();
+            };
         }
     };
 }
