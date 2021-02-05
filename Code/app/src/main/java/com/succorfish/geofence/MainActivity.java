@@ -2248,10 +2248,4 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
     }
-    /**
-     *
-     * Clean code Geofence
-     */
 }
-
-

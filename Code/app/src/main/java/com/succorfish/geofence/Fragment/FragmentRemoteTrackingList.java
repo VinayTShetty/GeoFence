@@ -91,10 +91,11 @@ public class FragmentRemoteTrackingList extends BaseFragment {
                     /**
                      * Call the Device ID API and replace the new Fragment.
                      */
+                    System.out.println("Device ID= "+voVessel.getDeviceId());
                     if(haveInternet(getActivity())){
                         Bundle bundle=new Bundle();
                         bundle.putString(FragmentRemoteTrackingList.class.getName(),""+deviecId);
-                        mainActivity.replaceFragment(new FragmentRemoteTrackingMap(),bundle,false);
+                        //mainActivity.replaceFragment(new FragmentRemoteTrackingMap(),bundle,false);
                     }
                 }
             }
