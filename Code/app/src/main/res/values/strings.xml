@@ -56,6 +56,8 @@
     <string name="fragment_sim_Toolbar_header_name">Sim Configuration</string>
     <!--Fragment UART configuration-->
     <string name="fragment_UART_Toolbar_header_name">UART Configuration</string>
+    <!--Fragment Wifi Configuratoin -->
+    <string name="fragment_WIFI_Toolbar_header_name">Wifi Configuration</string>
 
     <!--Fragment Chatting.-->
     <string name="fragment_chatting_no_messageFound">No message found</string>
