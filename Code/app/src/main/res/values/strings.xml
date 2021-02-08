@@ -17,6 +17,10 @@
     <string name="activity_main_menu_setting">Setting</string>
 
 
+<!--            All Fragments String Naming files
+    ==========================================================
+    -->
+
     <!--Fragment Setting.-->
     <string name="fragment_setting">Setting</string>
     <string name="fragment_setting_buzzer">Time interval for Buzzer sound</string>
@@ -28,6 +32,11 @@
 
     <!--Fragment Device Configuration-->
     <string name="fragment_Device_configuration_Toolbar_header_name">Device Configuration</string>
+
+    <!--Fragment History-->
+    <string name="fragment_history_Toolbar_header_name">History</string>
+    <string name="fragment_history_Toolbar_header_refresh">Refresh</string>
+
 
     <!--Fragment Chatting.-->
     <string name="fragment_chatting_no_messageFound">No message found</string>

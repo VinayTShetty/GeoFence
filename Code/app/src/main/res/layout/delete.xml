@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_fragmentScan"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#000000"
@@ -18,24 +18,26 @@
             android:layout_height="?attr/actionBarSize"
             android:background="#000000"
             tools:context=".MainActivity">
-            <ImageButton
-                android:id="@+id/fragment_deviceConfig_back"
+            <Button
+                android:id="@+id/history_reload"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:src="@drawable/back"
+                android:text="Refresh"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideline6"
-                app:layout_constraintStart_toStartOf="@+id/guideline6"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintStart_toStartOf="@+id/guideline8"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/geofence"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Device Configutation"
-                android:textColor="@color/colorWhite"
+                android:text="History"
+                android:textColor="#ffffff"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
@@ -43,16 +45,19 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-            <TextView
-                android:id="@+id/save_text_view"
-                android:layout_width="wrap_content"
+            <ImageButton
+                android:id="@+id/fragment_history_back"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:text="SAVE"
-                android:textColor="@color/colorWhite"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_active_next"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideline8"
-                app:layout_constraintStart_toStartOf="@+id/guideline8"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintHorizontal_bias="0.49"
+                app:layout_constraintStart_toStartOf="@+id/guideline6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline7"
                 android:layout_width="wrap_content"
@@ -88,470 +93,17 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.92" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.95" />
 
-
-        </androidx.constraintlayout.widget.ConstraintLayout>    </androidx.appcompat.widget.Toolbar>
-    <ScrollView
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragmentHistory_recycleView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="782dp"
-            android:layout_marginTop="0dp"
-            android:orientation="vertical"
-            android:padding="20dp">
-            <EditText
-                android:id="@+id/gsm_interval_editText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/lable_device_configuration"
-                android:hint="Enter GSM Interval"
-                android:paddingLeft="10dp"
-                android:maxLength="5"
-                android:inputType="number"
-                android:textColor="@color/colorBlack" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingBottom="5dp"
-                android:text="Interval between waypoint report in seconds. Setting this value to 0 will cellular waypoint.."
-                android:textColor="#B3AEAE" />
-            <EditText
-                android:id="@+id/gsm_timeout_interval_editText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="9dp"
-                android:background="@drawable/lable_device_configuration"
-                android:hint="Enter GSM Timeout"
-                android:inputType="number"
-                android:paddingLeft="10dp"
-                android:maxLength="5"
-                android:textColor="@color/colorBlack" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingBottom="5dp"
-                android:text="GSM timeout in seconds"
-                android:textColor="#B3AEAE" />
-            <EditText
-                android:id="@+id/gps_interval_editText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="9dp"
-                android:background="@drawable/lable_device_configuration"
-                android:hint="Enter GPS Interval"
-                android:paddingLeft="10dp"
-                android:inputType="number"
-                android:maxLength="5"
-                android:textColor="@color/colorBlack" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingBottom="5dp"
-                android:text="Time in seconds between interval waypoints.Setting this value to 0 will disable storing the waypoint interval.."
-                android:textColor="#B3AEAE" />
-
-            <EditText
-                android:id="@+id/gps_timeout_editText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="9dp"
-                android:background="@drawable/lable_device_configuration"
-                android:hint="Enter GPS Timeout"
-                android:paddingLeft="10dp"
-                android:maxLength="5"
-                android:inputType="number"
-                android:textColor="@color/colorBlack" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingBottom="5dp"
-                android:text="GPS timeout in seconds"
-                android:textColor="#B3AEAE" />
-
-            <EditText
-                android:id="@+id/satellite_interval_editText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="9dp"
-                android:background="@drawable/lable_device_configuration"
-                android:hint="Enter Satellite Interval"
-                android:paddingLeft="10dp"
-                android:inputType="number"
-                android:maxLength="5"
-                android:textColor="@color/colorBlack" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingBottom="5dp"
-
-                android:text="Satellite Timeout"
-                android:textColor="#B3AEAE" />
-
-            <EditText
-                android:id="@+id/satellite_timeout_editText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="9dp"
-                android:background="@drawable/lable_device_configuration"
-                android:hint="Enter Satellite Timeout"
-                android:paddingLeft="10dp"
-                android:inputType="number"
-                android:maxLength="5"
-                android:textColor="@color/colorBlack" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingBottom="5dp"
-                android:text="Satellite Timeout"
-                android:textColor="#B3AEAE" />
-
-            <EditText
-                android:id="@+id/cheapest_multiplier_editText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="9dp"
-                android:background="@drawable/lable_device_configuration"
-                android:hint="Enter Cheapest multiplier"
-                android:maxLength="5"
-                android:paddingLeft="10dp"
-                android:inputType="number"
-                android:textColor="@color/colorBlack" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingBottom="5dp"
-                android:text="Specifies how many retries over cheaper medium requried before more expensive method is used..."
-                android:textColor="#B3AEAE" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingBottom="5dp"
-                android:text="Cheapest mode"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/cheapest_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <RadioButton
-                    android:id="@+id/cheapest_radio_group_on"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="on"
-                    android:textColor="@color/colorWhite" />
-
-                <RadioButton
-                    android:id="@+id/cheapest_radio_group_off"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="off"
-                    android:textColor="@color/colorWhite" />
-
-                <RadioButton
-                    android:id="@+id/cheapest_radio_group_unchange"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:checked="true"
-                    android:text="unchange"
-                    android:textColor="@color/colorWhite" />
-            </RadioGroup>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Ultra low power mode"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/ultra_power_mode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <RadioButton
-                    android:id="@+id/ultra_power_mode_on"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="on"
-                    android:textColor="@color/colorWhite" />
-
-                <RadioButton
-                    android:id="@+id/ultra_power_mode_off"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="off"
-                    android:textColor="@color/colorWhite" />
-
-                <RadioButton
-                    android:id="@+id/ultra_power_mode_unchange"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="unchange"
-                    android:textColor="@color/colorWhite" />
-            </RadioGroup>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="USB download mode"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/usb_download_mode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <RadioButton
-                    android:id="@+id/usb_download_mode_on"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="on"
-                    android:textColor="@color/colorWhite" />
-
-                <RadioButton
-                    android:id="@+id/usb_download_mode_off"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="off"
-                    android:textColor="@color/colorWhite" />
-
-                <RadioButton
-                    android:id="@+id/usb_download_mode_unchange"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="unchange"
-                    android:textColor="@color/colorWhite" />
-            </RadioGroup>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Iridium always on"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold" />
-            <RadioGroup
-                android:id="@+id/iridium_always"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:padding="5dp">
-                <RadioButton
-                    android:id="@+id/iridium_always_on"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="on"
-                    android:textColor="@color/colorWhite" />
-                <RadioButton
-                    android:id="@+id/iridium_always_off"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="off"
-                    android:textColor="@color/colorWhite" />
-                <RadioButton
-                    android:id="@+id/iridium_always_unchnage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="unchange"
-                    android:checked="true"
-                    android:textColor="@color/colorWhite" />
-            </RadioGroup>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Iridium events on"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold" />
-            <RadioGroup
-                android:id="@+id/iridium_event"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:padding="5dp">
-                <RadioButton
-                    android:id="@+id/iridium_event_on"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="on"
-                    android:textColor="@color/colorWhite" />
-                <RadioButton
-                    android:id="@+id/iridium_event_off"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="off"
-                    android:textColor="@color/colorWhite" />
-                <RadioButton
-                    android:id="@+id/iridium_event_unchange"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="unchange"
-                    android:checked="true"
-                    android:textColor="@color/colorWhite" />
-            </RadioGroup>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Instant tamper"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold" />
-            <RadioGroup
-                android:id="@+id/instant_temper"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:padding="5dp">
-                <RadioButton
-                    android:id="@+id/instant_temper_on"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="on"
-                    android:textColor="@color/colorWhite" />
-                <RadioButton
-                    android:id="@+id/instant_temper_off"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="off"
-                    android:textColor="@color/colorWhite" />
-                <RadioButton
-                    android:id="@+id/instant_temper_unchange"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="unchange"
-                    android:checked="true"
-                    android:textColor="@color/colorWhite" />
-            </RadioGroup>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Waypoint on movement"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold" />
-            <RadioGroup
-                android:id="@+id/waypoint_movement"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:padding="5dp">
-                <RadioButton
-                    android:id="@+id/waypoint_movement_on"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="on"
-                    android:textColor="@color/colorWhite" />
-                <RadioButton
-                    android:id="@+id/waypoint_movement_off"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="off"
-                    android:textColor="@color/colorWhite" />
-                <RadioButton
-                    android:id="@+id/waypoint_movement_unchnage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:buttonTint="@color/colorWhite"
-                    android:text="unchange"
-                    android:textColor="@color/colorWhite" />
-            </RadioGroup>
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/fragmenthistory_listitem">
+    </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -42,7 +44,7 @@ public class FragmentHistory extends BaseFragment {
     private ArrayList<HistroyList> histroylist = new ArrayList<>();
     DialogProvider dialogProvider;
     MainActivity mainActivity;
-    Button historyReload_ImageButtom;
+    TextView historyReload_ImageButtom;
     private KProgressHUD hud;
     @Override
     public void onAttach(@NonNull Context context) {
@@ -60,7 +62,7 @@ public class FragmentHistory extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentHistoryView = inflater.inflate(R.layout.fragment_history, container, false);
         unbinder = ButterKnife.bind(this, fragmentHistoryView);
-        historyReload_ImageButtom=(Button)fragmentHistoryView.findViewById(R.id.history_reload);
+        historyReload_ImageButtom=(TextView) fragmentHistoryView.findViewById(R.id.history_reload);
         bottomLayoutVisibility(false);
         intializeViews();
         histroyRelaodImageButtonClick();
