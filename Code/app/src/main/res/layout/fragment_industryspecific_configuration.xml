@@ -32,9 +32,10 @@
             <TextView
                 android:id="@+id/tool_bar_text"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="0.6"
+                android:gravity="center"
                 android:text="@string/fragment_IndustrySpecific_Toolbar_header_name"
                 android:textAlignment="center"
                 android:textColor="#ffffff"

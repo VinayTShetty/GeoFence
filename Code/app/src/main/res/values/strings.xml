@@ -40,6 +40,9 @@
     <!--Fragment Industry Specific Configuration.-->
     <string name="fragment_IndustrySpecific_Toolbar_header_name">Industry Specific Configuration</string>
 
+    <!--Fragment Live Tracking-->
+    <string name="fragment_LiveTracking_Toolbar_header_name">Live Tracking</string>
+
     <!--Fragment Chatting.-->
     <string name="fragment_chatting_no_messageFound">No message found</string>
     <string name="fragment_chatting_toolbar">Messages</string>

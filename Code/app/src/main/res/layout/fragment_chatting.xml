@@ -25,16 +25,16 @@
                 android:id="@+id/close_icon"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.1"
+                android:layout_weight="0.2"
                 android:src="@drawable/chat_close_icon" />
 
             <TextView
                 android:id="@+id/tool_bar_text"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.8"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
                 android:text="Messaging"
-                android:layout_gravity="center"
+                android:gravity="center"
                 android:textAlignment="center"
                 android:textColor="#ffffff"
                 android:textSize="24sp" />
