@@ -312,17 +312,23 @@ public class MainActivity extends AppCompatActivity implements
         if(requestCode==START_ACTIVITY_REQUEST_CODE&&resultCode==RESULT_OK){
             fileuri=data.getData();
             filepath=fileuri.getPath();
-            fileExtensionType=filepath.substring(filepath.lastIndexOf("."));
-            if((filepath!=null)&&(filepath.length()>0)&&(fileuri!=null)&&(filepath!=null)&&(fileExtensionType.equalsIgnoreCase(".zip"))){
-                /**
-                 * Selected proper zip file formatt..
-                 */
-                if(dfuFileSelectedValid_invalid!=null){
-                    dfuFileSelectedValid_invalid.SelecetedFileForDFU(true,fileuri,filepath,fileExtensionType);
+            if(filepath.contains(".")){
+                fileExtensionType=filepath.substring(filepath.lastIndexOf("."));
+                if((filepath!=null)&&(filepath.length()>0)&&(fileuri!=null)&&(filepath!=null)&&(fileExtensionType.equalsIgnoreCase(".zip"))){
+                    /**
+                     * Selected proper zip file formatt..
+                     */
+                    if(dfuFileSelectedValid_invalid!=null){
+                        dfuFileSelectedValid_invalid.SelecetedFileForDFU(true,fileuri,filepath,fileExtensionType);
+                    }
                 }
-            }else{
+                else{
+                    dialogProvider.errorDialog("File Formatt Not Supported");
+                }
+            }else {
                 dialogProvider.errorDialog("File Formatt Not Supported");
             }
+
         }
     }
 
