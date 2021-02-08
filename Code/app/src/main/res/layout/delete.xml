@@ -3,12 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/splashbg"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_fragmentScan"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#000000"
@@ -17,61 +15,44 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="#000000"
-            tools:context=".MainActivity">
-            <ImageButton
-                android:id="@+id/logout_imagebutotn"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:src="@drawable/logout_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideline6"
-                app:layout_constraintStart_toStartOf="@+id/guideline6"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+            tools:context=".MainActivity"><Button
+            android:id="@+id/save_server_configuration"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline8"
+            app:layout_constraintStart_toStartOf="@+id/guideline8"
+            app:layout_constraintTop_toTopOf="parent" />
             <TextView
-                android:id="@+id/geofence"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Geofence"
-                android:textColor="#ffffff"
-                android:textSize="24sp"
+                android:text="Server Configuration"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.52" />
             <ImageButton
-                android:id="@+id/reload"
+                android:id="@+id/fragment_server_configuration_back"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_active_reload"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/ic_active_back"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideline8"
-                app:layout_constraintStart_toStartOf="@+id/guideline8"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/notificaiton_count"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginBottom="4dp"
-                android:background="@drawable/lable"
-                android:gravity="center"
-                android:text=""
-                android:textColor="#ffffff"
-                android:textSize="10sp"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toTopOf="@+id/guideline4"
-                app:layout_constraintEnd_toEndOf="@+id/button4"
-                app:layout_constraintHorizontal_bias="0.106"
-                app:layout_constraintStart_toStartOf="@+id/guideline8"
-                app:layout_constraintTop_toTopOf="@+id/button4"
-                app:layout_constraintVertical_bias="0.0"
-                tools:ignore="MissingConstraints,UnknownId" />
-
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintHorizontal_bias="0.49"
+                app:layout_constraintStart_toStartOf="@+id/guideline6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline7"
                 android:layout_width="wrap_content"
@@ -84,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.0" />
+                app:layout_constraintGuide_begin="0dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline4"
@@ -107,38 +88,101 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.92" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.95" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>    </androidx.appcompat.widget.Toolbar>
-    <TextView
-        android:id="@+id/Tap_on_connect_button"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Tap_on_Connect_button"
-        android:textSize="@dimen/_12sdp"
-        android:background="#000000"
-        android:padding="@dimen/_10sdp"
-        android:paddingTop="@dimen/_10sdp"
-        android:textColor="#ffffff"
-        android:visibility="invisible"
-        android:gravity="center" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragmentScan_recycleView"
-        android:layout_marginTop="12dp"
-        android:layout_below="@+id/toolbar_fragmentScan"
-        tools:listitem="@layout/fragmentscan_listitem_test"
-        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorBlack"
+        android:elevation="@dimen/_5sdp"
+        android:orientation="horizontal"
+        android:padding="@dimen/_5sdp"
+        android:weightSum="1">
+
+        <EditText
+            android:id="@+id/server_address_EditText"
+            android:layout_width="348dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:hint="Enter server address"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/_12sdp"
+            android:inputType="text|textNoSuggestions"
+            android:theme="@style/MyEditTextWhite"
+            android:imeOptions="actionNext"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_marginTop="5dp"
+        android:background="@color/colorBlack"
+        android:elevation="@dimen/_5sdp"
+        android:orientation="horizontal"
+        android:padding="@dimen/_5sdp"
+        android:weightSum="1">
+
+        <EditText
+            android:id="@+id/keep_aliveInterval_EditText"
+            android:layout_width="348dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:hint="Keep alive interval"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/_12sdp"
+            android:inputType="number|textNoSuggestions"
+            android:theme="@style/MyEditTextWhite"
+            android:imeOptions="actionNext"
+            android:maxLength="3"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorBlack"
+        android:elevation="@dimen/_5sdp"
+        android:orientation="horizontal"
+        android:padding="@dimen/_5sdp"
+        android:weightSum="1">
+        <EditText
+            android:id="@+id/server_port_EditText"
+            android:layout_width="348dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:hint="Server port"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/_12sdp"
+            android:inputType="number|textNoSuggestions"
+            android:theme="@style/MyEditTextWhite"
+            android:imeOptions="actionDone"
+            android:maxLength="5"
+            />
+    </LinearLayout>
 </LinearLayout>

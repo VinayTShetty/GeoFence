@@ -49,7 +49,8 @@
     <string name="fragment_remoteTracking_Toolbar_header_name">Remote Tracking</string>
     <!--Fragment Scan-->
     <string name="fragment_scan_Toolbar_header_name">Geofence</string>
-
+    <!--Fragment Server Configuration-->
+    <string name="fragment_server_Toolbar_header_name">Server Configuration</string>
 
     <!--Fragment Chatting.-->
     <string name="fragment_chatting_no_messageFound">No message found</string>
