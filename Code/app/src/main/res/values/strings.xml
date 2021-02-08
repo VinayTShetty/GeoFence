@@ -43,6 +43,9 @@
     <!--Fragment Live Tracking-->
     <string name="fragment_LiveTracking_Toolbar_header_name">Live Tracking</string>
 
+    Fragment Map
+    <string name="fragment_Map_Toolbar_header_name">Geo Fence Location</string>
+
     <!--Fragment Chatting.-->
     <string name="fragment_chatting_no_messageFound">No message found</string>
     <string name="fragment_chatting_toolbar">Messages</string>
