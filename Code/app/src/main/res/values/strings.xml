@@ -22,6 +22,7 @@
     -->
 
     <!--Fragment Setting.-->
+    <string name="fragment_setting_Toolbar_header_name">Setting</string>
     <string name="fragment_setting">Setting</string>
     <string name="fragment_setting_buzzer">Time interval for Buzzer sound</string>
     <string name="fragment_setting_dialog_select">Select Time interval</string>
