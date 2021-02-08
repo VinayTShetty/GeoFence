@@ -236,34 +236,6 @@ public class DialogProvider {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-    public void showMessageChatPopUp(Context context, final ChatMessageText chatMessageText){
-        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(context);
-        View mView = layoutInflaterAndroid.inflate(R.layout.chatmessagetype_pop_layout, null);
-        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(context);
-        alertDialogBuilderUserInput.setView(mView);
-
-        final EditText userInputDialogEditText = (EditText) mView.findViewById(R.id.userInputDialog);
-        alertDialogBuilderUserInput
-                .setCancelable(false)
-                .setPositiveButton("Send", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogBox, int id) {
-                        // ToDo get user input here
-                        chatMessageText.PositiveMethod(dialogBox,id,userInputDialogEditText.getText().toString());
-                    }
-                })
-
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogBox, int id) {
-                                dialogBox.cancel();
-                            }
-                        });
-
-        AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
-        alertDialogAndroid.show();
-    }
-
     public void resetDeviceDialog(final ResetDeviceDialogCallBack resetDeviceDialogCallBack){
         if (mActivity != null) {
             mActivity.runOnUiThread(new Runnable() {

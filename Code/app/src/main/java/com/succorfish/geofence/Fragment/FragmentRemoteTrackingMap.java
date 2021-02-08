@@ -188,7 +188,6 @@ public class FragmentRemoteTrackingMap extends BaseFragment {
                         public View getInfoWindow(Marker marker) {
                             return null;
                         }
-
                         @Override
                         public View getInfoContents(Marker marker) {
                             View markerinfoView=getLayoutInflater().inflate(R.layout.fence_info_window, null);
