@@ -26,6 +26,9 @@
     <!--Fragment Band Configuration-->
     <string name="fragment_Band_configuration_Toolbar_header_name">Band Configuration</string>
 
+    <!--Fragment Device Configuration-->
+    <string name="fragment_Device_configuration_Toolbar_header_name">Device Configuration</string>
+
     <!--Fragment Chatting.-->
     <string name="fragment_chatting_no_messageFound">No message found</string>
     <string name="fragment_chatting_toolbar">Messages</string>

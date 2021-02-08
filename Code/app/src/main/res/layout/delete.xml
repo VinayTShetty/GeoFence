@@ -4,444 +4,554 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:background="@drawable/splashbg"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_fragmentScan"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#000000"
         app:popupTheme="@style/Theme.AppCompat.Light">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="#000000"
             tools:context=".MainActivity">
-            <Button
-                android:id="@+id/band_config_save"
-                android:layout_width="80dp"
+            <ImageButton
+                android:id="@+id/fragment_deviceConfig_back"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:text="Save"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textSize="14sp"
+                android:src="@drawable/back"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideline8"
-                app:layout_constraintStart_toStartOf="@+id/guideline8"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintStart_toStartOf="@+id/guideline6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
             <TextView
+                android:id="@+id/geofence"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Band Configuration"
+                android:text="Device Configutation"
                 android:textColor="@color/colorWhite"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
                 app:layout_constraintTop_toTopOf="parent" />
-            <ImageButton
-                android:id="@+id/fragment_band_configuration_back"
-                android:layout_width="80dp"
+
+
+            <TextView
+                android:id="@+id/save_text_view"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:src="@drawable/ic_active_back"
+                android:text="SAVE"
+                android:textColor="@color/colorWhite"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideline6"
-                app:layout_constraintHorizontal_bias="0.49"
-                app:layout_constraintStart_toStartOf="@+id/guideline6"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintStart_toStartOf="@+id/guideline8"
+                app:layout_constraintTop_toTopOf="parent" />
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.49" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="0dp" />
+                app:layout_constraintGuide_percent="0.0" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.5" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.04" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.92" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.appcompat.widget.Toolbar>
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>    </androidx.appcompat.widget.Toolbar>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="782dp"
+            android:layout_marginTop="0dp"
             android:orientation="vertical"
-            android:padding="16dp">
-
-            <LinearLayout
+            android:padding="20dp">
+            <EditText
+                android:id="@+id/gsm_interval_editText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/lable_device_configuration"
+                android:hint="Enter GSM Interval"
+                android:paddingLeft="10dp"
+                android:maxLength="5"
+                android:inputType="number"
+                android:textColor="@color/colorBlack" />
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/button_1"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B1"
-                    />
-
-                <Button
-                    android:id="@+id/button_2"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B2"
-                    />
-
-                <Button
-                    android:id="@+id/button_3"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B3"
-                    />
-
-                <Button
-                    android:id="@+id/button_4"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B4"
-                    />
-
-                <Button
-                    android:id="@+id/button_5"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B5"
-                    />
-
-
-            </LinearLayout>
-
-            <LinearLayout
+                android:maxLines="2"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:text="Interval between waypoint report in seconds. Setting this value to 0 will cellular waypoint.."
+                android:textColor="#B3AEAE" />
+            <EditText
+                android:id="@+id/gsm_timeout_interval_editText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/lable_device_configuration"
+                android:hint="Enter GSM Timeout"
+                android:inputType="number"
+                android:paddingLeft="10dp"
+                android:maxLength="5"
+                android:textColor="@color/colorBlack" />
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:maxLines="2"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:text="GSM timeout in seconds"
+                android:textColor="#B3AEAE" />
+            <EditText
+                android:id="@+id/gps_interval_editText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/lable_device_configuration"
+                android:hint="Enter GPS Interval"
+                android:paddingLeft="10dp"
+                android:inputType="number"
+                android:maxLength="5"
+                android:textColor="@color/colorBlack" />
 
-                <Button
-                    android:id="@+id/button_6"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B6"
-                    />
-
-                <Button
-                    android:id="@+id/button_7"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B7"
-                    />
-
-                <Button
-                    android:id="@+id/button_8"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B8"
-                    />
-
-                <Button
-                    android:id="@+id/button_9"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B9"
-                    />
-
-                <Button
-                    android:id="@+id/button_10"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B10"
-                    />
-
-
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:maxLines="2"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:text="Time in seconds between interval waypoints.Setting this value to 0 will disable storing the waypoint interval.."
+                android:textColor="#B3AEAE" />
 
-                <Button
-                    android:id="@+id/button_11"
+            <EditText
+                android:id="@+id/gps_timeout_editText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/lable_device_configuration"
+                android:hint="Enter GPS Timeout"
+                android:paddingLeft="10dp"
+                android:maxLength="5"
+                android:inputType="number"
+                android:textColor="@color/colorBlack" />
 
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B11"
-                    />
-
-                <Button
-                    android:id="@+id/button_12"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B12"
-                    />
-
-                <Button
-                    android:id="@+id/button_13"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B13"
-                    />
-
-                <Button
-                    android:id="@+id/button_14"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B14"
-                    />
-
-                <Button
-                    android:id="@+id/button_15"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B15"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:text="GPS timeout in seconds"
+                android:textColor="#B3AEAE" />
+
+            <EditText
+                android:id="@+id/satellite_interval_editText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/lable_device_configuration"
+                android:hint="Enter Satellite Interval"
+                android:paddingLeft="10dp"
+                android:inputType="number"
+                android:maxLength="5"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+
+                android:text="Satellite Timeout"
+                android:textColor="#B3AEAE" />
+
+            <EditText
+                android:id="@+id/satellite_timeout_editText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/lable_device_configuration"
+                android:hint="Enter Satellite Timeout"
+                android:paddingLeft="10dp"
+                android:inputType="number"
+                android:maxLength="5"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:text="Satellite Timeout"
+                android:textColor="#B3AEAE" />
+
+            <EditText
+                android:id="@+id/cheapest_multiplier_editText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/lable_device_configuration"
+                android:hint="Enter Cheapest multiplier"
+                android:maxLength="5"
+                android:paddingLeft="10dp"
+                android:inputType="number"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:text="Specifies how many retries over cheaper medium requried before more expensive method is used..."
+                android:textColor="#B3AEAE" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:text="Cheapest mode"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/cheapest_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal"
-                >
+                android:padding="5dp">
 
-                <Button
-                    android:id="@+id/button_16"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
+                <RadioButton
+                    android:id="@+id/cheapest_radio_group_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B16"
-                    />
+                    android:buttonTint="@color/colorWhite"
+                    android:text="on"
+                    android:textColor="@color/colorWhite" />
 
-                <Button
-                    android:id="@+id/button_17"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
+                <RadioButton
+                    android:id="@+id/cheapest_radio_group_off"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B17"
-                    />
+                    android:buttonTint="@color/colorWhite"
+                    android:text="off"
+                    android:textColor="@color/colorWhite" />
 
-                <Button
-                    android:id="@+id/button_18"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
+                <RadioButton
+                    android:id="@+id/cheapest_radio_group_unchange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B18"
-                    />
+                    android:buttonTint="@color/colorWhite"
+                    android:checked="true"
+                    android:text="unchange"
+                    android:textColor="@color/colorWhite" />
+            </RadioGroup>
 
-                <Button
-                    android:id="@+id/button_19"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Ultra low power mode"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
 
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B19"
-                    />
-
-                <Button
-                    android:id="@+id/button_20"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B20"
-                    />
-
-
-            </LinearLayout>
-
-            <LinearLayout
+            <RadioGroup
+                android:id="@+id/ultra_power_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
-                <Button
-                    android:id="@+id/button_21"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
+                <RadioButton
+                    android:id="@+id/ultra_power_mode_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B21"
-                    />
+                    android:buttonTint="@color/colorWhite"
+                    android:text="on"
+                    android:textColor="@color/colorWhite" />
 
-                <Button
-                    android:id="@+id/button_22"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
+                <RadioButton
+                    android:id="@+id/ultra_power_mode_off"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B22"
-                    />
+                    android:buttonTint="@color/colorWhite"
+                    android:text="off"
+                    android:textColor="@color/colorWhite" />
 
-                <Button
-                    android:id="@+id/button_23"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
+                <RadioButton
+                    android:id="@+id/ultra_power_mode_unchange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B23"
-                    />
+                    android:checked="true"
+                    android:buttonTint="@color/colorWhite"
+                    android:text="unchange"
+                    android:textColor="@color/colorWhite" />
+            </RadioGroup>
 
-                <Button
-                    android:id="@+id/button_24"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="USB download mode"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
 
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B24"
-                    />
-
-                <Button
-                    android:id="@+id/button_25"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B25"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
+            <RadioGroup
+                android:id="@+id/usb_download_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
-                <Button
-                    android:id="@+id/button_26"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
+                <RadioButton
+                    android:id="@+id/usb_download_mode_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B26"
-                    />
+                    android:buttonTint="@color/colorWhite"
+                    android:text="on"
+                    android:textColor="@color/colorWhite" />
 
-                <Button
-                    android:id="@+id/button_27"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
+                <RadioButton
+                    android:id="@+id/usb_download_mode_off"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B27"
-                    />
+                    android:buttonTint="@color/colorWhite"
+                    android:text="off"
+                    android:textColor="@color/colorWhite" />
 
-                <Button
-                    android:id="@+id/button_28"
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
+                <RadioButton
+                    android:id="@+id/usb_download_mode_unchange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="B28"
-                    />
-
-                <Button
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:checked="true"
+                    android:buttonTint="@color/colorWhite"
+                    android:text="unchange"
+                    android:textColor="@color/colorWhite" />
+            </RadioGroup>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Iridium always on"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+            <RadioGroup
+                android:id="@+id/iridium_always"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
+                <RadioButton
+                    android:id="@+id/iridium_always_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="invisible"
-                    android:gravity="center" />
-
-                <Button
-
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:buttonTint="@color/colorWhite"
+                    android:text="on"
+                    android:textColor="@color/colorWhite" />
+                <RadioButton
+                    android:id="@+id/iridium_always_off"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="invisible"
-                    android:gravity="center" />
-
-            </LinearLayout>
-
+                    android:buttonTint="@color/colorWhite"
+                    android:text="off"
+                    android:textColor="@color/colorWhite" />
+                <RadioButton
+                    android:id="@+id/iridium_always_unchnage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorWhite"
+                    android:text="unchange"
+                    android:checked="true"
+                    android:textColor="@color/colorWhite" />
+            </RadioGroup>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Iridium events on"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+            <RadioGroup
+                android:id="@+id/iridium_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
+                <RadioButton
+                    android:id="@+id/iridium_event_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorWhite"
+                    android:text="on"
+                    android:textColor="@color/colorWhite" />
+                <RadioButton
+                    android:id="@+id/iridium_event_off"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorWhite"
+                    android:text="off"
+                    android:textColor="@color/colorWhite" />
+                <RadioButton
+                    android:id="@+id/iridium_event_unchange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorWhite"
+                    android:text="unchange"
+                    android:checked="true"
+                    android:textColor="@color/colorWhite" />
+            </RadioGroup>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Instant tamper"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+            <RadioGroup
+                android:id="@+id/instant_temper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
+                <RadioButton
+                    android:id="@+id/instant_temper_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorWhite"
+                    android:text="on"
+                    android:textColor="@color/colorWhite" />
+                <RadioButton
+                    android:id="@+id/instant_temper_off"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorWhite"
+                    android:text="off"
+                    android:textColor="@color/colorWhite" />
+                <RadioButton
+                    android:id="@+id/instant_temper_unchange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorWhite"
+                    android:text="unchange"
+                    android:checked="true"
+                    android:textColor="@color/colorWhite" />
+            </RadioGroup>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Waypoint on movement"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+            <RadioGroup
+                android:id="@+id/waypoint_movement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
+                <RadioButton
+                    android:id="@+id/waypoint_movement_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorWhite"
+                    android:text="on"
+                    android:textColor="@color/colorWhite" />
+                <RadioButton
+                    android:id="@+id/waypoint_movement_off"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorWhite"
+                    android:text="off"
+                    android:textColor="@color/colorWhite" />
+                <RadioButton
+                    android:id="@+id/waypoint_movement_unchnage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:buttonTint="@color/colorWhite"
+                    android:text="unchange"
+                    android:textColor="@color/colorWhite" />
+            </RadioGroup>
         </LinearLayout>
-
     </ScrollView>
-
 </LinearLayout>
