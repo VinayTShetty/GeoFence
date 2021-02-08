@@ -37,6 +37,8 @@
     <string name="fragment_history_Toolbar_header_name">History</string>
     <string name="fragment_history_Toolbar_header_refresh">Refresh</string>
 
+    <!--Fragment Industry Specific Configuration.-->
+    <string name="fragment_IndustrySpecific_Toolbar_header_name">Industry Specific Configuration</string>
 
     <!--Fragment Chatting.-->
     <string name="fragment_chatting_no_messageFound">No message found</string>
