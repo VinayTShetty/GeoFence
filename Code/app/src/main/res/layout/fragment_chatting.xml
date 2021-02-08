@@ -16,7 +16,7 @@
         app:contentInsetStart="0dp">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:fitsSystemWindows="false"
             android:orientation="horizontal"
             android:weightSum="1">
@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/close_icon"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="0.1"
                 android:src="@drawable/chat_close_icon" />
 
@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:text="Messaging"
+                android:layout_gravity="center"
                 android:textAlignment="center"
                 android:textColor="#ffffff"
                 android:textSize="24sp" />
