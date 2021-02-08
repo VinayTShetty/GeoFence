@@ -63,10 +63,6 @@ public class FragmentScan extends BaseFragment {
     TextView connect_inst_Txtview;
     @BindView(R.id.fragmentScan_recycleView)
     RecyclerView fragmentScanRecycleView;
-    /***
-     * Removed BindView for the ToolBar View as it was crashing.
-     */
-    TextView mtextViewCountNotification;
     private FragmentScanAdapter fragmentScanAdapter;
     private KProgressHUD hud;
     MainActivity mainActivity;
@@ -100,7 +96,6 @@ public class FragmentScan extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmenScanView = inflater.inflate(R.layout.fragment_scan, container, false);
         unbinder = ButterKnife.bind(this, fragmenScanView);
-        mtextViewCountNotification = (TextView) fragmenScanView.findViewById(R.id.notificaiton_count);
         bottomLayoutVisibility(true);
         loadDeviceTableData();
         intializeView();
@@ -123,7 +118,7 @@ public class FragmentScan extends BaseFragment {
         deviceConnectDisconnect = (DeviceConnectDisconnect) getActivity();
     }
 
-    private void addNotification() {
+  /*  private void addNotification() {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -143,7 +138,7 @@ public class FragmentScan extends BaseFragment {
                 });
             }
         });
-    }
+    }*/
 
     private void intializeView() {
         hud = KProgressHUD.create(getActivity());
@@ -547,14 +542,13 @@ public class FragmentScan extends BaseFragment {
     public void reloadImageClick() {
         checkBluetoothIsOn();
         clearScanConnectedDevices();
-      //  mainActivity.start_stop_SCAN(getActivity()); // Remove
         mainActivity.start_stop_scan();
     }
 
-    @OnClick(R.id.notificaiton_count)
+   /* @OnClick(R.id.notificaiton_count)
     public void notificationIconClick() {
         mainActivity.replaceFragment(new FragmentHistory(), null, null, false);
-    }
+    }*/
 
     @OnClick(R.id.logout_imagebutotn)
     public void historyImageClick_insideButton() {
@@ -638,7 +632,7 @@ public class FragmentScan extends BaseFragment {
         deviceTableslistDetails.clear();
     }
 
-    private void checkNotificationCount() {
+  /*  private void checkNotificationCount() {
         if (mtextViewCountNotification.getText().toString().equalsIgnoreCase("")) {
             mtextViewCountNotification.setVisibility(View.VISIBLE);
             mtextViewCountNotification.setBackgroundResource(R.drawable.lable);
@@ -652,7 +646,7 @@ public class FragmentScan extends BaseFragment {
                 mtextViewCountNotification.setText("" + countAlreadyInTextView);
             }
         }
-    }
+    }*/
 
     private void showProgressDialog(String bleAddress,String detailedLabel){
         hud.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)

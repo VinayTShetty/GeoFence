@@ -22,14 +22,12 @@
             android:fitsSystemWindows="false"
             android:orientation="horizontal"
             android:weightSum="1">
-
             <ImageView
                 android:id="@+id/fragment_history_back"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:src="@drawable/left_arrow" />
-
             <TextView
                 android:id="@+id/tool_bar_text"
                 android:layout_width="0dp"
@@ -40,7 +38,6 @@
                 android:textAlignment="center"
                 android:textColor="#ffffff"
                 android:textSize="24sp" />
-
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
     <RelativeLayout

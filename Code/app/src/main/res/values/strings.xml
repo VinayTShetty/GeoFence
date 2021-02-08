@@ -52,6 +52,8 @@
     <string name="fragment_scan_Toolbar_header_name">Geofence</string>
     <!--Fragment Server Configuration-->
     <string name="fragment_server_Toolbar_header_name">Server Configuration</string>
+    <!--Fragment Sim Configuration-->
+    <string name="fragment_sim_Toolbar_header_name">Sim Configuration</string>
 
     <!--Fragment Chatting.-->
     <string name="fragment_chatting_no_messageFound">No message found</string>
