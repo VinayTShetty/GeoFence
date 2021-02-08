@@ -23,6 +23,8 @@
     <string name="fragment_setting_dialog_select">Select Time interval</string>
     <string name="str_done">Done</string>
 
+    <!--Fragment Band Configuration-->
+    <string name="fragment_Band_configuration_Toolbar_header_name">Band Configuration</string>
 
     <!--Fragment Chatting.-->
     <string name="fragment_chatting_no_messageFound">No message found</string>
@@ -32,14 +34,6 @@
     <string name="fragment_chatting_out_going_message">OUT_GOING</string>
     <string name="fragment_chat_owner_name">USER</string>
     <string name="fragment_chat_server_name">SERVER</string>
-
-
-    <!--<string name="fragment_chat_message_failed">MESSAGE_FAIL</string>
-    <string name="fragment_chat_message_full_message_recieved_from_device">MESSAGE_DELIVERD_TO_DEVICE</string>
-    <string name="fragment_chat_message_failed_to_send_message_server">MESSAGE_SENDING_TO_SERVER_FAILED</string>
-    <string name="fragment_chat_message_mesaage_sent_to_server">MESSAGE_SENT_SERVER</string>-->
-
-
     <string name="fragment_chat_message_mesaage_failed_app">MESSAGE_FAILED_APP_SIDE</string>
     <string name="fragment_chat_message_mesaage_invalid_channel_id">INVALID_CHANNEL_ID</string>
     <string name="fragment_chat_message_mesaage_full_message_recieved_by_device">FULL MESSSAGE RECIEVED BY DEVICE</string>
@@ -121,4 +115,8 @@
     <!--Remote Tracking Fragment-->
     <string name="REMOTE_FRAGMET_TOOL_BAR_HEADER">Remote Tracking</string>
     <string name="REMOTE_FRAGMET_TOOL_BAR_REFRESH">Refresh</string>
+
+
+    <!--Common Strings-->
+    <string name="Save_String">Save</string>
 </resources>
