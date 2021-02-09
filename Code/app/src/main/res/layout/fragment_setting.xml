@@ -151,7 +151,7 @@
             android:layout_gravity="center"
             android:layout_marginRight="10dp"
             android:layout_weight="2"
-            android:src="@drawable/right_arrow_setting_icon"
+            android:src="@drawable/ic_active_right"
             android:theme="@style/SwitchTheme" />
     </LinearLayout>
     <LinearLayout
