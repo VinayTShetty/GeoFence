@@ -507,7 +507,6 @@ public class FragmentScan extends BaseFragment {
             @Override
             public void overFlow_menu_SOS(CustBluetootDevices customBluetooth, int postion) {
                 CONNECTED_BLE_ADDRESS=customBluetooth.getBleAddress();
-                Toast.makeText(getActivity(),"UNDER CONSTRUCTION",Toast.LENGTH_SHORT).show();
                 mainActivity.replaceFragment(new FragmentSOS(),null,false);
             }
         });
