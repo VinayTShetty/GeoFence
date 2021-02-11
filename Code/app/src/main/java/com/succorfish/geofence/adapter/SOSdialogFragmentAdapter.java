@@ -20,6 +20,7 @@ public class SOSdialogFragmentAdapter extends RecyclerView.Adapter<SOSdialogFrag
     private ArrayList<String> sosMessagesList;
     private Context context;
     sosItemListMesageListInterface sosItemListMesageListInterface;
+
     public SOSdialogFragmentAdapter(ArrayList<String> sosMessagesList_loc){
         this.sosMessagesList=sosMessagesList_loc;
     }
@@ -29,8 +30,11 @@ public class SOSdialogFragmentAdapter extends RecyclerView.Adapter<SOSdialogFrag
     public SOSItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context=parent.getContext();
         View itemView = LayoutInflater.from(context).inflate(R.layout.dialog_fragment_sos_messagelist, parent, false);
+
         return new SOSItemViewHolder(itemView);
     }
+
+
 
     @Override
     public void onBindViewHolder(@NonNull SOSItemViewHolder sosItemViewHolder, int position) {

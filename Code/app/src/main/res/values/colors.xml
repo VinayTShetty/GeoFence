@@ -28,4 +28,7 @@
     <color name="activate_color_button">#40E511</color>
     <!--Login Activity colors-->
     <color name="colorWhiteLight">#90FFFFFF</color>
+    <!--Dialog Fragment PopUp-->
+    <color name="colorGrayText">#737373</color>
+    <color name="colorRed">#aaFF0000</color>
 </resources>

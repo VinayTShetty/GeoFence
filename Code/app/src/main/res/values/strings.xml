@@ -58,6 +58,8 @@
     <string name="fragment_UART_Toolbar_header_name">UART Configuration</string>
     <!--Fragment Wifi Configuratoin -->
     <string name="fragment_WIFI_Toolbar_header_name">Wifi Configuration</string>
+    <!--Fragment SOS Dialog Fragment-->
+    <string name="frg_message_txt_no_message">No Message Found</string>
 
     <!--Fragment Chatting.-->
     <string name="fragment_chatting_no_messageFound">No message found</string>
