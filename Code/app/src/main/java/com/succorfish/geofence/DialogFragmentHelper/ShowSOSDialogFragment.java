@@ -34,6 +34,7 @@ public class ShowSOSDialogFragment extends DialogFragment {
     private ArrayList<String> sosMessageList=new ArrayList<String>();
     @BindView(R.id.popup_sent_msg_recyclerview_msg)
     RecyclerView sosMessageListRecycleView;
+    private DialogListener dialogListener;
     public ShowSOSDialogFragment() {
 
     }
@@ -61,6 +62,7 @@ public class ShowSOSDialogFragment extends DialogFragment {
         }
         add_SOSMessages();
         setUpRecycleView();
+        SOS_messagesItemClick();
         return view;
     }
 
@@ -71,11 +73,19 @@ public class ShowSOSDialogFragment extends DialogFragment {
         sosMessageListRecycleView.setAdapter(soSdialogFragmentAdapter);
     }
 
+    private void SOS_messagesItemClick(){
+        soSdialogFragmentAdapter.setOnItemClickListner_sosMessage(new SOSdialogFragmentAdapter.sosItemListMesageListInterface() {
+            @Override
+            public void sosMessageItem(int postion) {
+                System.out.println(" Message Clicked= "+sosMessageList.get(postion).toString());
+            }
+        });
+    }
+
     private void add_SOSMessages(){
-        sosMessageList.add("SOS MESSAGES 1");
-        sosMessageList.add("SOS MESSAGES 2");
-        sosMessageList.add("SOS MESSAGES 3");
-        sosMessageList.add("SOS MESSAGES 4");
+        for (int i = 0; i <5 ; i++) {
+            sosMessageList.add("SOS MESSAGES "+i);
+        }
     }
 
     @Override
@@ -116,5 +126,12 @@ public class ShowSOSDialogFragment extends DialogFragment {
     @OnClick(R.id.popup_sent_msg_textview_cancel)
     public void onCancelButtonClicked() {
         dismiss();
+    }
+
+    public interface DialogListener {
+        void onDiverMessageSelected(String messageSelected, boolean dialogCancelFlag);
+    }
+    public void setDialogListener(DialogListener dialogListener_loc) {
+        this.dialogListener = dialogListener_loc;
     }
 }
