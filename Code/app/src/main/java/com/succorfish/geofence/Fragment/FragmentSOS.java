@@ -79,9 +79,9 @@ public class FragmentSOS extends BaseFragment {
         getConnectedBleAddress();
         interfaceIntialization();
         intializeDialog();
-        geoFenceAlertImplementation();
+  //      geoFenceAlertImplementation();
         setupRecycleView(chattingObjectList);
-        getDBMessageList(connected_bleAddress);
+      //  getDBMessageList(connected_bleAddress);
         interfaceImplementation_CallBack();
         longClick();
         return fragmentChattingView;
@@ -395,9 +395,9 @@ public class FragmentSOS extends BaseFragment {
                 String timeStampDateBase = getTimeStampMilliSecondd();
                 //  String timeStampDateBase = DateUtilsMyHelper.getCurrentDate(DateUtilsMyHelper.dateFormatStandard);
                 hideKeyBoard(typedMessage);//typedMessage
-                insertChat_To_table(typedMessage, timeStampDateBase, timeStamp_Sequence_NumberToTble);
+            //    insertChat_To_table(typedMessage, timeStampDateBase, timeStamp_Sequence_NumberToTble);
                 makeEditTextEmpty();
-                sendMessageToBleDevice(typedMessage, timeStampDateBase, timeStamp_Sequence_NumberToTble);
+          //      sendMessageToBleDevice(typedMessage, timeStampDateBase, timeStamp_Sequence_NumberToTble);
             }
 
     }
