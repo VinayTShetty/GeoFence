@@ -217,7 +217,7 @@ public class FragmentSOS extends BaseFragment {
                     chatInfo.setSequence("" + sequenceNumber);
                     chatInfo.setIdentifier(connected_bleAddress.replace(":", "").toLowerCase());
                     chatInfo.setTimeStamp(timeStampDataBase);
-                    roomDBHelperInstance.get_Chat_info_dao().insert_ChatInfo(chatInfo);
+                  //  roomDBHelperInstance.get_Chat_info_dao().insert_ChatInfo(chatInfo);
 
                 }
             });
@@ -395,7 +395,7 @@ public class FragmentSOS extends BaseFragment {
                 String timeStampDateBase = getTimeStampMilliSecondd();
                 //  String timeStampDateBase = DateUtilsMyHelper.getCurrentDate(DateUtilsMyHelper.dateFormatStandard);
                 hideKeyBoard(typedMessage);//typedMessage
-            //    insertChat_To_table(typedMessage, timeStampDateBase, timeStamp_Sequence_NumberToTble);
+                insertChat_To_table(typedMessage, timeStampDateBase, timeStamp_Sequence_NumberToTble);
                 makeEditTextEmpty();
           //      sendMessageToBleDevice(typedMessage, timeStampDateBase, timeStamp_Sequence_NumberToTble);
             }
