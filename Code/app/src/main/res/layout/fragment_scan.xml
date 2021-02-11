@@ -26,7 +26,7 @@
                 android:id="@+id/logout_imagebutotn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_gravity="center"
+                android:layout_gravity="bottom"
                 android:src="@drawable/logout_icon"
                 android:layout_weight="0.2" />
 
@@ -45,9 +45,9 @@
             <ImageView
                 android:id="@+id/reload"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="40dp"
                 android:layout_weight="0.2"
-                android:gravity="center"
+                android:layout_gravity="bottom"
                 android:src="@drawable/ic_active_reload" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
