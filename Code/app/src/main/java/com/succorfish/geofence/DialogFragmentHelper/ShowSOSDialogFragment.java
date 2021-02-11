@@ -78,6 +78,10 @@ public class ShowSOSDialogFragment extends DialogFragment {
             @Override
             public void sosMessageItem(int postion) {
                 System.out.println(" Message Clicked= "+sosMessageList.get(postion).toString());
+                if(dialogListener!=null){
+                    dialogListener.onSOSMessageSelected(sosMessageList.get(postion).toString(),false);
+                    dismiss();
+                }
             }
         });
     }
@@ -129,7 +133,7 @@ public class ShowSOSDialogFragment extends DialogFragment {
     }
 
     public interface DialogListener {
-        void onDiverMessageSelected(String messageSelected, boolean dialogCancelFlag);
+        void onSOSMessageSelected(String messageSelected, boolean dialogCancelFlag);
     }
     public void setDialogListener(DialogListener dialogListener_loc) {
         this.dialogListener = dialogListener_loc;

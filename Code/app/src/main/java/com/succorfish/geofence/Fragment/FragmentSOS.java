@@ -187,6 +187,13 @@ public class FragmentSOS extends BaseFragment {
         }
 
         sosDialogFragment.show(ft, "dialog");
+
+        sosDialogFragment.setDialogListener(new ShowSOSDialogFragment.DialogListener() {
+            @Override
+            public void onSOSMessageSelected(String messageSelected, boolean dialogCancelFlag) {
+                message_text_view.setText(messageSelected);
+            }
+        });
     }
 
     private void showPopupDialog() {
