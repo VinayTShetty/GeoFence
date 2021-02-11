@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/splashbg"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -47,7 +46,7 @@
             android:id="@+id/beacon_setting_bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/bottom_sheet_behavior"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             android:background="@android:color/transparent"
             android:layout_marginTop="300dp"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

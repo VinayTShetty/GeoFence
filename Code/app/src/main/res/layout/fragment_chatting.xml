@@ -113,6 +113,7 @@
             android:paddingLeft="@dimen/_5sdp"
             android:textColor="@color/colorWhite"
             android:textIsSelectable="true"
+            android:digits="abcdefjhijklmnopqrstyuwxyz0123456789.,"
             android:backgroundTint="@color/colorBlack"
             android:textColorHint="@color/colorWhite"
             android:background="@drawable/chat_edit_text_border"
