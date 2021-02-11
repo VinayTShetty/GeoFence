@@ -174,6 +174,12 @@ public class FragmentSOS extends BaseFragment {
 
     }
 
+
+    @OnClick(R.id.sos_message_popUp)
+    public void SOS_messsageClick(){
+        System.out.println("Show Dialog Fragment..");
+    }
+
     private void showPopupDialog() {
         dialogProvider.showAlertDialog(getActivity(), "Select GSM OR IRIDIUM", "");
     }
