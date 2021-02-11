@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class ShowSOSDialogFragment extends DialogFragment {
@@ -104,5 +105,16 @@ public class ShowSOSDialogFragment extends DialogFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+
+    @OnClick(R.id.popup_sent_msg_textview_done)
+    public void onDoneButtonClicked() {
+        dismiss();
+    }
+
+    @OnClick(R.id.popup_sent_msg_textview_cancel)
+    public void onCancelButtonClicked() {
+        dismiss();
     }
 }
