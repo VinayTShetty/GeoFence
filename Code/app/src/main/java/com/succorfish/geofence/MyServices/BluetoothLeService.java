@@ -117,15 +117,15 @@ public class BluetoothLeService extends Service {
                 switch (retryOptionForConnection){
                     case 2:
                         retryOptionForConnection=0;
-                        Log.d(TAG, "onConnectionStateChange: Retry Count= "+retryOptionForConnection);
+                        Log.d(TAG, "    133_STATUS_ISSUE onConnectionStateChange: Retry Count= "+retryOptionForConnection);
                         gatt.disconnect();
                         gatt.close();
                         gatt=null;
-                        Log.d(TAG, "onConnectionStateChange: GATT Disconnected and Null");
+                        Log.d(TAG, "133_STATUS_ISSUE onConnectionStateChange: GATT Disconnected and Null");
                         break;
                     default:
                         retryOptionForConnection++;
-                        Log.d(TAG, "onConnectionStateChange: Retry Connection= Connecting again");
+                        Log.d(TAG, "133_STATUS_ISSUE onConnectionStateChange: Retry Connection= Connecting again retryCounnt= "+retryOptionForConnection);
                         connect(gatt.getDevice().getAddress());
                         break;
                 }

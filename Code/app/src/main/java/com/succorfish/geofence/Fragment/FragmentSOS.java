@@ -13,9 +13,11 @@ import android.widget.RadioButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.succorfish.geofence.BaseFragment.BaseFragment;
+import com.succorfish.geofence.DialogFragmentHelper.ShowSOSDialogFragment;
 import com.succorfish.geofence.MainActivity;
 import com.succorfish.geofence.R;
 import com.succorfish.geofence.RoomDataBaseEntity.ChatInfo;
@@ -177,7 +179,14 @@ public class FragmentSOS extends BaseFragment {
 
     @OnClick(R.id.sos_message_popUp)
     public void SOS_messsageClick(){
-        System.out.println("Show Dialog Fragment..");
+        ShowSOSDialogFragment sosDialogFragment=new ShowSOSDialogFragment();
+        FragmentTransaction ft = mainActivity.getSupportFragmentManager().beginTransaction();
+        Fragment prev = mainActivity.getSupportFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+
+        sosDialogFragment.show(ft, "dialog");
     }
 
     private void showPopupDialog() {
