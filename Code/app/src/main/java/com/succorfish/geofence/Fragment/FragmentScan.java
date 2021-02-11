@@ -190,7 +190,6 @@ public class FragmentScan extends BaseFragment {
         switch (requestCode) {
             case LocationPermissionRequestCode:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-             //       mainActivity.start_stop_SCAN(getActivity()); // Remove
                     mainActivity.start_stop_scan();
                 } else {
                     askPermission();
@@ -201,7 +200,6 @@ public class FragmentScan extends BaseFragment {
     private void checkPermissionGiven() {
         if (isAdded()) {
             if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-        //        mainActivity.start_stop_SCAN(getActivity()); //Remove
                 mainActivity.start_stop_scan();
             } else {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LocationPermissionRequestCode);
@@ -242,24 +240,6 @@ public class FragmentScan extends BaseFragment {
     }
 
     private void interfaceImplementation_CallBack() {
-
-        /**
-         * Remove
-         */
-      /*  mainActivity.setUpInterfaceInMainActivity(new PassScanDevicesRxBle() {
-            @Override
-            public void scannedRxBleDevices(CustomBluetooth customBluetooth) {
-                if (!customBluetoothDeviceList.contains(customBluetooth)) {
-                    String deviceName = getdevialiasNamefromDB(customBluetooth.getBleaddress());
-                    customBluetooth.setDeviceName(deviceName);
-                    customBluetoothDeviceList.add(customBluetooth);
-                    connect_inst_Txtview.setVisibility(View.VISIBLE);
-                    fragmentScanAdapter.notifyDataSetChanged();
-                }
-            }
-        });*/
-
-
         mainActivity.setupPassScanDeviceToActivity_interface(new PassScanDeviceToActivity_interface() {
             @Override
             public void sendCustomBleDevice(CustBluetootDevices custBluetootDevices) {
@@ -273,11 +253,6 @@ public class FragmentScan extends BaseFragment {
                 }
             }
         });
-
-
-
-
-
 
         mainActivity.setUpConnectionStatus(new ConnectionStatus() {
             @Override
@@ -533,6 +508,7 @@ public class FragmentScan extends BaseFragment {
             public void overFlow_menu_SOS(CustBluetootDevices customBluetooth, int postion) {
                 CONNECTED_BLE_ADDRESS=customBluetooth.getBleAddress();
                 Toast.makeText(getActivity(),"UNDER CONSTRUCTION",Toast.LENGTH_SHORT).show();
+                mainActivity.replaceFragment(new FragmentSOS(),null,false);
             }
         });
 
