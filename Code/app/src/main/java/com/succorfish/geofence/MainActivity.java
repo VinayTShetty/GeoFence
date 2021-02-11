@@ -1171,7 +1171,7 @@ public class MainActivity extends AppCompatActivity implements
                     try {
                         byte [] decryptedHexValue=   decryptData(dataWritten);
                      //   System.out.println("LOOP_BACK_DATA_FROM_FIRMWARE  "+bytesToHex(decryptedHexValue));
-                        Log.d(TAG, "onReceive: DATA_WRITEN_ACK "+bytesToHex(decryptedHexValue)+" STATUS= "+status);
+                        Log.d(TAG, "onReceive: DATA_WRITEN_ACK  "+bytesToHex(decryptedHexValue)+" STATUS= "+status);
                     } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     } catch (NoSuchPaddingException e) {

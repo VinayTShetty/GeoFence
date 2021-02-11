@@ -24,7 +24,7 @@
                 android:id="@+id/fragment_band_configuration_back"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.2"
+                android:layout_weight="0.1"
                 android:src="@drawable/left_arrow" />
 
             <TextView
@@ -32,11 +32,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                android:gravity="center"
-                android:layout_weight="0.6"
+                android:layout_weight="0.7"
                 android:text="@string/fragment_Band_configuration_Toolbar_header_name"
                 android:textAlignment="center"
                 android:textColor="#ffffff"
-                android:textSize="24sp" />
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/band_config_save"
