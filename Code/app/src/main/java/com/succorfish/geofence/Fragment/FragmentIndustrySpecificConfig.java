@@ -161,16 +161,16 @@ public class FragmentIndustrySpecificConfig extends BaseFragment {
          * Depth and temperature mode.
          */
         byte depth_temperature_value=(byte)0xff;
-        flight_mode_value=radioButtonSelectedValue(radioButton_light_mode_off,radioButton_flight_mode_cellular,radioButton_flight_mode_satellite);
-        garage_mode_value=radioButtonSelectedValue(radioButton_garage__mode_on,radioButton_garage__mode_cellular,radioButton_garage_mode_satellite);
+        flight_mode_value=radioButtonSelectedValueIndustrySpecificConfiguration(radioButton_light_mode_off,radioButton_flight_mode_cellular,radioButton_flight_mode_satellite);
+        garage_mode_value=radioButtonSelectedValueIndustrySpecificConfiguration(radioButton_garage__mode_on,radioButton_garage__mode_cellular,radioButton_garage_mode_satellite);
         /**
          * GIGO MODE
          */
-        GIGO_mode_value=radioButtonSelectedValue(radioButton_gigo_mode_off,radioButton_gigo_cellular,radioButton_gigo_mode_satellite);
+        GIGO_mode_value=radioButtonSelectedValueIndustrySpecificConfiguration(radioButton_gigo_mode_off,radioButton_gigo_cellular,radioButton_gigo_mode_satellite);
         /**
          * Depth and temperature mode.
          */
-        depth_temperature_value=radioButtonSelectedValue(radioButton_depth_temperature_off,radioButton_depth_temperature_cellular,radioButton_depth_temperature_satellite);
+        depth_temperature_value=radioButtonSelectedValueIndustrySpecificConfiguration(radioButton_depth_temperature_off,radioButton_depth_temperature_cellular,radioButton_depth_temperature_satellite);
         if(fragmentIndustrySpecificConfigInterface!=null){
             fragmentIndustrySpecificConfigInterface.industrySpcificConfigurationDetails(connectedBleAddress,industrySpecificConfigurationPacket(flight_mode_value,garage_mode_value,GIGO_mode_value,depth_temperature_value));
         }
@@ -183,6 +183,18 @@ public class FragmentIndustrySpecificConfig extends BaseFragment {
     @OnClick(R.id.fragment_industry_back)
     public void backImageClick(){
         mainActivity.onBackPressed();
+    }
+
+    private static byte radioButtonSelectedValueIndustrySpecificConfiguration(RadioButton on,RadioButton cellular,RadioButton unchanged){
+        byte value= (byte) 0xff;
+        if(on.isChecked()){
+            value=00;
+        }else if(cellular.isChecked()){
+            value=01;
+        }else if(unchanged.isChecked()) {
+            value= (byte) 0x02;
+        }
+        return value;
     }
 
 
