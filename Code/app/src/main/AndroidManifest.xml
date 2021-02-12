@@ -33,7 +33,7 @@
             android:screenOrientation="portrait"></activity> <!-- Map API key Addition. -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/map_api_key_tom_tom_map" />
+            android:value="@string/map_api_key" />
         <service android:name=".MyServices.BluetoothLeService"
             android:enabled="true">
         </service>
