@@ -270,11 +270,9 @@ public class FragmentDeviceConfiguration extends BaseFragment {
       byte cheapestModeValue=radioButtonSelectedValue(cheapest_radio_group_on,cheapest_radio_group_off,cheapest_radio_group_unchange);
       byte ultraPowerMode=radioButtonSelectedValue(ultra_power_mode_on,ultra_power_mode_off,ultra_power_mode_unchange);
       byte usbDownloadMode=radioButtonSelectedValue(usb_download_mode_on,usb_download_mode_off,usb_download_mode_unchange);
-
       byte iridurmAlwaysOnValue=radioButtonSelectedValue(iridium_always_on,iridium_always_off,iridium_always_unchnage);
       byte iridiumEventValue=radioButtonSelectedValue(iridium_event_on,iridium_event_off,iridium_event_unchange);
       byte instantTemper=radioButtonSelectedValue(instant_temper_on,instant_temper_off,instant_temper_unchange);
-
       byte waypoint_movement=radioButtonSelectedValue(waypoint_movement_on,waypoint_movement_off,waypoint_movement_unchnage);
 
       byte [] radiobuttonSelected=  sendCheapsetModeRadioButtonValues(
@@ -298,9 +296,9 @@ public class FragmentDeviceConfiguration extends BaseFragment {
     private byte radioButtonSelectedValue(RadioButton on,RadioButton off,RadioButton unchanged){
         byte value= (byte) 0xff;
         if(on.isChecked()){
-            value=00;
-        }else if(off.isChecked()){
             value=01;
+        }else if(off.isChecked()){
+            value=00;
         }else if(unchanged.isChecked()) {
             value= (byte) 0xff;
         }
