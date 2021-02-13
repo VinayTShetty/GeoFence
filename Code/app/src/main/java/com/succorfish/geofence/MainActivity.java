@@ -1247,7 +1247,7 @@ public class MainActivity extends AppCompatActivity implements
                         String hex_converted_decrypted_byte_array = bytesToHex(decrypted_byteArray_FromFirmware);
                         blehexObtainedFrom_Firmware = hex_converted_decrypted_byte_array.toLowerCase();
 //                        System.out.println("Decrypted Firmware HEX Value= " + blehexObtainedFrom_Firmware);
-                        Log.d(TAG, "onReceive: DECRYPED FIRMWARE HEXVALUE= "+blehexObtainedFrom_Firmware);
+                        Log.d(TAG, "onReceive: Decrypted HEX Value  Data "+blehexObtainedFrom_Firmware);
                     } catch (IllegalBlockSizeException e) {
                         e.printStackTrace();
                     } catch (InvalidKeyException e) {
@@ -1300,7 +1300,7 @@ public class MainActivity extends AppCompatActivity implements
                         /**
                          * Error Packet of the GeoFence.
                          */
-                        System.out.println("Error Packet From Firmware");
+                        Log.d(TAG, "onReceive: Error Packet From Firmware a2010000000000000000000000000000");
                         cancelProgressDialog();
 
                     }
