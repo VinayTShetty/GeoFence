@@ -27,7 +27,7 @@ import static com.succorfish.geofence.blecalculation.DeviceConfiguration.sendChe
 import static com.succorfish.geofence.blecalculation.DeviceConfiguration.sendData;
 import static com.succorfish.geofence.blecalculation.DeviceConfiguration.sendIntervalSeconds;
 import static com.succorfish.geofence.utility.Utility.checkEditTextDataIsEmpty;
-import static com.succorfish.geofence.utility.Utility.convertStringToByte;
+
 
 public class FragmentDeviceConfiguration extends BaseFragment {
     private Unbinder unbinder;
