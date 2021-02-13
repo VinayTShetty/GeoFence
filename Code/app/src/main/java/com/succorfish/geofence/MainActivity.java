@@ -1679,7 +1679,6 @@ public class MainActivity extends AppCompatActivity implements
                                                     /**
                                                      * Remove here
                                                      */
-                                                 //   writeDataToFirmware(bleDevice, sendAckReadyForNextPacket(), "A5 ALERTS RECIEVED,SENDING ACK READY FOR NEXT ALERT");
                                                     sendSinglePacketDataToBle(bleAddressFromNotificationChanged,sendAckReadyForNextPacket(),"A5 ALERTS RECIEVED,SENDING ACK READY FOR NEXT ALERT");
                                                 } catch (InterruptedException e) {
                                                     e.printStackTrace();
@@ -2028,7 +2027,6 @@ public class MainActivity extends AppCompatActivity implements
                                 /**
                                  * Recieveed incomming message sucess
                                  */
-                              //  sendAckIncommigMessageRecievedFromDevice(bleAddressFromNotificationChanged,incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 1));
                                 sendSinglePacketDataToBle(bleAddressFromNotificationChanged,incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 1),"INCOMMING MESSAGE SUCESS");
                                 /**
                                  * insert chat to table and send UI updte for recycleView.
@@ -2039,7 +2037,6 @@ public class MainActivity extends AppCompatActivity implements
                                 /**
                                  * incomming message recieved failure..
                                  */
-                              //  sendAckIncommigMessageRecievedFromDevice(bleDevice.getMac(),incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 0));
                                 sendSinglePacketDataToBle(bleAddressFromNotificationChanged,incommingMessageACK(incommingMessagePacket.getSequenceNumber(),channelId, (byte) 0),"INCOMMING MESSAGE FAILURE");
                             }
 
@@ -2072,7 +2069,7 @@ public class MainActivity extends AppCompatActivity implements
             from_firmware_ID_TimeStamp = new ArrayList<String>();
             from_firmware_ID_TimeStamp_A8_Packet = new ArrayList<String>();
             System.gc();
-            sendDataToBleDeviceWithoutEncryption(bleAddress,connectionArray,"WRITING CONNECTION MAINTAINENCE CODE ");
+            sendDataToBleDeviceWithoutEncryption(bleAddress,connectionArray,"Write Connection MainTainence Code");
         }
 
         private void passConnectionSucesstoFragmentScanForUIChange(String connectedDeviceAddress, boolean connect_disconnect) {
@@ -2183,25 +2180,15 @@ public class MainActivity extends AppCompatActivity implements
      */
 
     private static void sendNextDataToFirmmWareAfterConfermation(byte [] obtainedFromOnCharcterticWrite,String bleAddressToWrite,String reasonToWrite){
-       // System.out.println(" UNIVERSAL_ARRAY_PACEKT_LIST SIZE= "+UNIVERSAL_ARRAY_PACEKT_LIST.size());
         try {
             byte[] decrypted_byteArray_FromFirmware =decryptData(obtainedFromOnCharcterticWrite);
             String hex_converted_decrypted_byte_array = bytesToHex(decrypted_byteArray_FromFirmware);
-            System.out.println("" + hex_converted_decrypted_byte_array);
-         //   Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation:  DATA_WRITTEN_SUCEFFULLY "+hex_converted_decrypted_byte_array);
             if (!UNIVERSAL_ARRAY_PACEKT_LIST.isEmpty() && (UNIVERSAL_ARRAY_PACEKT_LIST.contains(hex_converted_decrypted_byte_array))) {
                 UNIVERSAL_ARRAY_PACEKT_LIST.remove(hex_converted_decrypted_byte_array);
-           //     System.out.println("DATA REMOVED AFTER WRITING " + hex_converted_decrypted_byte_array);
-             //   Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation: DATA_REMOVED_CONFERMATION= "+hex_converted_decrypted_byte_array);
                 if (UNIVERSAL_ARRAY_PACEKT_LIST.size() > 0) {
                     byte[] bytesDataToWrite = encryptData(byteConverstionHelper_hexStringToByteArray(UNIVERSAL_ARRAY_PACEKT_LIST.get(0)));
-                    /*try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }*/
                     mBluetoothLeService.sendDataToBleDevice(bleAddressToWrite,bytesDataToWrite);
-                    Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation: NEXT DATA WRITTEN "+bytesToHex(bytesDataToWrite));
+                    Log.d(TAG, "sendNextDataToFirmmWareAfterConfermation Data :"+bytesToHex(bytesDataToWrite)+" RSN Next Packet Written "+" Ads "+bleAddressToWrite);
                 }
             }
 
@@ -2219,7 +2206,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public static void  sendSinglePacketDataToBle(String bleAddress,byte[] dataNeedToSend,String reasonToWriteData){
-        Log.d(TAG, "sendSinglePacketDataToBle: Hex Data needs to be Passed= "+bytesToHex(dataNeedToSend)+" DATA REASON= "+reasonToWriteData+" BLE ADDRESS= "+bleAddress);
+        Log.d(TAG, "sendSinglePacketDataToBle Data :"+bytesToHex(dataNeedToSend)+" RSN "+reasonToWriteData+" Ads "+bleAddress);
         try {
             byte [] encryptedData=encryptData(dataNeedToSend);
             mBluetoothLeService.sendDataToBleDevice(bleAddress,encryptedData);
@@ -2237,8 +2224,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public static void sendDataToBleDeviceWithoutEncryption(String bleAddress,byte[] dataNeedToSend,String reasonToWriteData){
-     //   System.out.println("Reason For Writing= "+reasonToWriteData);
-        Log.d(TAG, "sendDataToBleDeviceWithoutEncryption: "+reasonToWriteData);
+        Log.d(TAG, "sendDataToBleDeviceWithoutEncryption Data: "+bytesToHex(dataNeedToSend)+" RSN "+reasonToWriteData+" Ads "+bleAddress);
         mBluetoothLeService.sendDataToBleDevice(bleAddress,dataNeedToSend);
     }
 
