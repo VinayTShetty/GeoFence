@@ -230,28 +230,28 @@ public class FragmentDeviceConfiguration extends BaseFragment {
          * Interval in Seconds UI process list.
          */
         ArrayList<byte[]> deviceConfigurationArray=new ArrayList<byte[]>();
-        byte gsm_intervalByteValue=(byte)0XFF;
-        byte gsm_timeout_intervalByteValue=(byte)0XFF;
-        byte gps_intervalByteValue=(byte)0XFF;
-        byte gps_timeoutByteValue=(byte)0XFF;
-        byte satellite_intervalByteValue=(byte)0XFF;
-        byte satellite_timeoutByteValue=(byte)0XFF;
-        byte cheapest_multiplierByteValue=(byte)0XFF;
+        int gsm_intervalByteValue=(byte)0XFF;
+        int gsm_timeout_intervalByteValue=(byte)0XFF;
+        int gps_intervalByteValue=(byte)0XFF;
+        int gps_timeoutByteValue=(byte)0XFF;
+        int satellite_intervalByteValue=(byte)0XFF;
+        int satellite_timeoutByteValue=(byte)0XFF;
+        int cheapest_multiplierByteValue=(byte)0XFF;
         if(checkEditTextDataIsEmpty(gsm_interval_text)){
-            gsm_intervalByteValue= convertStringToByte(gsm_interval_text.getText().toString());
+            gsm_intervalByteValue= Integer.parseInt(gsm_interval_text.getText().toString());
         }if(checkEditTextDataIsEmpty(gsm_timeout_interval_text)){
-            gsm_timeout_intervalByteValue= convertStringToByte(gsm_timeout_interval_text.getText().toString());
+            gsm_timeout_intervalByteValue= Integer.parseInt(gsm_timeout_interval_text.getText().toString());
         }
         if(checkEditTextDataIsEmpty(gps_interval_text)){
-            gps_intervalByteValue= convertStringToByte(gps_interval_text.getText().toString());
+            gps_intervalByteValue= Integer.parseInt(gps_interval_text.getText().toString());
         }if(checkEditTextDataIsEmpty(gps_timeout_text)){
-            gps_timeoutByteValue= convertStringToByte(gps_timeout_text.getText().toString());
+            gps_timeoutByteValue= Integer.parseInt(gps_timeout_text.getText().toString());
         }if(checkEditTextDataIsEmpty(satellite_interval_text)){
-            satellite_intervalByteValue= convertStringToByte(satellite_interval_text.getText().toString());
+            satellite_intervalByteValue= Integer.parseInt(satellite_interval_text.getText().toString());
         }if(checkEditTextDataIsEmpty(satellite_timeout_text)){
-            satellite_timeoutByteValue= convertStringToByte(satellite_timeout_text.getText().toString());
+            satellite_timeoutByteValue= Integer.parseInt(satellite_timeout_text.getText().toString());
         }if(checkEditTextDataIsEmpty(cheapest_multiplier_text)){
-            cheapest_multiplierByteValue= convertStringToByte(cheapest_multiplier_text.getText().toString());
+            cheapest_multiplierByteValue= Integer.parseInt(cheapest_multiplier_text.getText().toString());
         }
       byte [] intervalArray=  sendIntervalSeconds(gsm_intervalByteValue,
                 gsm_timeout_intervalByteValue,

@@ -232,11 +232,11 @@ public class Utility {
         return result;
     }
 
-    public static  byte convertStringToByte(String covertToByte){
+ /*   public static  byte convertStringToByte(String covertToByte){
         byte value=00;
         value=Byte.parseByte(covertToByte);
         return value;
-    }
+    }*/
 
 
     /**

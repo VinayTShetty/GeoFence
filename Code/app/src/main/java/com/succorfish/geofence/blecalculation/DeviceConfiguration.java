@@ -6,13 +6,13 @@ import static com.succorfish.geofence.blecalculation.Blecalculation.into2Bytes;
 import static com.succorfish.geofence.blecalculation.ByteConversion.convertToTwoBytes;
 
 public class DeviceConfiguration {
-    public static byte[] sendIntervalSeconds( byte gsmInterval,
-                                              byte gsmTimeOut,
-                                              byte gpsInterval,
-                                              byte gpstimeout,
-                                              byte sateliteInterval,
-                                              byte sateliteTimeout,
-                                              byte cheapestModeMulitplier){
+    public static byte[] sendIntervalSeconds( int gsmInterval,
+                                              int gsmTimeOut,
+                                              int gpsInterval,
+                                              int gpstimeout,
+                                              int sateliteInterval,
+                                              int sateliteTimeout,
+                                              int cheapestModeMulitplier){
         byte [] intervalArray=new byte[16];
         byte [] gsmInterval_araay=convertToTwoBytes(gsmInterval);
         byte [] gsmTimeOut_araay=convertToTwoBytes(gsmTimeOut);

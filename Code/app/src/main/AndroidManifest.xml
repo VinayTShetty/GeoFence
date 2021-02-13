@@ -40,7 +40,5 @@
         <service android:name=".MyServices.DfuService"
             android:enabled="true">
         </service>
-
     </application>
-
 </manifest>
